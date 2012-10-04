@@ -3,6 +3,8 @@
  */
 package game.core;
 
+import game.window.MainWindow;
+
 /**
  * StarterKlasse für das Projekt <br>
  * In dieser Klasse werden die Rahmenbedingungen gesetzt und das Hauptfenster
@@ -17,7 +19,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		new MainWindow();
 
 	}
 

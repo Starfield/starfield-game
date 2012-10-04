@@ -1,7 +1,7 @@
 /**
  * 
  */
-package help;
+package game.help;
 
 import javax.swing.JFrame;
 
