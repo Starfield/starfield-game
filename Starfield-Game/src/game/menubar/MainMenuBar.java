@@ -21,6 +21,8 @@ public class MainMenuBar extends JMenuBar {
 	/* Menüelemente */
 	/** Menüpunkt Spiel */
 	private JMenu _spiel;
+	/** Menüpunkt Editor */
+	private JMenu _editor;
 	/** Menüpunkt Hilfe */
 	private JMenu _hilfe;
 
@@ -45,6 +47,9 @@ public class MainMenuBar extends JMenuBar {
 	private void initMenu() {
 		/* Menüpunkt Spiel erstellen */
 		this.add(initSpiel());
+		
+		/* Menüpunkt Editor erstellen */
+		this.add(initEditor());
 
 		/* Menüpunkt Hilfe erstellen */
 		this.add(initHilfe());
@@ -60,11 +65,27 @@ public class MainMenuBar extends JMenuBar {
 		// Menüpunkt Neues Spiel
 		_spiel.add(new JMenuItem(new NewGameAction("Neues Spiel ...",
 				ImageResources.getIcon(Images.ICON_NEWGAME))));
+		// Menüpunkt Spiel Laden
+		_spiel.add(new JMenuItem(new LoadGameAction("Spiel Laden ...", ImageResources.getIcon(Images.ICON_NEWGAME))));
+		// Menüpunkt Spiel Speichern
+		_spiel.add(new JMenuItem(new SaveAction("Spiel Speichern ...", ImageResources.getIcon(Images.ICON_NEWGAME))));
 		// Menüpunkt Beenden
 		_spiel.addSeparator();
 		_spiel.add(new JMenuItem(new CloseApplicationAction("Beenden",
 				ImageResources.getIcon(Images.ICON_EXIT))));
 		return _spiel;
+	}
+	
+	private JMenu initEditor(){
+		_editor = new JMenu("Editor");
+		// Menüpunkt Puzzle erstellen
+		_editor.add(new JMenuItem(new CreatePuzzleAction("Neues Puzzle erstellen ...", ImageResources.getIcon(Images.ICON_NEWGAME))));
+		// Menüpunkt Spiel Laden
+		_editor.add(new JMenuItem(new EditPuzzleAction("Puzzle Bearbeiten ...", ImageResources.getIcon(Images.ICON_NEWGAME))));
+		// Menüpunkt Puzzle Speichern
+		_editor.add(new JMenuItem(new SaveAction("Puzzle Speichern ...", ImageResources.getIcon(Images.ICON_NEWGAME))));
+		return _editor;
+		
 	}
 
 	/**
@@ -76,6 +97,10 @@ public class MainMenuBar extends JMenuBar {
 		_hilfe = new JMenu("Hilfe");
 		// Hilfe hinzufügen
 		_hilfe.add(new JMenuItem(new OpenHelpAction("Hilfe öffnen ...",
+				ImageResources.getIcon(Images.ICON_HELP))));
+		// About
+		_hilfe.addSeparator();
+		_hilfe.add(new JMenuItem(new OpenAboutAction("Über",
 				ImageResources.getIcon(Images.ICON_HELP))));
 		return _hilfe;
 	}
