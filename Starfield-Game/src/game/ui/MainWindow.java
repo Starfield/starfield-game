@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game.window;
+package game.ui;
 
 import game.menubar.MainMenuBar;
 
@@ -19,12 +19,12 @@ import javax.swing.JMenuBar;
 public class MainWindow extends JFrame {
 
 	/** Die MenüLeiste */
-	JMenuBar _menuBar;
+	JMenuBar					_menuBar;
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
 
 	public MainWindow() {
 		super("Starfield - The Game");
