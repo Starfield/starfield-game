@@ -1,7 +1,7 @@
 /**
  * 
  */
-package game.views;
+package game.ui;
 
 import javax.swing.JPanel;
 
