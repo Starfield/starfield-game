@@ -1,0 +1,2 @@
+# .class Dateien werden ignoriert
+bin/**/* 
