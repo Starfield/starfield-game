@@ -77,6 +77,11 @@ public void createStarfield(int xNumber, int yNumber){
 			
 		}
 		
+		public Dimension getSize(){
+			
+		return size;
+		}
+		
  }
  
  
