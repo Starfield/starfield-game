@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  * @author schroeder_jan
  *
  */
-public class Starfield extends JPanel {
+public class StarfieldView extends JPanel {
 
 	/**
 	 * 
