@@ -3,6 +3,8 @@
  */
 package game.core;
 
+import game.ui.MainWindow;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -15,6 +17,16 @@ import javax.swing.ImageIcon;
  */
 public class ImageResources {
 
+	// Konstanten
+	/** Ordner in dem die Bilder liegen */
+	private final static String	FOLDER		= "images/";
+	/** Endung der Bilddateien */
+	private final static String	FILE_TYPE	= ".png";
+	/** Schalter für kleine Bilder */
+	public final static int		SIZE_32		= 0;
+	/** Schalter für große Bilder */
+	public final static int		SIZE_64		= 1;
+
 	/**
 	 * Auflistung aller bekannten Bilder
 	 * 
@@ -22,13 +34,15 @@ public class ImageResources {
 	 * 
 	 */
 	public enum Images {
-		STAR("images/star.png"), ICON_NEWGAME("images/icon_newgame.png"), ICON_EXIT(
-				"images/icon_exit.png"), ICON_HELP("images/icon_help.png");
+		STAR("star"),
+		ICON_NEWGAME("icon_newgame"),
+		ICON_EXIT("icon_exit"),
+		ICON_HELP("icon_help");
 
-		private final String imagePath;
+		private final String	name;
 
 		Images(String imageName) {
-			this.imagePath = imageName;
+			this.name = imageName;
 		}
 	}
 
@@ -40,8 +54,24 @@ public class ImageResources {
 	 * @return ImageIcon des Bildes
 	 */
 	public static ImageIcon getIcon(Images image) {
-		// return new ImageIcon(getUserDir() + "\\" + image.getImageName());
-		return new ImageIcon(image.imagePath);
+		String pfad = getImagePath(image);
+		if (pfad != null)
+			return new ImageIcon(pfad);
+		return null;
 	}
 
+	/**
+	 * Liefert in Abhängigkeit der eingestellten Optionen den richtigen Bildpfad
+	 * 
+	 * @param image
+	 *            nach dem gesucht werden soll
+	 * @return Pfad zur Bilddatei in richtiger Größe
+	 */
+	private static String getImagePath(Images image) {
+		if (MainWindow.getGamePrefs().getImageSize() == SIZE_32)
+			return FOLDER + image.name + "32" + FILE_TYPE;
+		if (MainWindow.getGamePrefs().getImageSize() == SIZE_64)
+			return FOLDER + image.name + "64" + FILE_TYPE;
+		return null;
+	}
 }

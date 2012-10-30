@@ -3,7 +3,7 @@
  */
 package game.core;
 
-import game.window.MainWindow;
+import game.ui.MainWindow;
 
 /**
  * StarterKlasse für das Projekt <br>
