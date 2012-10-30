@@ -19,4 +19,12 @@ public class Field {
 	 this.xPos = xPos;
 	 this.yPos = yPos;
 	}
+	
+	public userContent getUserContent(){
+	return userContent;	
+	}
+		
+	public solutionContent getSolutionContent(){
+	return solutionContent;	
+	}
 }
