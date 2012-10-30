@@ -1,9 +1,9 @@
 package game.model;
-/** Interface für Field Content
+/** Abstrakte Klasse fÃ¼r Field Content
  * 
  * @author Alexander Arians
  *
  */
-public interface IContent {
+public abstract AbstractContent {
 
 }
