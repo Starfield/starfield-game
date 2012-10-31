@@ -127,7 +127,7 @@ public class MainWindow extends JFrame {
 		if (_starfieldView != null)
 			_contentPane.remove(_starfieldView);
 		// Neues Starfield erzeugen und anzeigen
-		_starfieldView = new StarfieldView(new Starfield());
+		_starfieldView = new StarfieldView(new Starfield(10, 10));
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
 	}
 
