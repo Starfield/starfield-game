@@ -1,9 +1,9 @@
 package game.model;
-/** Star fürs Field
+/** Star fÃ¼rs Field
  * 
  * @author Alexander Arians
  *
  */
-public class Star implements IContent {
+public class Star extends AbstractContent {
 
 }
