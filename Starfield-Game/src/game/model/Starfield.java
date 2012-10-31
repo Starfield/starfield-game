@@ -20,7 +20,7 @@ public class Starfield {
 	
 		
 
-public void Starfield(int xNumber, int yNumber){
+public Starfield(int xNumber, int yNumber){
 	size.setSize(xNumber, yNumber);
 	createStarfield(xNumber, yNumber);
 }
