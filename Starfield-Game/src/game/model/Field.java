@@ -7,6 +7,26 @@ package game.model;
  */
 
 public class Field {
+	
+	/**
+	 * Definiert Enums für den möglichen Inhalte von Field.
+	 * 
+	 * @author Nikolaj
+	 */
+	public enum Content {
+		STAR(new Star()),
+		EMPTY(null);
+		
+		private AbstractContent content;
+		
+		private Content(AbstractContent content) {
+			this.content = content;
+		}
+		
+		public AbstractContent getContent() {
+			return content;
+		}
+	}
 
 	int xPos;
 	int yPos;
