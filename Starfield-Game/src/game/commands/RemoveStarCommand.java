@@ -19,6 +19,9 @@ public class RemoveStarCommand extends AbstractCommand {
 	 * 
 	 * @param stacks
 	 *  - CommandStack Referenz
+	 *  
+	 * @param e
+	 *  - Das den Command aufrufende Event
 	 */
 	public RemoveStarCommand(CommandStack stacks, ActionEvent e) {
 		super(stacks, e);

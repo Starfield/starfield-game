@@ -19,6 +19,9 @@ public class SetStarCommand extends AbstractCommand {
 	 * 
 	 * @param stacks
 	 *  - CommandStack Referenz
+	 *  
+	 * @param e
+	 *  - Das den Command aufrufende Event
 	 */
 	public SetStarCommand(CommandStack stacks, ActionEvent e) {
 		super(stacks, e);

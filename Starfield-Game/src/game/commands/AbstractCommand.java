@@ -23,6 +23,9 @@ public abstract class AbstractCommand implements Serializable {
 	 * 
 	 * @param stacks
 	 *  - CommandStack Referenz
+	 *  
+	 * @param e
+	 *  - Das den Command aufrufende Event
 	 */
 	public AbstractCommand(CommandStack stacks, ActionEvent e) {
 		this.stacks = stacks;
@@ -42,6 +45,23 @@ public abstract class AbstractCommand implements Serializable {
 	 */
 	public void undo() {
 		stacks.addTimeLapseCommand(this);
+	}
+
+	/**
+	 * Gibt das CommandStack Element zurück.
+	 * 
+	 * @return CommandStack
+	 */
+	public CommandStack getStacks() {
+		return stacks;
+	}
+
+	/**
+	 * @param stacks
+	 *  - Das CommandStack Element
+	 */
+	public void setStacks(CommandStack stacks) {
+		this.stacks = stacks;
 	}
 
 	/**
