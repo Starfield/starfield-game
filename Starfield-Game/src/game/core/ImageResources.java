@@ -37,7 +37,10 @@ public class ImageResources {
 		STAR("star"),
 		ICON_NEWGAME("icon_newgame"),
 		ICON_EXIT("icon_exit"),
-		ICON_HELP("icon_help");
+		ICON_HELP("icon_help"),
+		CONTENT_EMPTY("EmptyContent"),
+		CONTENT_GRAYED("GrayedContent"),
+		CONTENT_STAR("StarContent");
 
 		private final String	name;
 
