@@ -15,14 +15,17 @@ public class Starfield {
 
 	ArrayList<ArrayList<Field>> listcontainer;
 	Boolean playable;
+
 	Dimension size;
 	
 		
 
-
+public void Starfield(int xNumber, int yNumber){
+	size.setSize(xNumber, yNumber);
+	createStarfield(xNumber, yNumber);
+}
 
 public void createStarfield(int xNumber, int yNumber){
-	size.setSize(xNumber, yNumber);
 	for(int i=0; i< xNumber; i++){
 		ArrayList<Field> yList = new ArrayList<Field>();
 		for(int y=0; y<yNumber; y++){
@@ -31,6 +34,10 @@ public void createStarfield(int xNumber, int yNumber){
 		listcontainer.add(yList);	
 	}
 
+}
+
+public void setPlayable(Boolean playable) {
+	this.playable = playable;
 }
 
 
@@ -44,23 +51,33 @@ public void createStarfield(int xNumber, int yNumber){
  }
  
  
- 		// zum �ndern des Feldes f�r den Editor
-// 		public void addFields(int addXRows, int addYRows){
-// 			size.setSize(size.getWidth()+addXRows, size.getHeight()+addYRows);
-//		for(int i=0; i< addXRows; i++){
-//			ArrayList<Field> yList = new ArrayList<Field>();
-//			for(int y=0; y<addYRows; y++){
-//				yList.add(new Field(i,y));
-//			}
-//			listcontainer.add(yList);	
-//		}
-// 		}
  		
+ 	    //zum Hinzufügen von Felder in der X-Dimension für den Editor
  		public void addXFields(int addXRows){
- 			
+ 			size.setSize(size.getWidth()+addXRows,size.getHeight());
+ 			for(int i=0; i< addXRows; i++){
+ 				ArrayList<Field> yList = new ArrayList<Field>();
+ 				for(int y=0; y<size.getHeight(); y++){
+ 					yList.add(new Field(i,y));
+ 				}
+ 					listcontainer.add(yList);
+ 			}
  		}
+ 		
+ 		//zum Hinzufügen von Felder in der Y-Dimension für den Editor	
+ 		public void addYFields(int addYRows){
+ 			
+ 			for(int i=0; i< size.getWidth(); i++){
+ 				for (int y=0; y< addYRows;y++){
+ 					
+ 				listcontainer.get(i).add(new Field(i,(int) (size.getHeight()+y+1)));
+ 				}
+ 			}
+ 			size.setSize(size.getWidth(),size.getHeight()+addYRows);
+ 		}
+ 		
 		
-		// zum �ndern des Feldes f�r den Editor
+		// zum Ändern des Feldes für den Editor X-Dimension
 		public void deleteXFields(int deleteXRows){
 			size.setSize(size.getWidth()-deleteXRows, size.getHeight());
 			for(int i=0; i< deleteXRows; i++){
@@ -69,6 +86,8 @@ public void createStarfield(int xNumber, int yNumber){
 			
 			
 		}
+		
+		// zum Ändern des Feldes für den Editor Y-Dimension
 		public void deleteYFields(int deleteYRows){
 			
 			for(int y=0; y< listcontainer.size(); y++){
@@ -77,11 +96,11 @@ public void createStarfield(int xNumber, int yNumber){
 			
 		}
 		
+		// gibt die Größe des Spieldfeldes zurück
 		public Dimension getSize(){
 			
 		return size;
 		}
 		
  }
- 
  
