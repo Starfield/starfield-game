@@ -1,9 +1,9 @@
 package game.model;
-/** Arrow fürs Field
+/** Arrow fÃ¼rs Field
  * 
  * @author Alexander Arians
  *
  */
-public class Arrow implements IContent {
+public class Arrow extends AbstractContent {
 
 }
