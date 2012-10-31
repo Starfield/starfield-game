@@ -7,7 +7,8 @@ import game.core.ImageResources;
 import game.core.ImageResources.Images;
 import game.model.Starfield;
 
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -39,17 +40,21 @@ public class StarfieldView extends JPanel {
 	 * <li>PrefferedSize</li> <li>Layout</li> <li>...</li>
 	 */
 	private void initWindowsPrefs() {
-		GridLayout gridLayout = new GridLayout(_starfield.getSize().height,
-				_starfield.getSize().width);
-		gridLayout.setHgap(5);
-		gridLayout.setVgap(5);
+		GridBagLayout gridLayout = new GridBagLayout();
 		setLayout(gridLayout);
+
 	}
 
 	private void fillView() {
 		for (ArrayList<game.model.Field> row : _starfield.getListcontainer())
 			for (game.model.Field cell : row)
-				if (cell.getUserContent() == null)
-					add(new JLabel(ImageResources.getIcon(Images.CONTENT_EMPTY)));
+				if (cell.getUserContent() == null) {
+					GridBagConstraints c = new GridBagConstraints();
+					c.gridx = cell.getxPos();
+					c.gridy = cell.getyPos();
+					c.fill = GridBagConstraints.BOTH;
+					add(new JLabel(ImageResources.getIcon(Images.CONTENT_EMPTY)),
+							c);
+				}
 	}
 }

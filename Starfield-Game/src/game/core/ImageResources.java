@@ -40,7 +40,15 @@ public class ImageResources {
 		ICON_HELP("icon_help"),
 		CONTENT_EMPTY("EmptyContent"),
 		CONTENT_GRAYED("GrayedContent"),
-		CONTENT_STAR("StarContent");
+		CONTENT_STAR("StarContent"),
+		CONTENT_ARROW_U("arrows/UpArrowContent"),
+		CONTENT_ARROW_D("arrows/DownArrowContent"),
+		CONTENT_ARROW_L("arrows/LeftArrowContent"),
+		CONTENT_ARROW_R("arrows/RightArrowContent"),
+		CONTENT_ARROW_UR("arrows/UpRightArrowContent"),
+		CONTENT_ARROW_UL("arrows/UpLeftArrowContent"),
+		CONTENT_ARROW_DR("arrows/DownRightArrowContent"),
+		CONTENT_ARROW_DL("arrows/DownLeftArrowContent");
 
 		private final String	name;
 

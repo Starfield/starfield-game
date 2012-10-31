@@ -12,6 +12,7 @@ import game.model.Starfield;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -59,8 +60,13 @@ public class MainWindow extends JFrame {
 		// Toolbar anzeigen
 		initToolbar();
 		// Starfield erzeugen
-		// initStarfieldView();
+		initStarfieldView();
 		// Optionen für die Platzierung auf dem Bildschirm
+		pack();
+		if (isAppSizeBiggerThanDisplay()) {
+			setSize(new Dimension(800, 600));
+			setExtendedState(MAXIMIZED_BOTH);
+		}
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -123,6 +129,22 @@ public class MainWindow extends JFrame {
 		// Neues Starfield erzeugen und anzeigen
 		_starfieldView = new StarfieldView(new Starfield());
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
+	}
+
+	/**
+	 * Überprüft ob die Größe nicht zu groß für den Bildschirm ist.
+	 */
+	private boolean isAppSizeBiggerThanDisplay() {
+		boolean answer = false;
+
+		Dimension programSize = getSize();
+		Dimension displaySize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		if (programSize.getHeight() > displaySize.getHeight())
+			answer = true;
+		if (programSize.getWidth() > displaySize.getWidth())
+			answer = true;
+		return answer;
 	}
 
 	@Override
