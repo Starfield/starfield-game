@@ -6,6 +6,7 @@ package game.ui;
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
 import game.model.Starfield;
+import game.ui.handler.StarfieldViewHandler;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -25,9 +26,12 @@ public class StarfieldView extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long	serialVersionUID	= 1L;
+	private static final long			serialVersionUID	= 1L;
 
-	private final Starfield		_starfield;
+	/** Das Modell */
+	private final Starfield				_starfield;
+	/** Der Handler für Aktionen */
+	private final StarfieldViewHandler	_handler			= new StarfieldViewHandler();	;
 
 	public StarfieldView(Starfield pStarfield) {
 		_starfield = pStarfield;
@@ -52,7 +56,10 @@ public class StarfieldView extends JPanel {
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridx = x;
 				c.gridy = y;
-				add(new JLabel(ImageResources.getIcon(Images.CONTENT_EMPTY)), c);
+				JLabel label = new JLabel(
+						ImageResources.getIcon(Images.CONTENT_EMPTY));
+				label.addMouseListener(_handler);
+				add(label, c);
 			}
 		}
 	}
