@@ -1,9 +1,9 @@
 package game.model;
-/** Abstrakte Klasse für Field Content
+/** Abstrakte Klasse fÃ¼r Field Content
  * 
  * @author Alexander Arians
  *
  */
-public abstract AbstractContent {
+public abstract class  AbstractContent {
 
 }
