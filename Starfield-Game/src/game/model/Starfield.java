@@ -21,7 +21,9 @@ public class Starfield {
 		
 
 public Starfield(int xNumber, int yNumber){
+	Dimension size = new Dimension();
 	size.setSize(xNumber, yNumber);
+	ArrayList<ArrayList> listcontainer = new ArrayList();
 	createStarfield(xNumber, yNumber);
 }
 
