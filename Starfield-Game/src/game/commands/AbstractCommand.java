@@ -1,6 +1,6 @@
 package game.commands;
 
-import java.awt.event.ActionEvent;
+import java.awt.AWTEvent;
 import java.io.Serializable;
 
 /**
@@ -16,7 +16,7 @@ public abstract class AbstractCommand implements Serializable {
 	private CommandStack stacks = null;
 	
 	/** Speichert das beim Aufruf eines Commands erzeugte Event */
-	private ActionEvent e = null;
+	private AWTEvent e = null;
 	
 	/**
 	 * Konstruktor
@@ -27,7 +27,7 @@ public abstract class AbstractCommand implements Serializable {
 	 * @param e
 	 *  - Das den Command aufrufende Event
 	 */
-	public AbstractCommand(CommandStack stacks, ActionEvent e) {
+	public AbstractCommand(CommandStack stacks, AWTEvent e) {
 		this.stacks = stacks;
 		this.e = e;
 	}
@@ -69,7 +69,7 @@ public abstract class AbstractCommand implements Serializable {
 	 * 
 	 * @return Das Event
 	 */
-	public ActionEvent getE() {
+	public AWTEvent getE() {
 		return e;
 	}
 
@@ -79,7 +79,7 @@ public abstract class AbstractCommand implements Serializable {
 	 * @param e
 	 *  - Das Event
 	 */
-	public void setE(ActionEvent e) {
+	public void setE(AWTEvent e) {
 		this.e = e;
 	}
 
