@@ -1,7 +1,7 @@
 package game.commands;
 
 import game.model.Field;
-import game.model.Field.Content;
+import game.model.Field.AllowedContent;
 
 import java.awt.event.ActionEvent;
 
@@ -12,40 +12,44 @@ import java.awt.event.ActionEvent;
  */
 public class SetStarCommand extends AbstractCommand {
 
-	private static final long serialVersionUID = 1936391762275520778L;
+	private static final long	serialVersionUID	= 1936391762275520778L;
 
 	/**
 	 * Konstruktor
 	 * 
 	 * @param stacks
-	 *  - CommandStack Referenz
-	 *  
+	 *            - CommandStack Referenz
+	 * 
 	 * @param e
-	 *  - Das den Command aufrufende Event
+	 *            - Das den Command aufrufende Event
 	 */
 	public SetStarCommand(CommandStack stacks, ActionEvent e) {
 		super(stacks, e);
 	}
-	
+
 	/**
-	 * Initiiert das Setzen eines Sterns durch die im Event übergebene Quelle Field.
+	 * Initiiert das Setzen eines Sterns durch die im Event übergebene Quelle
+	 * Field.
 	 */
 	@Override
 	public void execute() {
 		super.execute();
 		if (this.getE().getSource() instanceof Field) {
-			((Field)this.getE().getSource()).setUserContent(Content.STAR.getContent());
+			((Field) this.getE().getSource())
+					.setUserContent(AllowedContent.CONTENT_STAR);
 		}
 	}
-	
+
 	/**
-	 * Initiiert das Entfernen des Sterns durch die im Event übergebene Quelle Field.
+	 * Initiiert das Entfernen des Sterns durch die im Event übergebene Quelle
+	 * Field.
 	 */
 	@Override
 	public void undo() {
 		super.undo();
 		if (this.getE().getSource() instanceof Field) {
-			((Field)this.getE().getSource()).setUserContent(Content.EMPTY.getContent());			
+			((Field) this.getE().getSource())
+					.setUserContent(AllowedContent.CONTENT_EMPTY);
 		}
 	}
 

@@ -65,6 +65,8 @@ public class ImageResources {
 	 * @return ImageIcon des Bildes
 	 */
 	public static ImageIcon getIcon(Images image) {
+		if (image == null)
+			return null;
 		String pfad = getImagePath(image);
 		if (pfad != null)
 			return new ImageIcon(pfad);

@@ -3,8 +3,7 @@
  */
 package game.ui;
 
-import game.core.ImageResources;
-import game.core.ImageResources.Images;
+import game.model.Field.AllowedContent;
 import game.model.Starfield;
 import game.ui.handler.StarfieldViewHandler;
 
@@ -12,7 +11,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -56,10 +54,10 @@ public class StarfieldView extends JPanel {
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridx = x;
 				c.gridy = y;
-				JLabel label = new JLabel(
-						ImageResources.getIcon(Images.CONTENT_EMPTY));
-				label.addMouseListener(_handler);
-				add(label, c);
+				game.model.Field field = _starfield.getField(x, y);
+				field.setUserContent(AllowedContent.CONTENT_EMPTY);
+				field.addMouseListener(_handler);
+				add(field, c);
 			}
 		}
 	}

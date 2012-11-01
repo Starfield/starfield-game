@@ -3,6 +3,7 @@
  */
 package game.ui;
 
+import game.commands.CommandStack;
 import game.core.GamePreferences;
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
@@ -44,6 +45,8 @@ public class MainWindow extends JFrame {
 	private static GamePreferences	_gamePrefs;
 	/** ConentPane */
 	private JPanel					_contentPane;
+	/** Der CommandStack */
+	private static CommandStack		_commandStack;
 
 	/**
 	 * 
@@ -59,6 +62,8 @@ public class MainWindow extends JFrame {
 		initMenuBar();
 		// Toolbar anzeigen
 		initToolbar();
+		// CommandStack erzeugen
+		initCommandStack();
 		// Starfield erzeugen
 		initStarfieldView();
 		// Optionen für die Platzierung auf dem Bildschirm
@@ -122,6 +127,10 @@ public class MainWindow extends JFrame {
 		_contentPane.add(_toolbar, BorderLayout.WEST);
 	}
 
+	private void initCommandStack() {
+		_commandStack = new CommandStack();
+	}
+
 	private void initStarfieldView() {
 		// Reste entfernen
 		if (_starfieldView != null)
@@ -155,4 +164,9 @@ public class MainWindow extends JFrame {
 	public static GamePreferences getGamePrefs() {
 		return _gamePrefs;
 	}
+
+	public static CommandStack getCommandStack() {
+		return _commandStack;
+	}
+
 }
