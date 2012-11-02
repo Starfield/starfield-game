@@ -5,6 +5,9 @@ package game.core;
 
 import game.ui.MainWindow;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 
 /**
@@ -19,13 +22,15 @@ public class ImageResources {
 
 	// Konstanten
 	/** Ordner in dem die Bilder liegen */
-	private final static String	FOLDER		= "images/";
+	private final static String FOLDER = "images/";
 	/** Endung der Bilddateien */
-	private final static String	FILE_TYPE	= ".png";
+	private final static String FILE_TYPE = ".png";
 	/** Schalter für kleine Bilder */
-	public final static int		SIZE_32		= 0;
+	public final static int SIZE_32 = 0;
 	/** Schalter für große Bilder */
-	public final static int		SIZE_64		= 1;
+	public final static int SIZE_64 = 1;
+	/** SimpleImageCache */
+	private final static Map<Images, ImageIcon> _imageCache = new HashMap<ImageResources.Images, ImageIcon>();
 
 	/**
 	 * Auflistung aller bekannten Bilder
@@ -50,7 +55,7 @@ public class ImageResources {
 		CONTENT_ARROW_DR("arrows/DownRightArrowContent"),
 		CONTENT_ARROW_DL("arrows/DownLeftArrowContent");
 
-		private final String	name;
+		private final String name;
 
 		Images(String imageName) {
 			this.name = imageName;
@@ -58,18 +63,27 @@ public class ImageResources {
 	}
 
 	/**
-	 * Liefert eine Instanz eines ImageIcon des Bildes
+	 * Durchsucht den SimpleCache nach dem angefragten Bild. Gibt dieses zurück
+	 * falls vorhanden, oder erstellt es, schiebt es in den SimpleCache und gibt
+	 * das Bild zurück
 	 * 
 	 * @param Name
-	 *            des Bildes in der Liste
+	 *            des Bildes in der {@link Images}
 	 * @return ImageIcon des Bildes
 	 */
 	public static ImageIcon getIcon(Images image) {
 		if (image == null)
 			return null;
-		String pfad = getImagePath(image);
-		if (pfad != null)
-			return new ImageIcon(pfad);
+		if (_imageCache.containsKey(image))
+			return _imageCache.get(image);
+		else {
+			String pfad = getImagePath(image);
+			if (pfad != null) {
+				ImageIcon imageIcon = new ImageIcon(pfad);
+				_imageCache.put(image, imageIcon);
+				return imageIcon;
+			}
+		}
 		return null;
 	}
 
