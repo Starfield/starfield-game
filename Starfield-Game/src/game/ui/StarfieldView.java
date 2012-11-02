@@ -10,7 +10,9 @@ import game.ui.handler.StarfieldViewHandler;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -24,12 +26,12 @@ public class StarfieldView extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long			serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
 	/** Das Modell */
-	private final Starfield				_starfield;
+	private final Starfield _starfield;
 	/** Der Handler für Aktionen */
-	private final StarfieldViewHandler	_handler			= new StarfieldViewHandler();	;
+	private final StarfieldViewHandler _handler = new StarfieldViewHandler();;
 
 	public StarfieldView(Starfield pStarfield) {
 		_starfield = pStarfield;
@@ -49,16 +51,36 @@ public class StarfieldView extends JPanel {
 
 	private void fillView() {
 		Dimension size = _starfield.getSize();
+		// Fields des Modell abbilden
 		for (int y = 0; y < size.getHeight(); y++) {
 			for (int x = 0; x < size.getWidth(); x++) {
 				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = x;
-				c.gridy = y;
+				c.gridx = x+1;
+				c.gridy = y+1;
 				game.model.Field field = _starfield.getField(x, y);
 				field.setUserContent(AllowedContent.CONTENT_EMPTY);
 				field.addMouseListener(_handler);
 				add(field, c);
 			}
+		}
+		// Anzahl der Sterne auf der UI anzeigen
+		// Oberer Rand
+		for (int x = 0; x < size.getWidth(); x++) {
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = x+1;
+			c.gridy = 0;
+			c.ipady = 5;
+			// TODO Anzahl der Sterne anhand Methode von Alex
+			add(new JLabel("0"), c);
+		}
+		// Linker Rand
+		for (int y = 0; y < size.getHeight(); y++) {
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.ipadx = 5;
+			c.gridy = y+1;
+			// TODO Anzahl der Sterne anhand der Methode von Alex
+			add(new JLabel("0"), c);
 		}
 	}
 }
