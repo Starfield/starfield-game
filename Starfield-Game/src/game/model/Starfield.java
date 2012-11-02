@@ -148,6 +148,18 @@ public void setPlayable(Boolean playable) {
 			return rightorwrong;
 		}
 		
+		public ArrayList<Field> getWrongFields(){
+			ArrayList<Field> wrongFields = new ArrayList();
+			for(ArrayList<Field> list : this.listcontainer){
+				for(int i = 0; i<list.size();i++){
+					if(list.get(i).IsCurrentContentRight()){
+						wrongFields.add(list.get(i));
+					}
+		
+				}
+			}
+			return wrongFields;
+		}
 		
 		
  }
