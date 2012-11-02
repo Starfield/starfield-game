@@ -95,6 +95,8 @@ public class CommandStack implements Serializable {
 	}
 
 	/**
+	 * Gibt die Position des ersten Fehlers im Play Stack zurück.
+	 * 
 	 * @return Position des ersten Fehlers im Play Stack
 	 */
 	private int getMistake() {
@@ -102,10 +104,17 @@ public class CommandStack implements Serializable {
 	}
 
 	/**
-	 * @param mistake
-	 *  - Position des ersten Fehlers im Play Stack
+	 * Füllt das Attribut mistake, um zum letzten fehlerfreien Spielstand zurückkehren zu können.
 	 */
-	public void setMistake(int mistake) {
-		this.mistake = mistake;
+	public void setMistake() {
+		this.mistake = playStack.size();
 	}
+	
+	/**
+	 * Führt das Laden eines Spielstands durch.
+	 */
+	public void loadGame() {
+		
+	}
+	
 }
