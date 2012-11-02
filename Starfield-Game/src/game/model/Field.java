@@ -2,8 +2,17 @@ package game.model;
 
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
+import game.model.Field.AllowedContent;
 
 import javax.swing.JLabel;
+
+public class Field extends JLabel {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 1L;
+	
 
 /**
  * Model/Logik von einem Field
@@ -12,18 +21,7 @@ import javax.swing.JLabel;
  * 
  */
 
-public class Field extends JLabel {
 
-	/**
-	 * 
-	 */
-	private static final long	serialVersionUID	= 1L;
-
-	/**
-	 * Definiert Enums für den möglichen Inhalte von Field.
-	 * 
-	 * @author Nikolaj
-	 */
 	public enum AllowedContent {
 		CONTENT_STAR,
 		CONTENT_EMPTY,
@@ -82,7 +80,9 @@ public class Field extends JLabel {
 		setIcon(ImageResources.getIcon(newIcon));
 		this.userContent = userContent;
 	}
-
+	/**
+	 * Setzt die richtige Lösung
+	 */
 	public void setSolutionContent(AllowedContent solutionContent) {
 		this.solutionContent = solutionContent;
 	}
@@ -92,14 +92,27 @@ public class Field extends JLabel {
 		this.yPos = yPos;
 	}
 
+	/**
+	 * Liefert den vom User gewählten Content
+	 */
 	public AllowedContent getUserContent() {
+		if(solutionContent==null){
+			solutionContent=AllowedContent.CONTENT_EMPTY;
+		}
 		return userContent;
 	}
-
+	/**
+	 * Liefert die richtige Lösung für das Feld
+	 */
 	public AllowedContent getSolutionContent() {
+		if(solutionContent==null){
+			solutionContent=AllowedContent.CONTENT_EMPTY;
+		}
 		return solutionContent;
 	}
-	
+	/**
+	 * Überprüft ob aktueller UserContent die richtige Lösung ist
+	 */
 	public boolean IsCurrentContentRight(){
 		if(userContent.equals(solutionContent)){
 			return true;

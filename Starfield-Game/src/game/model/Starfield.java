@@ -106,6 +106,9 @@ public void setPlayable(Boolean playable) {
 		return size;
 		}
 		
+		/**
+		 * Zählt die Sterne in einer Spalte
+		 */
 		public int getStarCountX(int column){
 			int starcounter = 0;
 			for(Field f : listcontainer.get(column)){
@@ -116,6 +119,10 @@ public void setPlayable(Boolean playable) {
 					
 			return starcounter;
 		}
+		
+		/**
+		 * Zählt die Sterne in einer Reihe
+		 */
 		public int getStarCountY(int row){
 			int starcounter = 0;
 			for(int i = 0; i< size.getWidth(); i++){			
