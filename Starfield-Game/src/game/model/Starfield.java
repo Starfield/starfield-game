@@ -1,5 +1,7 @@
 package game.model;
 
+import game.model.Field.AllowedContent;
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 
@@ -103,6 +105,43 @@ public void setPlayable(Boolean playable) {
 			
 		return size;
 		}
+		
+		public int getStarCountX(int column){
+			int starcounter = 0;
+			for(Field f : listcontainer.get(column)){
+				if(f.getSolutionContent().equals(AllowedContent.CONTENT_STAR)){	
+				starcounter=starcounter++;
+				}
+			}
+					
+			return starcounter;
+		}
+		public int getStarCountY(int row){
+			int starcounter = 0;
+			for(int i = 0; i< size.getWidth(); i++){			
+			if(listcontainer.get(i).get(row).getSolutionContent().equals(AllowedContent.CONTENT_STAR)){
+				starcounter=starcounter++;
+			}
+			}
+			return starcounter;
+		}
+		
+		public boolean checkSolution(){
+			boolean rightorwrong = true;
+			for(int x = 0; x < size.getWidth(); x++){
+				for(int y =0; y < size.getHeight(); y++){
+					
+			if(!listcontainer.get(x).get(y).getUserContent().equals(listcontainer.get(x).get(y).getUserContent())){
+				rightorwrong = false;
+			}
+			
+				}}
+			
+			
+			return rightorwrong;
+		}
+		
+		
 		
  }
  

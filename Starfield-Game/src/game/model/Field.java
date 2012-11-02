@@ -99,5 +99,11 @@ public class Field extends JLabel {
 	public AllowedContent getSolutionContent() {
 		return solutionContent;
 	}
-
+	
+	public boolean IsCurrentContentRight(){
+		if(userContent.equals(solutionContent)){
+			return true;
+		}
+		return false;
+	}
 }
