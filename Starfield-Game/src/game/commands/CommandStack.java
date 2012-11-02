@@ -114,7 +114,9 @@ public class CommandStack implements Serializable {
 	 * Führt das Laden eines Spielstands durch.
 	 */
 	public void loadGame() {
-		
+		for (AbstractCommand c : playStack) {
+			c.execute();
+		}
 	}
 	
 }
