@@ -3,31 +3,26 @@
  */
 package game.menubar;
 
-import game.commands.CommandStack;
 import game.ui.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
- * Diese Action öffnet ein Fenster zur Auswahl eines gespeicherten Spiels. <br>
- * Im Anschluss wird das aktuelle Spiel beendet und das gewählte Spiel geladen
  * @author schroeder_jan
  *
  */
-public class LoadGameAction extends AbstractAction {
+public class SaveGameAction extends AbstractAction {
 
-	
-	public LoadGameAction(String text, ImageIcon icon){
+	public SaveGameAction(String text, ImageIcon icon){
 		super(text, icon);
 	}
 	/**
@@ -39,28 +34,29 @@ public class LoadGameAction extends AbstractAction {
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent pArg0) {
-		// TODO FileChooser zum Laden eines gespeicherten Spiels
+	public void actionPerformed(ActionEvent pE) {
+		// TODO Speicherdialog aufrufen
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		jfc.showOpenDialog(null);
+		jfc.showSaveDialog(null);
 		String temppfad = jfc.getSelectedFile().getAbsolutePath();
+		System.out.println(temppfad);
 		if (temppfad.endsWith(".star")){
+			}
+		else {
+				temppfad = temppfad + ".star";
+			}
+			System.out.println(temppfad);
 			try {
 				File f = new File(temppfad);
-				FileInputStream fis = new FileInputStream(f);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				CommandStack commandStack = null;
-				Object o = ois.readObject();
-				if (o instanceof CommandStack){
-						commandStack = (CommandStack) o;
-				}
-				ois.close();
-				// TODO CommandStack an MainWindow übergeben
-			} catch (Exception e) {
+				FileOutputStream fos = new FileOutputStream(f);
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.flush();
+				oos.writeObject(MainWindow.getCommandStack());
+				oos.close();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
-	}
+		}
 }
