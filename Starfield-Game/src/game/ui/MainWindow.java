@@ -5,8 +5,6 @@ package game.ui;
 
 import game.commands.CommandStack;
 import game.core.GamePreferences;
-import game.core.ImageResources;
-import game.core.ImageResources.Images;
 import game.menubar.CloseApplicationAction;
 import game.menubar.MainMenuBar;
 import game.model.Starfield;
@@ -17,11 +15,9 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 /**
@@ -34,32 +30,45 @@ public class MainWindow extends JFrame {
 
 	// GameUI Elemente
 	/** Die MenüLeiste */
-	private JMenuBar				_menuBar;
+	private JMenuBar _menuBar;
 	/** Toolbar */
-	private JToolBar				_toolbar;
+	private AbstractToolbar _toolbar;
 	/** StarfieldView */
-	private StarfieldView			_starfieldView;
+	private StarfieldView _starfieldView;
 
 	// Unsichtbare Hilfmittel
 	/** GamePreferences */
-	private static GamePreferences	_gamePrefs;
+	private static GamePreferences _gamePrefs;
 	/** ConentPane */
-	private JPanel					_contentPane;
+	private JPanel _contentPane;
 	/** Der CommandStack */
-	private static CommandStack		_commandStack;
+	private static CommandStack _commandStack;
 
 	/**
 	 * 
 	 */
-	private static final long		serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
 	public MainWindow() {
 		super("Starfield - The Game");
+		// **************************************************
+		// Diese Schritte werden nur einmal durchlaufen beim
+		// ersten Start der Applikation
 		initWindow();
 		// GamePreferences laden
 		initPreferences();
 		// MenuBar setzen
 		initMenuBar();
+
+		initGame();
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
+	/**
+	 * Folgende Schritte müssen vor jedem neuen Spiel erneut aufgerufen werden
+	 */
+	public void initGame() {
 		// Toolbar anzeigen
 		initToolbar();
 		// CommandStack erzeugen
@@ -72,12 +81,10 @@ public class MainWindow extends JFrame {
 			setSize(new Dimension(800, 600));
 			setExtendedState(MAXIMIZED_BOTH);
 		}
-		setLocationRelativeTo(null);
-		setVisible(true);
 	}
 
 	/**
-	 * Setzt die Eigenschaften des Hauptfensters der Anwendung
+	 * Setzt einmalig die Eigenschaften des Hauptfensters der Anwendung
 	 */
 	private void initWindow() {
 		// Schließen-Button ruft die CloseAppliactionAction auf
@@ -103,6 +110,9 @@ public class MainWindow extends JFrame {
 
 	}
 
+	/**
+	 * Erstellt die MenuBar der Anwendung und fügt diese dem UI hinzu.
+	 */
 	private void initMenuBar() {
 		// Setzen der Menüleiste
 		_menuBar = new MainMenuBar();
@@ -114,27 +124,50 @@ public class MainWindow extends JFrame {
 	 */
 	private void initPreferences() {
 		// ggf. Preferences aus altem Stand laden
-		_gamePrefs = new GamePreferences();
+		_gamePrefs = new GamePreferences(this);
 	}
 
+	/**
+	 * Liest aus den aktuellen {@link GamePreferences} aus, welche Toolbar
+	 * gesetzt werden soll und fügt diese dem UI hinzu.
+	 */
 	private void initToolbar() {
 		// Reste entfernen
 		if (_toolbar != null)
 			_contentPane.remove(_toolbar);
-		// Neue Toolbar erzeugen und anzeigen
-		_toolbar = new JToolBar("TestToolBar");
-		_toolbar.add(new JButton(ImageResources.getIcon(Images.STAR)));
+		// Anhand des AppMode entscheiden welche Toolbar gesetzt wird
+		switch (getGamePrefs().getAppMode()) {
+		case LOAD_GAME_MODE:
+		case GAME_MODE:
+			_toolbar = new PlayToolbar();
+			break;
+		case EDIT_MODE:
+			_toolbar = new EditToolbar();
+			break;
+		}
 		_contentPane.add(_toolbar, BorderLayout.WEST);
 	}
 
+	/**
+	 * Lädt aus den {@link GamePreferences} den CommandStack. Wurde kein
+	 * CommandStack geladen wird ein neuer erstellt.
+	 */
 	private void initCommandStack() {
-		_commandStack = new CommandStack();
+		setCommandStack(getGamePrefs().getLoadedCommandStack());
 	}
 
+	/**
+	 * Initialisiert die Anzeige des Starfield. Wurde in den GamePreferences ein
+	 * CommandStack geladen, so wird das zugehörige Starfield geladen und der
+	 * alte Spielstand wiederhergestellt.
+	 */
 	private void initStarfieldView() {
 		// Reste entfernen
 		if (_starfieldView != null)
 			_contentPane.remove(_starfieldView);
+		// Anhand des AppMode entscheiden, ob ein neues leeres Starfield geladen
+		// werden soll, der EditorDialog erscheinen soll, oder ein gespeichertes
+		// Spiel wiederhergestellt werden soll.
 		// Neues Starfield erzeugen und anzeigen
 		_starfieldView = new StarfieldView(new Starfield(10, 10));
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
@@ -167,6 +200,10 @@ public class MainWindow extends JFrame {
 
 	public static CommandStack getCommandStack() {
 		return _commandStack;
+	}
+
+	private void setCommandStack(CommandStack pCommandStack) {
+		_commandStack = pCommandStack;
 	}
 
 }

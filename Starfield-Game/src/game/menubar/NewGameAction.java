@@ -3,8 +3,8 @@
  */
 package game.menubar;
 
-import game.core.ImageResources;
-import game.core.ImageResources.Images;
+import game.core.GamePreferences.AppMode;
+import game.ui.MainWindow;
 
 import java.awt.event.ActionEvent;
 
@@ -55,8 +55,10 @@ public class NewGameAction extends AbstractAction {
 		// 1. NewGameDialog aufrufen
 		// 2. Alten Inhalt des GameWindow leeren
 		// 3. Neues Puzzle laden
-		ImageIcon icon = ImageResources.getIcon(Images.ICON_NEWGAME);
-		System.out.println(icon.getIconWidth());
+		// Ändert zum Testen den AppMode und forced einen NeuAufbau des
+		// Starfields.
+		MainWindow.getGamePrefs().setAppMode(AppMode.GAME_MODE);
+		MainWindow.getGamePrefs().getMainWindow().initGame();
 
 	}
 }
