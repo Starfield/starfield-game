@@ -6,7 +6,7 @@ import game.model.Field.AllowedContent;
 import java.awt.AWTEvent;
 
 /**
- * Das SetGrayedCommand ist für ausgrauen eines Fields verantwortlich.
+ * Der SetGrayedCommand ist für ausgrauen eines Fields verantwortlich.
  * 
  * @author Nikolaj
  */

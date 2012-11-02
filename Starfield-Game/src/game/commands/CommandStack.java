@@ -23,7 +23,7 @@ public class CommandStack implements Serializable {
 	private ArrayList<Integer> marker = new ArrayList<Integer>(5);
 	
 	/** Position des ersten Fehlers im Play Stack. */
-	private int mistake;
+	private int mistake = 0;
 	
 	/**
 	 * Fügt einen Command zum Time Lapse Stack hinzu.
@@ -46,10 +46,23 @@ public class CommandStack implements Serializable {
 	}
 	
 	/**
-	 * Setzt einen neuen Marker an der angegebenen Position in der Liste.
+	 * Setzt einen neuen Marker an der angegebenen Position in die Liste.
+	 * 
+	 * @param number
+	 *  - Übergebener Marker (1-5)
 	 */
-	public void addMarker() {
-		marker.add(playStack.size());
+	public void addMarker(int number) {
+		marker.add(number, playStack.size());
+	}
+	
+	/**
+	 * Setzt einen vorhandenen Marker an der angegebenen Position zurück (Wert = 0).
+	 * 
+	 * @param number
+	 *  - Übergebener Marker (1-5)
+	 */
+	public void deleteMarker(int number) {
+		marker.set(number, 0);
 	}
 	
 	/**
@@ -67,7 +80,7 @@ public class CommandStack implements Serializable {
 	 *  
 	 * @return Position im Play Stack
 	 */
-	private int getMarker(int nr) {
+	public int getMarker(int nr) {
 		return marker.get(nr);
 	}
 	
@@ -78,7 +91,7 @@ public class CommandStack implements Serializable {
 	 *  - Übergebener Marker (1-5)
 	 */
 	public void undoMarker(int nr) {
-		for (int i = playStack.size()-1; i > (playStack.size() - 1 - getMarker(nr)); i--) {
+		for (int i = playStack.size() - 1; i > (playStack.size() - 1 - getMarker(nr)); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}
@@ -88,7 +101,7 @@ public class CommandStack implements Serializable {
 	 * Sorgt dafür, dass der fehlerfreie Spielstand wiederhergestellt wird.
 	 */
 	public void undoMistake() {
-		for (int i = playStack.size()-1; i > (playStack.size() - 1 - getMistake()); i--) {
+		for (int i = playStack.size()-1; i > (getMistake() - 1); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}
@@ -99,7 +112,7 @@ public class CommandStack implements Serializable {
 	 * 
 	 * @return Position des ersten Fehlers im Play Stack
 	 */
-	private int getMistake() {
+	public int getMistake() {
 		return mistake;
 	}
 

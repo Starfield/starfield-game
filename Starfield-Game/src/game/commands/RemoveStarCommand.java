@@ -5,9 +5,8 @@ import java.awt.AWTEvent;
 import game.model.Field;
 import game.model.Field.AllowedContent;
 
-
 /**
- * Das RemoveStarCommand ist für das Entfernen eines Sterns verantwortlich.
+ * Der RemoveStarCommand ist für das Entfernen eines Sterns verantwortlich.
  * 
  * @author Nikolaj
  */

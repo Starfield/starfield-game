@@ -6,7 +6,7 @@ import game.model.Field.AllowedContent;
 import java.awt.AWTEvent;
 
 /**
- * Das RemoveGrayedCommand ist für das Leeren eines Fields verantwortlich.
+ * Der RemoveGrayedCommand ist für das Leeren eines Fields verantwortlich.
  * 
  * @author Nikolaj
  */

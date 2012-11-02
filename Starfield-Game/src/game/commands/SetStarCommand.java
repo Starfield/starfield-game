@@ -5,9 +5,8 @@ import java.awt.AWTEvent;
 import game.model.Field;
 import game.model.Field.AllowedContent;
 
-
 /**
- * Das SetStarCommand ist für das Setzen eines Sterns verantwortlich.
+ * Der SetStarCommand ist für das Setzen eines Sterns verantwortlich.
  * 
  * @author Nikolaj
  */
