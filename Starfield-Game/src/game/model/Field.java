@@ -90,14 +90,17 @@ public class Field extends JLabel {
 	public Field(int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.userContent=AllowedContent.CONTENT_EMPTY;
+		solutionContent=AllowedContent.CONTENT_EMPTY;
+		
 	}
 
 	/**
 	 * Liefert den vom User gewählten Content
 	 */
 	public AllowedContent getUserContent() {
-		if(solutionContent==null){
-			solutionContent=AllowedContent.CONTENT_EMPTY;
+		if(userContent==null){
+			userContent=AllowedContent.CONTENT_EMPTY;
 		}
 		return userContent;
 	}
