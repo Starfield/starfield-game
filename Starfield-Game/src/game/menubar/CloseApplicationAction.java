@@ -3,6 +3,8 @@
  */
 package game.menubar;
 
+import game.ui.MainWindow;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -20,7 +22,7 @@ public class CloseApplicationAction extends AbstractAction {
 	/**
 	 * 
 	 */
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
 	public CloseApplicationAction(String text, ImageIcon icon) {
 		super(text, icon);
@@ -61,10 +63,18 @@ public class CloseApplicationAction extends AbstractAction {
 	}
 
 	private void saveGame() {
-		// TODO
-		// Speichern des aktuellen Spiels veranlassen
-		System.out.println("Spiel wird gespeichert.");
-		System.out.println("...");
-		System.out.println("Spiel erfolgreich gespeichert.");
+		AbstractAction saveAction = null;
+		switch (MainWindow.getGamePrefs().getAppMode()) {
+		case LOAD_EDIT_MODE:
+		case EDIT_MODE:
+			saveAction = new SavePuzzleAction(null, null);
+			break;
+		case LOAD_GAME_MODE:
+		case GAME_MODE:
+			saveAction = new SaveGameAction(null, null);
+			break;
+		}
+		if (saveAction != null)
+			saveAction.actionPerformed(null);
 	}
 }

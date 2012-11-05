@@ -4,6 +4,7 @@
 package game.core;
 
 import game.commands.CommandStack;
+import game.model.Starfield;
 import game.ui.MainWindow;
 
 /**
@@ -33,7 +34,7 @@ public class GamePreferences {
 	 * werden.
 	 */
 	public enum AppMode {
-		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE;
+		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE, LOAD_EDIT_MODE;
 	}
 
 	/** Das MainWindow */
@@ -46,6 +47,8 @@ public class GamePreferences {
 	private AppMode _appMode;
 	/** Geladener CommandStack */
 	private CommandStack _loadedCommandStack;
+	/** Geladenes Starfield */
+	private Starfield _loadedStarfield;
 
 	public int getImageSize() {
 		return _imageSize;
@@ -110,6 +113,39 @@ public class GamePreferences {
 	 */
 	public MainWindow getMainWindow() {
 		return _mainWindow;
+	}
+
+	/**
+	 * Holt das vorher gesetzte {@link Starfield} aus den
+	 * {@link GamePreferences}
+	 * 
+	 * @return the loadedStarfield
+	 */
+	public Starfield getLoadedStarfield() {
+		// Wurde noch kein Starfield gesetzt wird ein neues 5,5 zurückgegeben.
+		if (_loadedStarfield == null)
+			return new Starfield(5, 5);
+		return _loadedStarfield;
+	}
+
+	/**
+	 * Setzt ein geladenenes {@link Starfield} zur Abholung in die
+	 * {@link GamePreferences}
+	 * 
+	 * @param loadedStarfield
+	 *            the loadedStarfield to set
+	 */
+	public void setLoadedStarfield(Starfield loadedStarfield) {
+		_loadedStarfield = loadedStarfield;
+		setAppMode(AppMode.LOAD_EDIT_MODE);
+	}
+
+	/**
+	 * Entfernt das {@link Starfield} aus den {@link GamePreferences}. Sollte
+	 * nach erfolgreichem Ladevorgang aufgerufen werden.
+	 */
+	public void removeLoadedStarfield() {
+		_loadedStarfield = null;
 	}
 
 }

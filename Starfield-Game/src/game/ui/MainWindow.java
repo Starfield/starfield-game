@@ -137,11 +137,12 @@ public class MainWindow extends JFrame {
 			_contentPane.remove(_toolbar);
 		// Anhand des AppMode entscheiden welche Toolbar gesetzt wird
 		switch (getGamePrefs().getAppMode()) {
-		case LOAD_GAME_MODE:
 		case GAME_MODE:
+		case LOAD_GAME_MODE:
 			_toolbar = new PlayToolbar();
 			break;
 		case EDIT_MODE:
+		case LOAD_EDIT_MODE:
 			_toolbar = new EditToolbar();
 			break;
 		}
@@ -154,6 +155,9 @@ public class MainWindow extends JFrame {
 	 */
 	private void initCommandStack() {
 		setCommandStack(getGamePrefs().getLoadedCommandStack());
+		// Wenn der CommandStack aus einer gespeicherten Datei wiederhergestellt
+		// wurde, muss im Anschluss das richtige Starfield passend zum
+		// CommandStack geladen werden.
 	}
 
 	/**
@@ -166,10 +170,22 @@ public class MainWindow extends JFrame {
 		if (_starfieldView != null)
 			_contentPane.remove(_starfieldView);
 		// Anhand des AppMode entscheiden, ob ein neues leeres Starfield geladen
-		// werden soll, der EditorDialog erscheinen soll, oder ein gespeichertes
-		// Spiel wiederhergestellt werden soll.
-		// Neues Starfield erzeugen und anzeigen
-		_starfieldView = new StarfieldView(new Starfield(10, 10));
+		// werden soll oder ein gespeichertes Spiel wiederhergestellt werden
+		// soll.
+		switch (getGamePrefs().getAppMode()) {
+		case GAME_MODE:
+			_starfieldView = new StarfieldView(new Starfield(0, 0));
+			break;
+		case LOAD_GAME_MODE:
+		case LOAD_EDIT_MODE:
+			_starfieldView = new StarfieldView(getGamePrefs()
+					.getLoadedStarfield());
+			break;
+		case EDIT_MODE:
+			_starfieldView = new StarfieldView(new Starfield(5, 5));
+			break;
+		}
+
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
 	}
 
