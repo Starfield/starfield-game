@@ -29,6 +29,8 @@ public class ImageResources {
 	public final static int SIZE_32 = 0;
 	/** Schalter für große Bilder */
 	public final static int SIZE_64 = 1;
+
+	// Klassenvariablen
 	/** SimpleImageCache */
 	private final static Map<Images, ImageIcon> _imageCache = new HashMap<ImageResources.Images, ImageIcon>();
 
@@ -40,9 +42,12 @@ public class ImageResources {
 	 */
 	public enum Images {
 		ICON_STAR("icons/icon_star"),
-		ICON_NEWGAME("icon_newgame"),
-		ICON_EXIT("icon_exit"),
-		ICON_HELP("icon_help"),
+		ICON_NEW_GAME("icons/icon_new_game"),
+		ICON_SAVE_GAME("icons/icon_save_game"),
+		ICON_LOAD_GAME("icons/icon_load_game"),
+		ICON_CLOSE_GAME("icons/icon_close_game"),
+		ICON_EXIT("icons/icon_exit"),
+		ICON_HELP("icons/icon_help"),
 		ICON_ARROW_U("icons/arrows/UpArrowIcon"),
 		ICON_ARROW_D("icons/arrows/DownArrowIcon"),
 		ICON_ARROW_L("icons/arrows/LeftArrowIcon"),
@@ -103,6 +108,10 @@ public class ImageResources {
 	 * @return Pfad zur Bilddatei in richtiger Größe
 	 */
 	private static String getImagePath(Images image) {
+		// Icons werden immer klein angezeigt
+		if (image.toString().startsWith("ICON_"))
+			return FOLDER + image.name + "32" + FILE_TYPE;
+		// Ansonsten wird nach Optionseinstellung entschieden
 		if (MainWindow.getGamePrefs().getImageSize() == SIZE_32)
 			return FOLDER + image.name + "32" + FILE_TYPE;
 		if (MainWindow.getGamePrefs().getImageSize() == SIZE_64)
