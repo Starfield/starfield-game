@@ -14,7 +14,7 @@ public class CommandStack implements Serializable {
 	private static final long serialVersionUID = -3220534695170663622L;
 
 	/** Liste für die Aufnahme aller Commands, zur Darstellung des Zeitraffers am Ende eines Spiels. */
-	private ArrayList<AbstractCommand> timeLapseStack = new ArrayList<AbstractCommand>();
+	private ArrayList<TimeLapseItem> timeLapseStack = new ArrayList<TimeLapseItem>();
 	
 	/** Liste für die Aufnahme aller Commands um zu einem bestimmten Stand (Fehler oder Marker) zurückspringen zu können. */
 	private ArrayList<AbstractCommand> playStack = new ArrayList<AbstractCommand>();
@@ -30,9 +30,12 @@ public class CommandStack implements Serializable {
 	 * 
 	 * @param command
 	 *  - Vom User initiierter Command
+	 *  
+	 *  @param execute
+	 *  - boolean ob es sich um einen execute Befehl handelt
 	 */
-	public void addTimeLapseCommand(AbstractCommand command) {
-		timeLapseStack.add(command);
+	public void addTimeLapseCommand(AbstractCommand command, boolean execute) {
+		timeLapseStack.add(new TimeLapseItem(command, execute));
 	}
 	
 	/**
@@ -91,7 +94,9 @@ public class CommandStack implements Serializable {
 	 *  - Übergebener Marker (1-5)
 	 */
 	public void undoMarker(int nr) {
-		for (int i = playStack.size() - 1; i > (playStack.size() - 1 - getMarker(nr)); i--) {
+		int j = playStack.size();
+		
+		for (int i = j - 1; i > (j - 1 - getMarker(nr)); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}
@@ -101,7 +106,7 @@ public class CommandStack implements Serializable {
 	 * Sorgt dafür, dass der fehlerfreie Spielstand wiederhergestellt wird.
 	 */
 	public void undoMistake() {
-		for (int i = playStack.size()-1; i > (getMistake() - 1); i--) {
+		for (int i = playStack.size() - 1; i > (getMistake() - 2); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}

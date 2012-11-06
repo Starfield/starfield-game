@@ -37,14 +37,14 @@ public abstract class AbstractCommand implements Serializable {
 	 */
 	public void execute() {
 		stacks.addPlayCommand(this);
-		stacks.addTimeLapseCommand(this);
+		stacks.addTimeLapseCommand(this, true);
 	}
 
 	/**
-	 * Übernimmt die Eintragung des ausgeführten Commands in den Play Stack.
+	 * Übernimmt die Eintragung des ausgeführten Commands in den Time Lapse Stack.
 	 */
 	public void undo() {
-		stacks.addTimeLapseCommand(this);
+		stacks.addTimeLapseCommand(this, false);
 	}
 
 	/**

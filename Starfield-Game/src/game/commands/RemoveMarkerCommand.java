@@ -36,7 +36,6 @@ public class RemoveMarkerCommand extends AbstractCommand {
 	 */
 	@Override
 	public void execute() {
-		super.execute();
 		if (getStacks().getMarker(number) != 0) {
 			getStacks().undoMarker(number);
 		}
