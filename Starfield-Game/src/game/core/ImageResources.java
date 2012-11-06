@@ -39,21 +39,29 @@ public class ImageResources {
 	 * 
 	 */
 	public enum Images {
-		STAR("star"),
+		ICON_STAR("icons/icon_star"),
 		ICON_NEWGAME("icon_newgame"),
 		ICON_EXIT("icon_exit"),
 		ICON_HELP("icon_help"),
-		CONTENT_EMPTY("EmptyContent"),
-		CONTENT_GRAYED("GrayedContent"),
-		CONTENT_STAR("StarContent"),
-		CONTENT_ARROW_U("arrows/UpArrowContent"),
-		CONTENT_ARROW_D("arrows/DownArrowContent"),
-		CONTENT_ARROW_L("arrows/LeftArrowContent"),
-		CONTENT_ARROW_R("arrows/RightArrowContent"),
-		CONTENT_ARROW_UR("arrows/UpRightArrowContent"),
-		CONTENT_ARROW_UL("arrows/UpLeftArrowContent"),
-		CONTENT_ARROW_DR("arrows/DownRightArrowContent"),
-		CONTENT_ARROW_DL("arrows/DownLeftArrowContent");
+		ICON_ARROW_U("icons/arrows/UpArrowIcon"),
+		ICON_ARROW_D("icons/arrows/DownArrowIcon"),
+		ICON_ARROW_L("icons/arrows/LeftArrowIcon"),
+		ICON_ARROW_R("icons/arrows/RightArrowIcon"),
+		ICON_ARROW_UR("icons/arrows/UpRightArrowIcon"),
+		ICON_ARROW_UL("icons/arrows/UpLeftArrowIcon"),
+		ICON_ARROW_DR("icons/arrows/DownRightArrowIcon"),
+		ICON_ARROW_DL("icons/arrows/DownLeftArrowIcon"),
+		CONTENT_EMPTY("content/EmptyContent"),
+		CONTENT_GRAYED("content/GrayedContent"),
+		CONTENT_STAR("content/StarContent"),
+		CONTENT_ARROW_U("content/arrows/UpArrowContent"),
+		CONTENT_ARROW_D("content/arrows/DownArrowContent"),
+		CONTENT_ARROW_L("content/arrows/LeftArrowContent"),
+		CONTENT_ARROW_R("content/arrows/RightArrowContent"),
+		CONTENT_ARROW_UR("content/arrows/UpRightArrowContent"),
+		CONTENT_ARROW_UL("content/arrows/UpLeftArrowContent"),
+		CONTENT_ARROW_DR("content/arrows/DownRightArrowContent"),
+		CONTENT_ARROW_DL("content/arrows/DownLeftArrowContent");
 
 		private final String name;
 
