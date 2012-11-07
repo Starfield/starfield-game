@@ -3,177 +3,131 @@
  */
 package game.ui;
 
-/**
- * @author schroeder_jan
- *
- */
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
+import game.ui.handler.ToolbarPlayHandler;
 
-import javax.swing.JToolBar;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
-
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.border.Border;
 
-import java.net.URL;
+/**
+ * @author schroeder_jan
+ * 
+ */
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class PlayToolbar extends AbstractToolbar
-                         implements ActionListener {
+public class PlayToolbar extends JToolBar {
 
 	private static final long serialVersionUID = 1L;
-    static final private String SETMARK = "SETMARK";
-    static final private String REMOVEMARK = "REMOVEMARK";
-    static final private String GOTOFAILURE = "GOTOFAILURE";
-    private JLabel j1,j2,j3,j4,j5;
 
-    public PlayToolbar() {
-        super("Play");
-    }
+	/** MarkerHandler */
+	private final ToolbarPlayHandler _playHandler;
+	/** MarkerList */
+	private ArrayList<JLabel> _markerList;
 
-    protected void addButtons(JToolBar toolBar) { //TODO Image einbindung
-        JButton button = null;
+	/**
+	 * Standardkonstruktor für die PlayToolbar
+	 */
+	public PlayToolbar() {
+		// EventHandler erzeugen
+		_playHandler = new ToolbarPlayHandler();
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, VERTICAL));
+		panel.add(initMarker());
+		panel.add(initCheck());
+		add(panel);
+	}
 
-        //SetMarker button
-        button = createButton(1, SETMARK, 
-                                      "Setzt eine Markierung zu der später zurückgesprungen werden kann");
-        toolBar.add(button);
+	/**
+	 * Initialisiert die Grundeinstellungen der Toolbar
+	 */
+	private JPanel initMarker() {
+		// Internes Panel zur Ablage
+		JPanel panel = new JPanel();
+		// Layout mit Optionen festlegen
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(2, 2, 2, 2);
+		// Rahmen festlegen
+		Border border = BorderFactory.createTitledBorder("Marker");
+		panel.setBorder(border);
 
-        //RemoveMarkers button
-        button = createButton(2, REMOVEMARK, 
-                                      "Entfernt alle Markierungen die gesetzt waren");
-        toolBar.add(button);
+		// Markervisualierung hinzufügen
+		_markerList = new ArrayList<JLabel>();
 
-        //GotoFailure button
-        button = createButton(3, GOTOFAILURE,
-                                      "Springt zum letzten fehlerfreien Spielstand");
-        toolBar.add(button);
-        
+		JLabel label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		_markerList.add(label);
+		c.gridx = 0;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		_markerList.add(label);
+		c.gridx = 1;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		_markerList.add(label);
+		c.gridx = 2;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		_markerList.add(label);
+		c.gridx = 3;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		_markerList.add(label);
+		c.gridx = 4;
+		c.gridy = 0;
+		panel.add(label, c);
 
-        createLabels();        
-    	toolBar.add(j1);
-    	toolBar.add(j2);
-    	toolBar.add(j3);
-    	toolBar.add(j4);
-    	toolBar.add(j5);
-    }
+		// Marker setzen Button hinzufügen
+		JButton button = new JButton("Marker setzen");
+		button.addActionListener(_playHandler);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 5;
+		panel.add(button, c);
 
-    
-    public void createLabels(){
-    	j1 = new JLabel();
-    	j2 = new JLabel();
-    	j3 = new JLabel();
-    	j4 = new JLabel();
-    	j5 = new JLabel();
-    	j1.setIcon(ImageResources.getIcon(Images.ICON_STAR));
-    	j2.setIcon(ImageResources.getIcon(Images.ICON_STAR));
-    	j3.setIcon(ImageResources.getIcon(Images.ICON_STAR));
-    	j4.setIcon(ImageResources.getIcon(Images.ICON_STAR));
-    	j5.setIcon(ImageResources.getIcon(Images.ICON_STAR));  
-    	j1.setVisible(false);
-    	j2.setVisible(false);
-    	j3.setVisible(false);
-    	j4.setVisible(false);
-    	j5.setVisible(false);
-    }
-    
-    public void removeLabelIcons(){
-//    	j1.setIcon(ImageResources.getIcon(Images.CONTENT_EMPTY));
-//    	j2.setIcon(ImageResources.getIcon(Images.CONTENT_EMPTY));
-//    	j3.setIcon(ImageResources.getIcon(Images.CONTENT_EMPTY));
-//    	j4.setIcon(ImageResources.getIcon(Images.CONTENT_EMPTY));
-//    	j5.setIcon(ImageResources.getIcon(Images.CONTENT_EMPTY));
-    	j1.setVisible(false);
-    	j2.setVisible(false);
-    	j3.setVisible(false);
-    	j4.setVisible(false);
-    	j5.setVisible(false);
-    }
-    
-    public void addLabelIcon(){
-    	if (j1.isVisible() == false)
-    		{
-    			j1.setVisible(true);
-    			return;
-    		}
-    	if (j2.isVisible() == false)
-		{
-			j2.setVisible(true);
-			return;
-		}
-    	if (j3.isVisible() == false)
-		{
-			j3.setVisible(true);
-			return;
-		}
-    	if (j4.isVisible() == false)
-		{
-			j4.setVisible(true);
-			return;
-		}
-    	if (j5.isVisible() == false)
-		{
-			j5.setVisible(true);
-			return;
-		}
-    }
-    
-    protected JButton createButton(int imagenr,
-                                           String actionCommand,
-                                           String toolTipText) {
+		// Marker entfernen Button hinzufügen
+		button = new JButton("Marker entfernen");
+		button.addActionListener(_playHandler);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 5;
+		panel.add(button, c);
+		return panel;
+	}
 
-        JButton button = new JButton();
-        button.setActionCommand(actionCommand);
-        button.setToolTipText(toolTipText);
-        button.addActionListener(this);
-        
-        switch (imagenr)
-        {
-        	case 1:
-        		button.setIcon(ImageResources.getIcon(Images.ICON_STAR));
-        		break;
-        	case 2:
-        		button.setIcon(ImageResources.getIcon(Images.CONTENT_ARROW_D));
-        		break;
-        	case 3:
-        		button.setIcon(ImageResources.getIcon(Images.CONTENT_ARROW_L));
-        		break;
-        }
-        
-        return button;
-    }
+	private JPanel initCheck() {
+		// Internes Panel zur Ablage
+		JPanel panel = new JPanel();
+		// Rahmen festlegen
+		Border border = BorderFactory.createTitledBorder("Ergebnisüberprüfung");
+		panel.setBorder(border);
+		// Check Button hinzufügen
+		JButton button = new JButton("Eingaben überprüfen");
+		button.addActionListener(_playHandler);
+		panel.add(button);
+		return panel;
+	}
 
-    public void actionPerformed(ActionEvent e) {// TODO
-        String cmd = e.getActionCommand();
-        String description = null;
-        
-        if (SETMARK.equals(cmd)) { 
-            description = "Sie haben eine Markierung gesetzt";   
-            addLabelIcon();
-            // setMarker Action
-        } else if (REMOVEMARK.equals(cmd)) { 
-        	description = "Sie haben alle Markierungen gelöscht";
-        	removeLabelIcons();
-            // removeMarkers Action
-        } else if (GOTOFAILURE.equals(cmd)) { 
-        	description = "Sie sind zum letzten Fehler gesprungen";
-            // GOTO Failure Action
-        }
-       
-        System.out.println(description);
-        
-    }
+	public void setNextMarker() {
+		// Logik einfügen, dass beim Aufruf aus dem MarkerHandler das nächste
+		// Icon in der markerList auf "AN" gesetzt wird
+	}
 
-    
-    
+	public void removeLastMarker() {
+		// Logik einfügen, dass beim Aufruf aus dem MarkerHandler das letzte
+		// Icon auf der MarkerList auf "AUS" gesetzt wird
+	}
 }

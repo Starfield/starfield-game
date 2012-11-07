@@ -3,7 +3,6 @@
  */
 package game.ui;
 
-import game.model.Field.AllowedContent;
 import game.model.Starfield;
 import game.ui.handler.StarfieldViewHandler;
 
@@ -57,7 +56,6 @@ public class StarfieldView extends JPanel {
 				c.gridx = x + 1;
 				c.gridy = y + 1;
 				game.model.Field field = _starfield.getField(x, y);
-				field.setUserContent(AllowedContent.CONTENT_EMPTY);
 				field.addMouseListener(_handler);
 				add(field, c);
 			}

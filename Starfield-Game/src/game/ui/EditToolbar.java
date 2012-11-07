@@ -4,149 +4,120 @@ package game.ui;
  * @author schroeder_jan
  *
  */
+import game.core.ImageResources;
+import game.core.ImageResources.Images;
+import game.ui.handler.ToolbarEditHandler;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
+import javax.swing.border.Border;
 
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+public class EditToolbar extends JToolBar {
 
-import java.net.URL;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class EditToolbar extends AbstractToolbar
-                         implements ActionListener {
-
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
-	protected JTextArea textArea;
-    protected String newline = "\n";
-    static final private String SETARROW = "SETARROW";
-    static final private String SETSTAR = "SETSTAR";
-    static final private String CHECKSOLUTION = "CHECKSOLUTION";
 
-    public EditToolbar() {
-        super("");
+	private final ToolbarEditHandler _editHandler;
 
-        //Erstellen der Toolbar
-        JToolBar toolBar = new JToolBar("Play");
-        addButtons(toolBar);
+	public EditToolbar() {
+		_editHandler = new ToolbarEditHandler();
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, VERTICAL));
+		panel.add(initStar());
+		panel.add(initArrows());
+		add(panel);
+	}
 
-        textArea = new JTextArea(5, 30);
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
+	private JPanel initStar() {
+		JPanel panel = new JPanel();
+		Border border = BorderFactory.createTitledBorder("Stern");
+		panel.setBorder(border);
 
-        setPreferredSize(new Dimension(450, 130));
-        add(toolBar, BorderLayout.PAGE_START);
-        add(scrollPane, BorderLayout.CENTER);
-    }
+		JToggleButton button = new JToggleButton(
+				ImageResources.getIcon(Images.ICON_STAR));
+		button.addActionListener(_editHandler);
+		panel.add(button);
+		return panel;
+	}
 
-    protected void addButtons(JToolBar toolBar) { //TODO Image einbindung
-        JButton button = null;
+	private JPanel initArrows() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		Border border = BorderFactory.createTitledBorder("Pfeile");
+		panel.setBorder(border);
+		ButtonGroup bg = new ButtonGroup();
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(2, 2, 2, 2);
 
-        //SETARROW button
-        button = makeNavigationButton("", SETARROW, 
-                                      "Ermöglicht es einen Pfeil auf einem Feld zu platzieren",
-                                      "Pfeil setzen");
-        toolBar.add(button);
+		JToggleButton button = new JToggleButton(
+				ImageResources.getIcon(Images.ICON_ARROW_UL));
+		button.addActionListener(_editHandler);
 
-        //SETSTAR button
-        button = makeNavigationButton("", SETSTAR, 
-                                      "Ermöglicht es einen Stern auf einem Feld zu setzen",
-                                      "Stern setze");
-        toolBar.add(button);
+		c.gridx = 0;
+		c.gridy = 0;
+		panel.add(button, c);
+		bg.add(button);
 
-        //CHECKSOLUTION button
-        button = makeNavigationButton("", CHECKSOLUTION,
-                                      "Überprüft ob das Spiel lösbar ist",
-                                      "Lösbarkeit prüfen");
-        toolBar.add(button);
-    }
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_U));
+		button.addActionListener(_editHandler);
+		c.gridx = 1;
+		c.gridy = 0;
+		panel.add(button, c);
+		bg.add(button);
 
-    protected JButton makeNavigationButton(String imageName,
-                                           String actionCommand,
-                                           String toolTipText,
-                                           String altText) {
-        String imgLocation = "images/"
-                + imageName
-                + ".png"; // TODO Pfad funktioniert nicht!
-        URL imageURL = EditToolbar.class.getResource(imgLocation);
-       
-        //Button erstellen
-        JButton button = new JButton();
-        button.setActionCommand(actionCommand);
-        button.addActionListener(this);
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_UR));
+		button.addActionListener(_editHandler);
+		c.gridx = 2;
+		c.gridy = 0;
+		panel.add(button, c);
+		bg.add(button);
 
-        if (imageURL != null) {                      //image found
-            button.setIcon(new ImageIcon(imageURL, altText));
-        } else {                                     //no image found
-            button.setText(altText);
-            System.err.println("Resource not found: "
-                               + imgLocation);
-        }
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_L));
+		button.addActionListener(_editHandler);
+		c.gridx = 0;
+		c.gridy = 1;
+		panel.add(button, c);
+		bg.add(button);
 
-        return button;
-    }
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_R));
+		button.addActionListener(_editHandler);
+		c.gridx = 2;
+		c.gridy = 1;
+		panel.add(button, c);
+		bg.add(button);
 
-    public void actionPerformed(ActionEvent e) {// TODO
-        String cmd = e.getActionCommand();
-        String description = null;
-        
-        if (SETARROW.equals(cmd)) { 
-            // SETARROW Action
-        } else if (SETSTAR.equals(cmd)) { 
-            // SETSTAR Action
-        } else if (CHECKSOLUTION.equals(cmd)) { 
-        	description = "Lösbarkeit wird überprüft...";
-            // GOTO Failure Action
-        }
-       
-        if (description != null)
-        	displayResult(description);
-        
-    }
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_DL));
+		button.addActionListener(_editHandler);
+		c.gridx = 0;
+		c.gridy = 2;
+		panel.add(button, c);
+		bg.add(button);
 
-    
-    
-    
-    
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_D));
+		button.addActionListener(_editHandler);
+		c.gridx = 1;
+		c.gridy = 2;
+		panel.add(button, c);
+		bg.add(button);
 
-    
-    protected void displayResult(String actionDescription) {
-        textArea.append(actionDescription + newline);
-        textArea.setCaretPosition(textArea.getDocument().getLength());
-    }
+		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_DR));
+		button.addActionListener(_editHandler);
+		c.gridx = 2;
+		c.gridy = 2;
+		panel.add(button, c);
+		bg.add(button);
 
-    // ab hier ist irrelevant für die anderen Klassen nur zum testen der Toolbar
+		return panel;
+	}
 
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("Play");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Add content to the window.
-        frame.add(new EditToolbar());
-
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                //Turn off metal's use of bold fonts
-	        UIManager.put("swing.boldMetal", Boolean.FALSE);
-	        createAndShowGUI();
-            }
-        });
-    }
 }

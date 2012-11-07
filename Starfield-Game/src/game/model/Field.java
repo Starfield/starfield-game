@@ -2,7 +2,6 @@ package game.model;
 
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
-import game.model.Field.AllowedContent;
 
 import javax.swing.JLabel;
 
@@ -11,16 +10,14 @@ public class Field extends JLabel {
 	/**
 	 * 
 	 */
-	private static final long	serialVersionUID	= 1L;
-	
+	private static final long serialVersionUID = 1L;
 
-/**
- * Model/Logik von einem Field
- * 
- * @author Alexander Arians
- * 
- */
-
+	/**
+	 * Model/Logik von einem Field
+	 * 
+	 * @author Alexander Arians
+	 * 
+	 */
 
 	public enum AllowedContent {
 		CONTENT_STAR,
@@ -37,10 +34,10 @@ public class Field extends JLabel {
 
 	}
 
-	int				xPos;
-	int				yPos;
-	AllowedContent	userContent;
-	AllowedContent	solutionContent;
+	int xPos;
+	int yPos;
+	AllowedContent userContent;
+	AllowedContent solutionContent;
 
 	public int getxPos() {
 		return xPos;
@@ -80,6 +77,7 @@ public class Field extends JLabel {
 		setIcon(ImageResources.getIcon(newIcon));
 		this.userContent = userContent;
 	}
+
 	/**
 	 * Setzt die richtige Lösung
 	 */
@@ -90,34 +88,36 @@ public class Field extends JLabel {
 	public Field(int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
-		this.userContent=AllowedContent.CONTENT_EMPTY;
-		solutionContent=AllowedContent.CONTENT_EMPTY;
-		
+		setUserContent(AllowedContent.CONTENT_EMPTY);
+		setSolutionContent(AllowedContent.CONTENT_EMPTY);
+
 	}
 
 	/**
 	 * Liefert den vom User gewählten Content
 	 */
 	public AllowedContent getUserContent() {
-		if(userContent==null){
-			userContent=AllowedContent.CONTENT_EMPTY;
+		if (userContent == null) {
+			userContent = AllowedContent.CONTENT_EMPTY;
 		}
 		return userContent;
 	}
+
 	/**
 	 * Liefert die richtige Lösung für das Feld
 	 */
 	public AllowedContent getSolutionContent() {
-		if(solutionContent==null){
-			solutionContent=AllowedContent.CONTENT_EMPTY;
+		if (solutionContent == null) {
+			solutionContent = AllowedContent.CONTENT_EMPTY;
 		}
 		return solutionContent;
 	}
+
 	/**
 	 * Überprüft ob aktueller UserContent die richtige Lösung ist
 	 */
-	public boolean IsCurrentContentRight(){
-		if(userContent.equals(solutionContent)){
+	public boolean IsCurrentContentRight() {
+		if (userContent.equals(solutionContent)) {
 			return true;
 		}
 		return false;

@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 /**
@@ -32,7 +33,7 @@ public class MainWindow extends JFrame {
 	/** Die MenüLeiste */
 	private JMenuBar _menuBar;
 	/** Toolbar */
-	private AbstractToolbar _toolbar;
+	private JToolBar _toolbar;
 	/** StarfieldView */
 	private StarfieldView _starfieldView;
 
@@ -146,7 +147,7 @@ public class MainWindow extends JFrame {
 			_toolbar = new EditToolbar();
 			break;
 		}
-		_contentPane.add(_toolbar, BorderLayout.WEST);
+		_contentPane.add(_toolbar, BorderLayout.LINE_START);
 	}
 
 	/**
