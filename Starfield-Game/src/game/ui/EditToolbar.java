@@ -32,7 +32,7 @@ public class EditToolbar extends AbstractToolbar
     static final private String CHECKSOLUTION = "CHECKSOLUTION";
 
     public EditToolbar() {
-        super(new BorderLayout());
+        super("");
 
         //Erstellen der Toolbar
         JToolBar toolBar = new JToolBar("Play");
