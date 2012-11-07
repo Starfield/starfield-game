@@ -5,6 +5,7 @@ package game.core;
 
 import game.ui.MainWindow;
 
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,6 +99,27 @@ public class ImageResources {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Liefert ein skaliertes Icon.
+	 * 
+	 * @param width
+	 *            - Breite des skalierten Icons
+	 * @param height
+	 *            - Höhe des skalierten Icons
+	 * @param image
+	 *            - ein Icon aus {@link Images}
+	 * @param scaleHint
+	 *            - eine Scaling Methode aus {@link Image}
+	 * @return
+	 */
+	public static ImageIcon getScaledIcon(int width, int height, Images image,
+			int ScaleHint) {
+		ImageIcon icon = getIcon(image);
+		icon.setImage(icon.getImage().getScaledInstance(width, height,
+				ScaleHint));
+		return icon;
 	}
 
 	/**

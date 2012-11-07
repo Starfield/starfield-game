@@ -6,6 +6,8 @@ package game.menubar;
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
 
+import java.awt.Image;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -64,17 +66,21 @@ public class MainMenuBar extends JMenuBar {
 		_spiel = new JMenu("Spiel");
 		// Menüpunkt Neues Spiel
 		_spiel.add(new JMenuItem(new NewGameAction("Neues Spiel ...",
-				ImageResources.getIcon(Images.ICON_NEW_GAME))));
+				ImageResources.getScaledIcon(20, 20, Images.ICON_NEW_GAME,
+						Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Laden
 		_spiel.add(new JMenuItem(new LoadGameAction("Spiel Laden ...",
-				ImageResources.getIcon(Images.ICON_LOAD_GAME))));
+				ImageResources.getScaledIcon(20, 20, Images.ICON_LOAD_GAME,
+						Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Speichern
 		_spiel.add(new JMenuItem(new SaveGameAction("Spiel Speichern ...",
-				ImageResources.getIcon(Images.ICON_SAVE_GAME))));
+				ImageResources.getScaledIcon(20, 20, Images.ICON_SAVE_GAME,
+						Image.SCALE_SMOOTH))));
 		// Menüpunkt Beenden
 		_spiel.addSeparator();
 		_spiel.add(new JMenuItem(new CloseApplicationAction("Beenden",
-				ImageResources.getIcon(Images.ICON_CLOSE_GAME))));
+				ImageResources.getScaledIcon(20, 20, Images.ICON_CLOSE_GAME,
+						Image.SCALE_SMOOTH))));
 		return _spiel;
 	}
 
@@ -82,14 +88,16 @@ public class MainMenuBar extends JMenuBar {
 		_editor = new JMenu("Editor");
 		// Menüpunkt Puzzle erstellen
 		_editor.add(new JMenuItem(new CreatePuzzleAction(
-				"Neues Puzzle erstellen ...", ImageResources
-						.getIcon(Images.ICON_NEW_GAME))));
+				"Neues Puzzle erstellen ...", ImageResources.getScaledIcon(20,
+						20, Images.ICON_NEW_GAME, Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Laden
 		_editor.add(new JMenuItem(new LoadPuzzleAction("Puzzle Bearbeiten ...",
-				ImageResources.getIcon(Images.ICON_LOAD_GAME))));
+				ImageResources.getScaledIcon(20, 20, Images.ICON_LOAD_GAME,
+						Image.SCALE_SMOOTH))));
 		// Menüpunkt Puzzle Speichern
 		_editor.add(new JMenuItem(new SavePuzzleAction("Puzzle Speichern ...",
-				ImageResources.getIcon(Images.ICON_SAVE_GAME))));
+				ImageResources.getScaledIcon(20, 20, Images.ICON_SAVE_GAME,
+						Image.SCALE_SMOOTH))));
 		return _editor;
 
 	}
