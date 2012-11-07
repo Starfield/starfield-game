@@ -75,11 +75,11 @@ public class PlayToolbar extends AbstractToolbar
     	j3 = new JLabel();
     	j4 = new JLabel();
     	j5 = new JLabel();
-    	j1.setIcon(ImageResources.getIcon(Images.STAR));
-    	j2.setIcon(ImageResources.getIcon(Images.STAR));
-    	j3.setIcon(ImageResources.getIcon(Images.STAR));
-    	j4.setIcon(ImageResources.getIcon(Images.STAR));
-    	j5.setIcon(ImageResources.getIcon(Images.STAR));  
+    	j1.setIcon(ImageResources.getIcon(Images.ICON_STAR));
+    	j2.setIcon(ImageResources.getIcon(Images.ICON_STAR));
+    	j3.setIcon(ImageResources.getIcon(Images.ICON_STAR));
+    	j4.setIcon(ImageResources.getIcon(Images.ICON_STAR));
+    	j5.setIcon(ImageResources.getIcon(Images.ICON_STAR));  
     	j1.setVisible(false);
     	j2.setVisible(false);
     	j3.setVisible(false);
@@ -140,7 +140,7 @@ public class PlayToolbar extends AbstractToolbar
         switch (imagenr)
         {
         	case 1:
-        		button.setIcon(ImageResources.getIcon(Images.STAR));
+        		button.setIcon(ImageResources.getIcon(Images.ICON_STAR));
         		break;
         	case 2:
         		button.setIcon(ImageResources.getIcon(Images.CONTENT_ARROW_D));
