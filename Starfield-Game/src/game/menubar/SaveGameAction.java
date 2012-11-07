@@ -8,6 +8,7 @@ import game.ui.MainWindow;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
@@ -15,6 +16,8 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author schroeder_jan
@@ -37,16 +40,18 @@ public class SaveGameAction extends AbstractAction {
 	public void actionPerformed(ActionEvent pE) {
 		// TODO Speicherdialog aufrufen
 		JFileChooser jfc = new JFileChooser();
-		jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		jfc.showSaveDialog(null);
-		String temppfad = jfc.getSelectedFile().getAbsolutePath();
-		System.out.println(temppfad);
-		if (temppfad.endsWith(".star")){
+		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		jfc.setMultiSelectionEnabled(false);
+		jfc.setFileHidingEnabled(true);
+		FileFilter ff = new FileNameExtensionFilter("Spielstand", "star");
+		jfc.addChoosableFileFilter(ff);
+		if (jfc.showSaveDialog(jfc) == JFileChooser.APPROVE_OPTION) {
+	        String temppfad = jfc.getSelectedFile().getAbsolutePath();
+			if (temppfad.endsWith(".star")){
 			}
-		else {
+			else {
 				temppfad = temppfad + ".star";
 			}
-			System.out.println(temppfad);
 			try {
 				File f = new File(temppfad);
 				FileOutputStream fos = new FileOutputStream(f);
@@ -59,4 +64,6 @@ public class SaveGameAction extends AbstractAction {
 				e.printStackTrace();
 			}
 		}
+
+	    }		
 }

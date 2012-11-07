@@ -17,6 +17,8 @@ import java.io.ObjectOutputStream;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Diese Action öffnet ein Fenster zur Auswahl eines gespeicherten Spiels. <br>
@@ -42,25 +44,36 @@ public class LoadGameAction extends AbstractAction {
 	public void actionPerformed(ActionEvent pArg0) {
 		// TODO FileChooser zum Laden eines gespeicherten Spiels
 		JFileChooser jfc = new JFileChooser();
-		jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		jfc.showOpenDialog(null);
-		String temppfad = jfc.getSelectedFile().getAbsolutePath();
-		if (temppfad.endsWith(".star")){
-			try {
-				File f = new File(temppfad);
-				FileInputStream fis = new FileInputStream(f);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				CommandStack commandStack = null;
-				Object o = ois.readObject();
-				if (o instanceof CommandStack){
-						commandStack = (CommandStack) o;
-				}
-				ois.close();
-				// TODO CommandStack an MainWindow übergeben
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		jfc.setMultiSelectionEnabled(false);
+		jfc.setFileHidingEnabled(true);
+		FileFilter ff = new FileNameExtensionFilter("Spielstand", "star");
+		jfc.addChoosableFileFilter(ff);
+		if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION){
+			String temppfad = jfc.getSelectedFile().getAbsolutePath();
+			if (temppfad.endsWith(".star")){
 			}
-		}		
+			else {
+				temppfad = temppfad + ".star";
+			}
+			System.out.println(temppfad);
+			if (temppfad.endsWith(".star")){
+				try {
+					File f = new File(temppfad);
+					FileInputStream fis = new FileInputStream(f);
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					CommandStack commandStack = null;
+					Object o = ois.readObject();
+					if (o instanceof CommandStack){
+							commandStack = (CommandStack) o;
+					}
+					ois.close();
+					// TODO CommandStack an MainWindow übergeben
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}	
+		}
 	}
 }
