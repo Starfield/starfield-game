@@ -33,9 +33,9 @@ public class MainWindow extends JFrame {
 	/** Die MenüLeiste */
 	private JMenuBar _menuBar;
 	/** Toolbar */
-	private JToolBar _toolbar;
+	private static JToolBar _toolbar;
 	/** StarfieldView */
-	private StarfieldView _starfieldView;
+	private static StarfieldView _starfieldView;
 
 	// Unsichtbare Hilfmittel
 	/** GamePreferences */
@@ -225,8 +225,21 @@ public class MainWindow extends JFrame {
 		_commandStack = pCommandStack;
 	}
 
-	public StarfieldView getStarfieldView() {
+	/**
+	 * Liefert die aktuell angezeigte StarfieldView
+	 * 
+	 * @return - die StarfieldView
+	 */
+	public static StarfieldView getStarfieldView() {
 		return _starfieldView;
 	}
 
+	/**
+	 * Liefert die aktive Toolbar
+	 * 
+	 * @return - die Toolbar
+	 */
+	public static JToolBar getActiveToolBar() {
+		return _toolbar;
+	}
 }

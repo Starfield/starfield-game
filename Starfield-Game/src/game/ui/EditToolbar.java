@@ -15,6 +15,7 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -43,8 +44,7 @@ public class EditToolbar extends JToolBar {
 		Border border = BorderFactory.createTitledBorder("Stern");
 		panel.setBorder(border);
 
-		JToggleButton button = new JToggleButton(
-				ImageResources.getIcon(Images.ICON_STAR));
+		JButton button = new JButton(ImageResources.getIcon(Images.ICON_STAR));
 		button.addActionListener(_editHandler);
 		panel.add(button);
 		return panel;

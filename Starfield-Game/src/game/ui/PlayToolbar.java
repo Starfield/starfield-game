@@ -64,27 +64,27 @@ public class PlayToolbar extends JToolBar {
 		// Markervisualierung hinzufügen
 		_markerList = new ArrayList<JLabel>();
 
-		JLabel label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		JLabel label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_ON));
 		_markerList.add(label);
 		c.gridx = 0;
 		c.gridy = 0;
 		panel.add(label, c);
-		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		_markerList.add(label);
 		c.gridx = 1;
 		c.gridy = 0;
 		panel.add(label, c);
-		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		_markerList.add(label);
 		c.gridx = 2;
 		c.gridy = 0;
 		panel.add(label, c);
-		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		_markerList.add(label);
 		c.gridx = 3;
 		c.gridy = 0;
 		panel.add(label, c);
-		label = new JLabel(ImageResources.getIcon(Images.ICON_STAR));
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		_markerList.add(label);
 		c.gridx = 4;
 		c.gridy = 0;
@@ -99,7 +99,7 @@ public class PlayToolbar extends JToolBar {
 		panel.add(button, c);
 
 		// Marker entfernen Button hinzufügen
-		button = new JButton("Marker entfernen");
+		button = new JButton("zum letzten Marker zurück");
 		button.addActionListener(_playHandler);
 		c.gridx = 0;
 		c.gridy = 4;

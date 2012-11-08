@@ -63,9 +63,8 @@ public class SavePuzzleAction extends AbstractAction {
 					FileOutputStream fos = new FileOutputStream(f);
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
 					oos.flush();
-					oos.writeObject(MainWindow.getGamePrefs().getMainWindow()
-							.getStarfieldView().getCurrentStarfield()
-							.copyUserToSolutionContent());
+					oos.writeObject(MainWindow.getStarfieldView()
+							.getCurrentStarfield().copyUserToSolutionContent());
 					oos.close();
 				} catch (IOException e) {
 					e.printStackTrace();

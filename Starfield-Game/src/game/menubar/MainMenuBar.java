@@ -88,8 +88,8 @@ public class MainMenuBar extends JMenuBar {
 		_editor = new JMenu("Editor");
 		// Menüpunkt Puzzle erstellen
 		_editor.add(new JMenuItem(new CreatePuzzleAction(
-				"Neues Puzzle erstellen ...", ImageResources.getScaledIcon(20,
-						20, Images.ICON_NEW_GAME, Image.SCALE_SMOOTH))));
+				"Neues Puzzle erstellen ...", ImageResources.getScaledIcon(24,
+						24, Images.ICON_NEW_GAME, Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Laden
 		_editor.add(new JMenuItem(new LoadPuzzleAction("Puzzle Bearbeiten ...",
 				ImageResources.getScaledIcon(24, 24, Images.ICON_LOAD_GAME,
@@ -111,11 +111,12 @@ public class MainMenuBar extends JMenuBar {
 		_hilfe = new JMenu("Hilfe");
 		// Hilfe hinzufügen
 		_hilfe.add(new JMenuItem(new OpenHelpAction("Hilfe öffnen ...",
-				ImageResources.getIcon(Images.ICON_HELP))));
+				ImageResources.getScaledIcon(24, 24, Images.ICON_HELP,
+						Image.SCALE_SMOOTH))));
 		// About
 		_hilfe.addSeparator();
 		_hilfe.add(new JMenuItem(new OpenAboutAction("Über", ImageResources
-				.getIcon(Images.ICON_HELP))));
+				.getScaledIcon(24, 24, Images.ICON_ABOUT, Image.SCALE_SMOOTH))));
 		return _hilfe;
 	}
 }
