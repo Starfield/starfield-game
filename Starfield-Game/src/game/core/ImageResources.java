@@ -51,6 +51,8 @@ public class ImageResources {
 		ICON_HELP("icons/icon_help"),
 		ICON_MARKER_ON("icons/icon_marker_on"),
 		ICON_MARKER_OFF("icons/icon_marker_off"),
+		ICON_PLAYABLE_TRUE("icons/icon_playable_true"),
+		ICON_PLAYABLE_FALSE("icons/icon_playable_false"),
 		ICON_ARROW_U("icons/arrows/UpArrowIcon"),
 		ICON_ARROW_D("icons/arrows/DownArrowIcon"),
 		ICON_ARROW_L("icons/arrows/LeftArrowIcon"),

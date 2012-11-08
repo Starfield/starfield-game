@@ -10,6 +10,7 @@ import game.ui.MainWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JToggleButton;
 
 /**
@@ -35,8 +36,9 @@ public class ToolbarEditHandler implements ActionListener {
 				return;
 			EditToolbar toolbar = (EditToolbar) o;
 
-			// Da Java 1.6 noch keine Strings switchen kann wird das hier
-			// ein langer if-Block
+			/*
+			 * Behandlung der Buttons aus der Gruppe "rechte Maustaste"
+			 */
 			if (button.getName() == "ARROW_U")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_U);
 			if (button.getName() == "ARROW_UR")
@@ -54,5 +56,46 @@ public class ToolbarEditHandler implements ActionListener {
 			if (button.getName() == "ARROW_DL")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DL);
 		}
+		if (o instanceof JButton) {
+			JButton button = (JButton) o;
+			/*
+			 * Behandlung der Buttons aus der Gruppe "Einstellungen"
+			 */
+
+			if (button.getName() == "APPLY")
+				handleApply(pEvent);
+			if (button.getName() == "CHECK")
+				handleCheck(pEvent);
+		}
+	}
+
+	private void handleApply(ActionEvent pEvent) {
+		/*
+		 * TODO Ändern der Größe des Starfields. Die Usereingaben können über
+		 * MainWindow.getActiveToolbar().getInputSizeX() und
+		 * MainWindow.getActiveToolbar().getInputSizeY() bekommen werden (Casten
+		 * in EditToolbar nicht vergessen)
+		 */
+		System.out
+				.println("SizeX: "
+						+ ((EditToolbar) MainWindow.getActiveToolBar())
+								.getInputSizeX());
+		System.out
+				.println("SizeY: "
+						+ ((EditToolbar) MainWindow.getActiveToolBar())
+								.getInputSizeY());
+
+	}
+
+	private void handleCheck(ActionEvent pEvent) {
+		/*
+		 * TODO Check anstoßen ob das Starfield als spielbar gilt. Das Starfield
+		 * kann über MainWindow.getStarfieldView().getCurrentStarfield()
+		 * bekommen werden. Hier muss eine Methode erstellt werden, die
+		 * überprüft ob das Modell so korrekt ist. Das Ergebnis der Überprüfung
+		 * muss über MainWindow.getActiveToolbar().setPlayable(boolean) wieder
+		 * zurück an die Toolbar geschickt werden.
+		 */
+
 	}
 }
