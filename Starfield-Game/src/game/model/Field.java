@@ -68,8 +68,29 @@ public class Field extends JLabel {
 		case CONTENT_GRAYED:
 			newIcon = Images.CONTENT_GRAYED;
 			break;
+		case CONTENT_ARROW_UL:
+			newIcon = Images.CONTENT_ARROW_UL;
+			break;
+		case CONTENT_ARROW_U:
+			newIcon = Images.CONTENT_ARROW_U;
+			break;
+		case CONTENT_ARROW_UR:
+			newIcon = Images.CONTENT_ARROW_UR;
+			break;
+		case CONTENT_ARROW_L:
+			newIcon = Images.CONTENT_ARROW_L;
+			break;
 		case CONTENT_ARROW_R:
 			newIcon = Images.CONTENT_ARROW_R;
+			break;
+		case CONTENT_ARROW_DL:
+			newIcon = Images.CONTENT_ARROW_DL;
+			break;
+		case CONTENT_ARROW_D:
+			newIcon = Images.CONTENT_ARROW_D;
+			break;
+		case CONTENT_ARROW_DR:
+			newIcon = Images.CONTENT_ARROW_DR;
 			break;
 		}
 		if (newIcon == null)
