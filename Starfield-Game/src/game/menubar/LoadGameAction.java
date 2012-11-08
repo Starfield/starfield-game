@@ -66,9 +66,9 @@ public class LoadGameAction extends AbstractAction {
 					Object o = ois.readObject();
 					if (o instanceof CommandStack){
 							commandStack = (CommandStack) o;
+							MainWindow.getGamePrefs().setLoadedCommandStack(commandStack);
 					}
 					ois.close();
-					// TODO CommandStack an MainWindow übergeben
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
