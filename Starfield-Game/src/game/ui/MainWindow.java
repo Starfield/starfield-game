@@ -60,9 +60,8 @@ public class MainWindow extends JFrame {
 		initPreferences();
 		// MenuBar setzen
 		initMenuBar();
-
+		// austauschbare GUI-Elemente erstellen
 		initGame();
-		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
@@ -82,6 +81,7 @@ public class MainWindow extends JFrame {
 			setSize(new Dimension(800, 600));
 			setExtendedState(MAXIMIZED_BOTH);
 		}
+		setLocationRelativeTo(null);
 	}
 
 	/**
@@ -173,20 +173,22 @@ public class MainWindow extends JFrame {
 		// Anhand des AppMode entscheiden, ob ein neues leeres Starfield geladen
 		// werden soll oder ein gespeichertes Spiel wiederhergestellt werden
 		// soll.
+
+		Starfield starfield = null;
 		switch (getGamePrefs().getAppMode()) {
 		case GAME_MODE:
-			_starfieldView = new StarfieldView(new Starfield(0, 0));
+			starfield = null;
 			break;
 		case LOAD_GAME_MODE:
 		case LOAD_EDIT_MODE:
-			_starfieldView = new StarfieldView(getGamePrefs()
-					.getLoadedStarfield());
+			starfield = getGamePrefs().getLoadedStarfield();
+			getGamePrefs().removeLoadedStarfield();
 			break;
 		case EDIT_MODE:
-			_starfieldView = new StarfieldView(new Starfield(5, 5));
+			starfield = new Starfield(5, 5);
 			break;
 		}
-
+		_starfieldView = new StarfieldView(starfield);
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
 	}
 
@@ -221,6 +223,10 @@ public class MainWindow extends JFrame {
 
 	private void setCommandStack(CommandStack pCommandStack) {
 		_commandStack = pCommandStack;
+	}
+
+	public StarfieldView getStarfieldView() {
+		return _starfieldView;
 	}
 
 }

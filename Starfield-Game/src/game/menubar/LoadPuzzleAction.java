@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * 
@@ -40,30 +42,36 @@ public class LoadPuzzleAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent pE) {
 		JFileChooser jfc = new JFileChooser();
-		jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		int choice = jfc.showOpenDialog(null);
+		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		jfc.setMultiSelectionEnabled(false);
+		jfc.setFileHidingEnabled(true);
+		FileFilter ff = new FileNameExtensionFilter("Starfield-Puzzle", "star");
+		jfc.addChoosableFileFilter(ff);
 		// Nur laden wenn User OK geklickt hat
-		if (choice == JFileChooser.APPROVE_OPTION) {
+		if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 			String temppfad = jfc.getSelectedFile().getAbsolutePath();
-			if (temppfad.endsWith(".estar")) {
+			if (temppfad.endsWith(".star")) {
 				try {
 					File f = new File(temppfad);
 					FileInputStream fis = new FileInputStream(f);
 					ObjectInputStream ois = new ObjectInputStream(fis);
-					Starfield starfield = null;
 					Object o = ois.readObject();
 					if (o instanceof Starfield) {
-						starfield = (Starfield) o;
-						MainWindow.getGamePrefs().setLoadedStarfield(starfield);
+						// Starfield zur Bearbeitung vorbereiten
+						((Starfield) o).createSolutionfromUserContent();
+						// Starfield in die GamePrefs zur Abholung bereit
+						// stellen
+						MainWindow.getGamePrefs().setLoadedStarfield(
+								(Starfield) o);
+						// Dem MainWindow bescheid geben, die Elemente neu zu
+						// erstellen
 						MainWindow.getGamePrefs().getMainWindow().initGame();
 					}
 					ois.close();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-
 }

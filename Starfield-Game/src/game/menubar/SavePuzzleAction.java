@@ -4,7 +4,6 @@
 package game.menubar;
 
 import game.core.GamePreferences.AppMode;
-import game.model.Starfield;
 import game.ui.MainWindow;
 
 import java.awt.event.ActionEvent;
@@ -16,6 +15,8 @@ import java.io.ObjectOutputStream;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Jan
@@ -44,27 +45,29 @@ public class SavePuzzleAction extends AbstractAction {
 		if (MainWindow.getGamePrefs().getAppMode() == AppMode.EDIT_MODE
 				|| MainWindow.getGamePrefs().getAppMode() == AppMode.LOAD_EDIT_MODE) {
 			JFileChooser jfc = new JFileChooser();
-			jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			int choice = jfc.showSaveDialog(null);
+			jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			jfc.setMultiSelectionEnabled(false);
+			jfc.setFileHidingEnabled(true);
+			FileFilter ff = new FileNameExtensionFilter("Starfield-Puzzle",
+					"star");
+			jfc.addChoosableFileFilter(ff);
 			// Nur speichern wenn OK gedrückt
-			if (choice == JFileChooser.APPROVE_OPTION) {
+			if (jfc.showSaveDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 				String temppfad = jfc.getSelectedFile().getAbsolutePath();
-				System.out.println(temppfad);
 				if (temppfad.endsWith(".star")) {
 				} else {
 					temppfad = temppfad + ".star";
 				}
-				System.out.println(temppfad);
 				try {
 					File f = new File(temppfad);
 					FileOutputStream fos = new FileOutputStream(f);
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
 					oos.flush();
-					// TO DO Unklar wie wir ans Starfield kommen
-					oos.writeObject(new Starfield(10, 10));
+					oos.writeObject(MainWindow.getGamePrefs().getMainWindow()
+							.getStarfieldView().getCurrentStarfield()
+							.copyUserToSolutionContent());
 					oos.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

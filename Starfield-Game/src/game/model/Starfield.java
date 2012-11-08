@@ -161,4 +161,43 @@ public class Starfield implements Serializable {
 		return wrongFields;
 	}
 
+	/**
+	 * Diese Methode dient dazu, vor der Speicherung eines neu Bearbeiteten
+	 * Puzzles den Inhalt, den der User eingegeben hat, als Lösung für
+	 * zukünftige Spielsessions vorzugeben. <br>
+	 * Diese Methode sollte nur vor der Speicherung des Puzzles aufgerufen
+	 * werden, sofern die Korrektheit des Puzzles überprüft worden ist.
+	 * 
+	 * @return - Das Starfield nach Bearbeitung
+	 */
+	public Starfield copyUserToSolutionContent() {
+		for (int y = 0; y < size.getHeight(); y++) {
+			for (int x = 0; x < size.getWidth(); x++) {
+				getField(x, y).setSolutionContent(
+						getField(x, y).getUserContent());
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Diese Methode dient dazu, ein bereits gespeichertes Starfield erneut im
+	 * Editor zu bearbeiten. Damit der User die Lösung bearbeiten kann, werden
+	 * die Daten in den UserContent geladen. <br>
+	 * Diese Methode sollte nur direkt nach dem Laden eines Starfields aus einer
+	 * serialisierten Datei aufgerufen werden. Wenn das Starfield im Anschluss
+	 * im Editor bearbeitet werden soll.
+	 * 
+	 * @return - Das Starfield nach Bearbeitung
+	 */
+	public Starfield createSolutionfromUserContent() {
+		for (int y = 0; y < size.getHeight(); y++) {
+			for (int x = 0; x < size.getWidth(); x++) {
+				getField(x, y).setUserContent(
+						getField(x, y).getSolutionContent());
+			}
+		}
+		return this;
+	}
+
 }

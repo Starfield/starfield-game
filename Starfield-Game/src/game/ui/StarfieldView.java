@@ -33,8 +33,11 @@ public class StarfieldView extends JPanel {
 
 	public StarfieldView(Starfield pStarfield) {
 		_starfield = pStarfield;
-		initWindowsPrefs();
-		fillView();
+		if (_starfield != null) {
+			initWindowsPrefs();
+			fillView();
+		}
+		// TODO Großes Logo anzeigen, wenn kein Starfield übergeben wird
 	}
 
 	/**
@@ -47,6 +50,9 @@ public class StarfieldView extends JPanel {
 
 	}
 
+	/**
+	 * Füllt das anzeigbare Starfield mit den Daten aus dem Modell
+	 */
 	private void fillView() {
 		Dimension size = _starfield.getSize();
 		// Fields des Modell abbilden
@@ -77,5 +83,14 @@ public class StarfieldView extends JPanel {
 			c.gridy = y + 1;
 			add(new JLabel("" + _starfield.getStarCountY(y)), c);
 		}
+	}
+
+	/**
+	 * Liefert das aktuell angezeigte {@link Starfield}
+	 * 
+	 * @return das Starfield
+	 */
+	public Starfield getCurrentStarfield() {
+		return _starfield;
 	}
 }
