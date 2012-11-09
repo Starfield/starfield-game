@@ -1,5 +1,6 @@
 package game.model;
 
+import game.core.ImageResources.Images;
 import game.model.Field.AllowedContent;
 
 import java.awt.Dimension;
@@ -199,5 +200,81 @@ public class Starfield implements Serializable {
 		}
 		return this;
 	}
-
+ /**
+  *  Diese Methode gibt alle Felder zurück, auf die ein Pfeil zeigt.
+  */
+	private ArrayList<Field> getFieldsfromArrowDirection(Field field){
+		ArrayList<Field> pointedFields = new ArrayList<Field>();
+		switch (field.getUserContent()) {
+		case CONTENT_STAR:
+			
+			break;
+		case CONTENT_EMPTY:
+			
+			break;
+		case CONTENT_GRAYED:
+			
+			break;
+		case CONTENT_ARROW_UL:
+				
+					
+			
+			
+			break;
+		case CONTENT_ARROW_U:
+			
+			break;
+		case CONTENT_ARROW_UR:
+			
+			break;
+		case CONTENT_ARROW_L:
+			
+			break;
+		case CONTENT_ARROW_R:
+			
+			break;
+		case CONTENT_ARROW_DL:
+			
+			break;
+		case CONTENT_ARROW_D:
+			
+			break;
+		}
+		
+		return pointedFields;
+	}
+		
+	
+	    /**
+	     * Gibt das Feld linksoben vom übergebenen Feld aus.
+	     * @return
+	     */
+		public Field getField_UL(Field field){
+			if(field.getWidth()>0 && field.getHeight()>0){
+				return listcontainer.get(field.getWidth()-1).get(field.getHeight()-1);					
+			}
+				return null;
+		}
+		
+		/**
+		 * Gibt das Feld oben vom übergebenen Feld aus.
+		 * @return
+		 */
+		public Field getField_U(Field field){
+			if(field.getHeight()>0){
+				return listcontainer.get(field.getWidth()).get(field.getHeight()-1);					
+			}
+				return null;
+		}
+	    /**
+	     * Gibt das Feld rechtsoben vom übergebenen Feld aus.
+	     * @return
+	     */
+		public Field getField_UR(Field field){
+			if(field.getWidth()>=listcontainer.size() && field.getHeight()>0){
+				return listcontainer.get(field.getWidth()+1).get(field.getHeight()-1);					
+			}
+				return null;
+		}
+		
 }
