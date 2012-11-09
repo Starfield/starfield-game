@@ -27,7 +27,14 @@ public class CommandStack implements Serializable {
 	private int mistake = 0;
 	
 	/** Korrespondierendes Starfield */
-	private File starfield = null;
+	private File starfieldFile = null;
+	
+	/**
+	 * Konstruktor
+	 */
+	public CommandStack() {
+		
+	}
 	
 	/**
 	 * Konstruktor
@@ -36,7 +43,7 @@ public class CommandStack implements Serializable {
 	 * - Geladenes Starfield
 	 */
 	public CommandStack(File starfield) {
-		this.starfield = starfield;
+		this.starfieldFile = starfield;
 	}
 	
 	/**
@@ -155,13 +162,13 @@ public class CommandStack implements Serializable {
 	}
 
 	/**
-	 * Gibt das korrespondierende Starfield zurück.
+	 * Gibt das korrespondierende Starfield als File zurück.
 	 * 
-	 * @return starfield
-	 * - Korrespondierendes Starfield
+	 * @return starfieldFile
+	 * - Korrespondierendes Starfield als File
 	 */
 	public File getStarfield() {
-		return starfield;
+		return starfieldFile;
 	}
 	
 }
