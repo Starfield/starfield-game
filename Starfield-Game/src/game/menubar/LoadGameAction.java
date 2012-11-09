@@ -69,7 +69,7 @@ public class LoadGameAction extends AbstractAction {
 						if (o instanceof CommandStack){
 								commandStack = (CommandStack) o;
 								MainWindow.getGamePrefs().setLoadedCommandStack(commandStack);
-								File starfieldf = commandStack.getStarfield();
+								File starfieldf = commandStack.getStarfieldFile();
 								if (starfieldf.exists()){
 									fis = new FileInputStream(starfieldf);
 									ois = new ObjectInputStream(fis);

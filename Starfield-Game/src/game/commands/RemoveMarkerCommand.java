@@ -10,9 +10,6 @@ import java.awt.AWTEvent;
 public class RemoveMarkerCommand extends AbstractCommand {
 
 	private static final long serialVersionUID = -198454667649613172L;
-
-	/** Nummer des Markers */
-	private int number;
 	
 	/**
 	 * Konstruktor
@@ -22,13 +19,9 @@ public class RemoveMarkerCommand extends AbstractCommand {
 	 * 
 	 * @param e
 	 *  - Das den Command aufrufende Event
-	 *  
-	 *  @param number
-	 *  - Nummer des Markers
 	 */
-	public RemoveMarkerCommand(CommandStack stacks, AWTEvent e, int number) {
+	public RemoveMarkerCommand(CommandStack stacks, AWTEvent e) {
 		super(stacks, e);
-		this.number = number;
 	}
 	
 	/**
@@ -36,9 +29,7 @@ public class RemoveMarkerCommand extends AbstractCommand {
 	 */
 	@Override
 	public void execute() {
-		if (getStacks().getMarker(number) != 0) {
-			getStacks().undoMarker(number);
-		}
+		getStacks().undoMarker();
 	}
 
 }

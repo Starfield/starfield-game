@@ -93,7 +93,7 @@ public class CommandStack implements Serializable {
 	 * Löscht alle gesetzten Marker.
 	 */
 	public void deleteMarkers() {
-		// TODO: Marker aus den Playstack entfernen, Time Lapse nicht
+		// TODO: Marker aus den Playstack entfernen? (Time Lapse nicht)
 		for (int i : marker) {
 			marker.set(i, 0);
 		}
@@ -112,15 +112,27 @@ public class CommandStack implements Serializable {
 	}
 	
 	/**
-	 * Sorgt dafür, dass der Spielstand des gewählten Markers wiederhergestellt wird.
+	 * Gibt den Wert des zuletzt gesetzten Markers zurück.
 	 * 
-	 * @param nr
-	 *  - Übergebener Marker (1-5)
+	 * @return marker
+	 * - Letzter gesetzter Marker
 	 */
-	public void undoMarker(int nr) {
+	public int getCurrentMarker() {
+		for (int i = marker.size() - 1; i >= 0; i--) {
+			if (marker.get(i) != 0) {
+				return marker.get(i);
+			}
+		}
+		return 0;
+	}
+	
+	/**
+	 * Sorgt dafür, dass der Spielstand des zuletzt gesetzten Markers wiederhergestellt wird.
+	 */
+	public void undoMarker() {
 		int j = playStack.size();
 		
-		for (int i = j - 1; i > (j - 1 - getMarker(nr)); i--) {
+		for (int i = j - 1; i > (j - 1 - getMarker(getCurrentMarker())); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}
@@ -167,7 +179,7 @@ public class CommandStack implements Serializable {
 	 * @return starfieldFile
 	 * - Korrespondierendes Starfield als File
 	 */
-	public File getStarfield() {
+	public File getStarfieldFile() {
 		return starfieldFile;
 	}
 	
