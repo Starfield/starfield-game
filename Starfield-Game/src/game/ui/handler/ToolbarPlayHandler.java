@@ -36,16 +36,14 @@ public class ToolbarPlayHandler implements ActionListener {
 		_toolbar = (PlayToolbar) MainWindow.getActiveToolBar();
 		
 		if (cmd == "setMarker"){
-			System.out.println("marker setzen");
 			setMarker(pE);
 		}
 		if (cmd == "rücksprungMarker"){
-			System.out.println("rücksprungMarker");	
-//			RemoveMarkerCommand
+			RemoveMarkerCommand c = new RemoveMarkerCommand(MainWindow.getCommandStack(), pE); 
+			c.execute();
 		}
 		if (cmd == "removeMarker"){
-			System.out.println("Marker entfernen");	
-			MainWindow.getCommandStack().deleteMarkers();
+			removeMarkers();
 		}
 		
 		MainWindow.getActiveToolBar();
@@ -65,6 +63,17 @@ public class ToolbarPlayHandler implements ActionListener {
 		}	
 	}
 	
+	public void removeMarkers(){
+		ArrayList<JLabel> _markerList = _toolbar.getMarkerList();
+		JLabel l = null; 
+		for (int i = 0; i < _markerList.size(); i++){
+			l = _markerList.get(i);
+			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON)) )
+				_markerList.get(i).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));	
+		}
+		
+		MainWindow.getCommandStack().deleteMarkers();
+	}
 	
 	
 }
