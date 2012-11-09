@@ -64,7 +64,7 @@ public class PlayToolbar extends JToolBar {
 		// Markervisualierung hinzufügen
 		_markerList = new ArrayList<JLabel>();
 
-		JLabel label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_ON));
+		JLabel label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		_markerList.add(label);
 		c.gridx = 0;
 		c.gridy = 0;
@@ -93,21 +93,33 @@ public class PlayToolbar extends JToolBar {
 		// Marker setzen Button hinzufügen
 		JButton button = new JButton("Marker setzen");
 		button.addActionListener(_playHandler);
+		button.setActionCommand("setMarker");
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 5;
 		panel.add(button, c);
-
-		// Marker entfernen Button hinzufügen
+		
+		// Marker rücksprung Button hinzufügen
 		button = new JButton("zum letzten Marker zurück");
 		button.addActionListener(_playHandler);
+		button.setActionCommand("rücksprungMarker");
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 5;
 		panel.add(button, c);
+		
+		
+		// Marker entfernen Button hinzufügen
+		button = new JButton("Alle Marker entfernen");
+		button.addActionListener(_playHandler);
+		button.setActionCommand("removeMarker");
+		c.gridx = 0;
+		c.gridy = 5;
+		c.gridwidth = 5;
+		panel.add(button, c);
 		return panel;
 	}
-
+ 
 	private JPanel initCheck() {
 		// Internes Panel zur Ablage
 		JPanel panel = new JPanel();
@@ -120,10 +132,16 @@ public class PlayToolbar extends JToolBar {
 		panel.add(button);
 		return panel;
 	}
+	
+	public ArrayList<JLabel> getMarkerList(){
+		return this._markerList;
+	}
 
 	public void setNextMarker() {
 		// Logik einfügen, dass beim Aufruf aus dem MarkerHandler das nächste
 		// Icon in der markerList auf "AN" gesetzt wird
+		_markerList.get(0).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		
 	}
 
 	public void removeLastMarker() {
