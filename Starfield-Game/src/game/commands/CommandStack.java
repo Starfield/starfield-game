@@ -21,7 +21,7 @@ public class CommandStack implements Serializable {
 	private ArrayList<AbstractCommand> playStack = new ArrayList<AbstractCommand>();
 	
 	/** Liste der fünf individuell zu setzenden Marker. */
-	private ArrayList<Integer> marker = new ArrayList<Integer>(5);
+	private ArrayList<Integer> marker = new ArrayList<Integer>();
 	
 	/** Position des ersten Fehlers im Play Stack. */
 	private int mistake = 0;
@@ -30,10 +30,10 @@ public class CommandStack implements Serializable {
 	private File starfieldFile = null;
 	
 	/**
-	 * Konstruktor
+	 * Standardkonstruktor
 	 */
 	public CommandStack() {
-		
+		initMarker();
 	}
 	
 	/**
@@ -44,6 +44,7 @@ public class CommandStack implements Serializable {
 	 */
 	public CommandStack(File starfield) {
 		this.starfieldFile = starfield;
+		initMarker();
 	}
 	
 	/**
@@ -69,6 +70,12 @@ public class CommandStack implements Serializable {
 		playStack.add(command);
 	}
 	
+	private void initMarker() {
+		for (int i = 0; i < 5; i++) {
+			marker.add(0);
+		}
+	}
+	
 	/**
 	 * Setzt einen neuen Marker an der angegebenen Position in die Liste.
 	 * 
@@ -76,7 +83,7 @@ public class CommandStack implements Serializable {
 	 *  - Übergebener Marker (1-5)
 	 */
 	public void addMarker(int number) {
-		marker.add(number, playStack.size());
+		marker.set(number, playStack.size());
 	}
 	
 	/**
@@ -93,7 +100,6 @@ public class CommandStack implements Serializable {
 	 * Löscht alle gesetzten Marker.
 	 */
 	public void deleteMarkers() {
-		// TODO: Marker aus den Playstack entfernen? (Time Lapse nicht)
 		for (int i : marker) {
 			marker.set(i, 0);
 		}
@@ -118,7 +124,7 @@ public class CommandStack implements Serializable {
 	 * - Letzter gesetzter Marker
 	 */
 	public int getCurrentMarker() {
-		for (int i = marker.size() - 1; i >= 0; i--) {
+		for (int i = 4; i >= 0; i--) {
 			if (marker.get(i) != 0) {
 				return marker.get(i);
 			}
@@ -132,7 +138,7 @@ public class CommandStack implements Serializable {
 	public void undoMarker() {
 		int j = playStack.size();
 		
-		for (int i = j - 1; i > (j - 1 - getMarker(getCurrentMarker())); i--) {
+		for (int i = j - 1; i > (j - 1 - getCurrentMarker()); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}
@@ -167,9 +173,9 @@ public class CommandStack implements Serializable {
 	/**
 	 * Führt das Laden eines Spielstands durch.
 	 */
-	public void loadGame() {
-		for (AbstractCommand c : playStack) {
-			c.execute();
+	public void loadSavegame() {
+		for (AbstractCommand command : playStack) {
+			command.execute();
 		}
 	}
 
