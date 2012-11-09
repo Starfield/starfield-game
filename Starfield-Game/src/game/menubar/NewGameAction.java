@@ -87,6 +87,7 @@ public class NewGameAction extends AbstractAction {
 						// stellen
 						MainWindow.getGamePrefs().setLoadedStarfield(
 								(Starfield) o);
+						MainWindow.getGamePrefs().setStarfieldFile(f);
 					}
 					ois.close();
 				} catch (Exception e) {
