@@ -4,19 +4,19 @@
 package game.menubar;
 
 import game.commands.CommandStack;
+import game.core.GamePreferences.AppMode;
+import game.model.Starfield;
 import game.ui.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -47,33 +47,70 @@ public class LoadGameAction extends AbstractAction {
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		jfc.setMultiSelectionEnabled(false);
 		jfc.setFileHidingEnabled(true);
-		FileFilter ff = new FileNameExtensionFilter("Spielstand", "star");
+		FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand", "save");
 		jfc.addChoosableFileFilter(ff);
-		if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION){
-			String temppfad = jfc.getSelectedFile().getAbsolutePath();
-			if (temppfad.endsWith(".star")){
-			}
-			else {
-				temppfad = temppfad + ".star";
-			}
-			System.out.println(temppfad);
-			if (temppfad.endsWith(".star")){
-				try {
-					File f = new File(temppfad);
-					FileInputStream fis = new FileInputStream(f);
-					ObjectInputStream ois = new ObjectInputStream(fis);
-					CommandStack commandStack = null;
-					Object o = ois.readObject();
-					if (o instanceof CommandStack){
-							commandStack = (CommandStack) o;
-							MainWindow.getGamePrefs().setLoadedCommandStack(commandStack);
+		int fileok = 1;
+		do {
+			fileok = 1;
+			if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION){
+				String temppfad = jfc.getSelectedFile().getAbsolutePath();
+				fileok = 1;
+				if (temppfad.endsWith(".save")){
+					try {
+						File f = new File(temppfad);
+						if (f.exists()){
+							
+						}
+						FileInputStream fis = new FileInputStream(f);
+						ObjectInputStream ois = new ObjectInputStream(fis);
+						CommandStack commandStack = null;
+						Object o = ois.readObject();
+						ois.close();
+						if (o instanceof CommandStack){
+								commandStack = (CommandStack) o;
+								MainWindow.getGamePrefs().setLoadedCommandStack(commandStack);
+								File starfieldf = commandStack.getStarfield();
+								if (starfieldf.exists()){
+									fis = new FileInputStream(starfieldf);
+									ois = new ObjectInputStream(fis);
+									o = ois.readObject();
+									ois.close();
+									if (o instanceof Starfield){
+										MainWindow.getGamePrefs().setLoadedStarfield((Starfield) o);
+									}
+									else {
+										JOptionPane.showMessageDialog(null,
+											    "Das zugehörige Starfield existiert leider nicht mehr.",
+											    "Starfield existiert nicht",
+											    JOptionPane.WARNING_MESSAGE);
+										MainWindow.getGamePrefs().setAppMode(AppMode.GAME_MODE);
+										MainWindow.getGamePrefs().removeLoadedCommandStack();
+										MainWindow.getGamePrefs().removeLoadedStarfield();
+									}
+								}	
+								else {
+									JOptionPane.showMessageDialog(null,
+										    "Das zugehörige Starfield existiert leider nicht mehr.",
+										    "Starfield existiert nicht",
+										    JOptionPane.WARNING_MESSAGE);
+									MainWindow.getGamePrefs().setAppMode(AppMode.GAME_MODE);
+									MainWindow.getGamePrefs().removeLoadedCommandStack();
+									MainWindow.getGamePrefs().removeLoadedStarfield();
+								}
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					ois.close();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-			}	
-		}
+				else {
+					JOptionPane.showMessageDialog(null,
+						    "Wählen sie eine gültige Datei!",
+						    "Dateityp ist ungültig",
+						    JOptionPane.WARNING_MESSAGE);
+					fileok = 0;
+				}
+			}
+		}while (fileok == 0); 
 	}
 }
