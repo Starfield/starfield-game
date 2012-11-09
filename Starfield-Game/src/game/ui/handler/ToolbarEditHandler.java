@@ -10,9 +10,6 @@ import game.ui.MainWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JToggleButton;
-
 /**
  * @author Jan
  * 
@@ -28,10 +25,7 @@ public class ToolbarEditHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent pEvent) {
 
-		Object o = pEvent.getSource();
-		if (o instanceof JToggleButton) {
-			JToggleButton button = (JToggleButton) o;
-			o = MainWindow.getActiveToolBar();
+			Object o = MainWindow.getActiveToolBar();
 			if (!(o instanceof EditToolbar))
 				return;
 			EditToolbar toolbar = (EditToolbar) o;
@@ -39,34 +33,34 @@ public class ToolbarEditHandler implements ActionListener {
 			/*
 			 * Behandlung der Buttons aus der Gruppe "rechte Maustaste"
 			 */
-			if (button.getName() == "ARROW_U")
+			if (pEvent.getActionCommand() == "ARROW_U")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_U);
-			if (button.getName() == "ARROW_UR")
+			if (pEvent.getActionCommand() == "ARROW_UR")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_UR);
-			if (button.getName() == "ARROW_UL")
+			if (pEvent.getActionCommand() == "ARROW_UL")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_UL);
-			if (button.getName() == "ARROW_L")
+			if (pEvent.getActionCommand() == "ARROW_L")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_L);
-			if (button.getName() == "ARROW_R")
+			if (pEvent.getActionCommand() == "ARROW_R")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_R);
-			if (button.getName() == "ARROW_D")
+			if (pEvent.getActionCommand() == "ARROW_D")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_D);
-			if (button.getName() == "ARROW_DR")
+			if (pEvent.getActionCommand() == "ARROW_DR")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DR);
-			if (button.getName() == "ARROW_DL")
+			if (pEvent.getActionCommand() == "ARROW_DL")
 				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DL);
-		}
-		if (o instanceof JButton) {
-			JButton button = (JButton) o;
+			if (pEvent.getActionCommand() == "EMPTY")
+				toolbar.setSelectedArrow(AllowedContent.CONTENT_EMPTY);
+
 			/*
 			 * Behandlung der Buttons aus der Gruppe "Einstellungen"
 			 */
 
-			if (button.getName() == "APPLY")
+			if (pEvent.getActionCommand() == "APPLY")
 				handleApply(pEvent);
-			if (button.getName() == "CHECK")
+			if (pEvent.getActionCommand() == "CHECK")
 				handleCheck(pEvent);
-		}
+		
 	}
 
 	private void handleApply(ActionEvent pEvent) {

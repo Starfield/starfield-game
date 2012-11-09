@@ -81,74 +81,70 @@ public class EditToolbar extends JToolBar {
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(2, 2, 2, 2);
 
-		JToggleButton button = new JToggleButton(
-				ImageResources.getIcon(Images.ICON_ARROW_UL));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_UL");
+		JToggleButton button = createToggleButton(Images.ICON_ARROW_UL, "ARROW_UL");
 		c.gridx = 0;
 		c.gridy = 0;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_U));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_U");
+		button = createToggleButton(Images.ICON_ARROW_U, "ARROW_U");
 		c.gridx = 1;
-		c.gridy = 0;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_UR));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_UR");
+		button = createToggleButton(Images.ICON_ARROW_UR, "ARROW_UR");
 		c.gridx = 2;
-		c.gridy = 0;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_L));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_L");
+		button = createToggleButton(Images.ICON_ARROW_L, "ARROW_L");
 		c.gridx = 0;
 		c.gridy = 1;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_R));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_R");
+		button = createToggleButton(Images.ICON_ARROW_R, "ARROW_R");
 		button.setSelected(true); // Standardmäßige Selektion
 		setSelectedArrow(AllowedContent.CONTENT_ARROW_R);
 		c.gridx = 2;
-		c.gridy = 1;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_DL));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_DL");
+		button = createToggleButton(Images.ICON_ARROW_DL, "ARROW_DL");
 		c.gridx = 0;
 		c.gridy = 2;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_D));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_D");
+		button = createToggleButton(Images.ICON_ARROW_D, "ARROW_D");
 		c.gridx = 1;
-		c.gridy = 2;
 		panel.add(button, c);
 		arrowBG.add(button);
 
-		button = new JToggleButton(ImageResources.getIcon(Images.ICON_ARROW_DR));
-		button.addActionListener(_editHandler);
-		button.setName("ARROW_DR");
+		button = createToggleButton(Images.ICON_ARROW_DR, "ARROW_DR");
 		c.gridx = 2;
-		c.gridy = 2;
 		panel.add(button, c);
 		arrowBG.add(button);
 
+		// Button zum Löschen anbieten
+		JToggleButton button2 = createToggleButton(null, "EMPTY");
+		c.gridx = 1;
+		c.gridy = 1;
+		panel.add(button2, c);
+		arrowBG.add(button2);
+		
 		return panel;
+	}
+
+	/**
+	 * @return
+	 */
+	private JToggleButton createToggleButton( Images icon, String name) {
+		JToggleButton button = new JToggleButton(
+				ImageResources.getIcon(icon));
+		button.addActionListener(_editHandler);
+		button.setActionCommand(name);
+		return button;
 	}
 
 	private Component initGlobal() {

@@ -3,6 +3,8 @@
  */
 package game.core;
 
+import java.io.File;
+
 import game.commands.CommandStack;
 import game.model.Starfield;
 import game.ui.MainWindow;
@@ -49,6 +51,8 @@ public class GamePreferences {
 	private CommandStack _loadedCommandStack;
 	/** Geladenes Starfield */
 	private Starfield _loadedStarfield;
+	/** Datei auf dem Filesystem */
+	private File _starfieldFile;
 
 	public int getImageSize() {
 		return _imageSize;
@@ -80,10 +84,6 @@ public class GamePreferences {
 	 * @return the loadedCommandStack
 	 */
 	public CommandStack getLoadedCommandStack() {
-		// Wurde noch kein CommandStack gesetzt wird ein neuer "leerer"
-		// Commandstack zurückgegeben
-		if (_loadedCommandStack == null)
-			return new CommandStack();
 		return _loadedCommandStack;
 	}
 
@@ -137,7 +137,6 @@ public class GamePreferences {
 	 */
 	public void setLoadedStarfield(Starfield loadedStarfield) {
 		_loadedStarfield = loadedStarfield;
-		setAppMode(AppMode.LOAD_EDIT_MODE);
 	}
 
 	/**
@@ -146,6 +145,22 @@ public class GamePreferences {
 	 */
 	public void removeLoadedStarfield() {
 		_loadedStarfield = null;
+	}
+	
+	/**
+	 * Setzt die Datei auf der das Starfield auf dem PC gespeichert ist.
+	 * @param pFile
+	 */
+	public void setStarfieldFile(File pFile){
+		_starfieldFile = pFile;
+	}
+	
+	public File getStarfieldFile(){
+		return _starfieldFile;
+	}
+	
+	public void removeStarfieldFile(){
+		_starfieldFile = null;
 	}
 
 }

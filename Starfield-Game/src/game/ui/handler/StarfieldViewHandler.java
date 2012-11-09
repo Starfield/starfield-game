@@ -37,6 +37,24 @@ public class StarfieldViewHandler implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent pE) {
+		
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent pE) {
+		
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent pE) {
+		
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent pE) {
 		Object o = pE.getSource();
 		// Zur Sicherheit wird überprüft ob das aufrufende Element ein Field von
 		// unserem Modell ist
@@ -62,7 +80,6 @@ public class StarfieldViewHandler implements MouseListener {
 			if (command != null)
 				command.execute();
 		}
-
 	}
 
 	/**
@@ -71,7 +88,7 @@ public class StarfieldViewHandler implements MouseListener {
 	 * @return
 	 */
 	private AbstractCommand handlePlayEvent(Field field, MouseEvent pE) {
-
+	
 		if (pE.getButton() == MouseEvent.BUTTON1) {
 			if (field.getUserContent() == AllowedContent.CONTENT_EMPTY)
 				return new SetStarCommand(MainWindow.getCommandStack(), pE);
@@ -138,32 +155,14 @@ public class StarfieldViewHandler implements MouseListener {
 					}
 				}
 			}
-
+	
 		}
 		return null;
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent pE) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent pE) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent pE) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void mouseReleased(MouseEvent pE) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

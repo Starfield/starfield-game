@@ -69,11 +69,11 @@ public class MainMenuBar extends JMenuBar {
 				ImageResources.getScaledIcon(24, 24, Images.ICON_NEW_GAME,
 						Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Laden
-		_spiel.add(new JMenuItem(new LoadGameAction("Spiel Laden ...",
+		_spiel.add(new JMenuItem(new LoadGameAction("Spiel laden ...",
 				ImageResources.getScaledIcon(24, 24, Images.ICON_LOAD_GAME,
 						Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Speichern
-		_spiel.add(new JMenuItem(new SaveGameAction("Spiel Speichern ...",
+		_spiel.add(new JMenuItem(new SaveGameAction("Spiel speichern ...",
 				ImageResources.getScaledIcon(24, 24, Images.ICON_SAVE_GAME,
 						Image.SCALE_SMOOTH))));
 		// Menüpunkt Beenden
@@ -91,11 +91,11 @@ public class MainMenuBar extends JMenuBar {
 				"Neues Puzzle erstellen ...", ImageResources.getScaledIcon(24,
 						24, Images.ICON_NEW_GAME, Image.SCALE_SMOOTH))));
 		// Menüpunkt Spiel Laden
-		_editor.add(new JMenuItem(new LoadPuzzleAction("Puzzle Bearbeiten ...",
+		_editor.add(new JMenuItem(new LoadPuzzleAction("Puzzle bearbeiten ...",
 				ImageResources.getScaledIcon(24, 24, Images.ICON_LOAD_GAME,
 						Image.SCALE_SMOOTH))));
 		// Menüpunkt Puzzle Speichern
-		_editor.add(new JMenuItem(new SavePuzzleAction("Puzzle Speichern ...",
+		_editor.add(new JMenuItem(new SavePuzzleAction("Puzzle speichern ...",
 				ImageResources.getScaledIcon(24, 24, Images.ICON_SAVE_GAME,
 						Image.SCALE_SMOOTH))));
 		return _editor;

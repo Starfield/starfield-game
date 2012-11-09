@@ -71,9 +71,7 @@ public class MainWindow extends JFrame {
 	public void initGame() {
 		// Toolbar anzeigen
 		initToolbar();
-		// CommandStack erzeugen
-		initCommandStack();
-		// Starfield erzeugen
+		// Starfield und CommandStack erzeugen
 		initStarfieldView();
 		// Optionen für die Platzierung auf dem Bildschirm
 		pack();
@@ -151,17 +149,6 @@ public class MainWindow extends JFrame {
 	}
 
 	/**
-	 * Lädt aus den {@link GamePreferences} den CommandStack. Wurde kein
-	 * CommandStack geladen wird ein neuer erstellt.
-	 */
-	private void initCommandStack() {
-		setCommandStack(getGamePrefs().getLoadedCommandStack());
-		// Wenn der CommandStack aus einer gespeicherten Datei wiederhergestellt
-		// wurde, muss im Anschluss das richtige Starfield passend zum
-		// CommandStack geladen werden.
-	}
-
-	/**
 	 * Initialisiert die Anzeige des Starfield. Wurde in den GamePreferences ein
 	 * CommandStack geladen, so wird das zugehörige Starfield geladen und der
 	 * alte Spielstand wiederhergestellt.
@@ -177,15 +164,27 @@ public class MainWindow extends JFrame {
 		Starfield starfield = null;
 		switch (getGamePrefs().getAppMode()) {
 		case GAME_MODE:
-			starfield = null;
+			// Im GameMode wird nur der Startbildschirm angezeigt, darum
+			// brauchen wir kein Starfield und können einen neuen leeren
+			// Commandstack setzen
+			starfield = getGamePrefs().getLoadedStarfield();
+			getGamePrefs().removeLoadedStarfield();
+			setCommandStack(new CommandStack(MainWindow.getGamePrefs().getStarfieldFile()));
+			MainWindow.getGamePrefs().removeStarfieldFile();
 			break;
 		case LOAD_GAME_MODE:
+			// Im LoadGameMode sind durch die Actions im Vorhinein die
+			// anzuzeigenden Elemente gesetzt worden
+			starfield = getGamePrefs().getLoadedStarfield();
+			setCommandStack(getGamePrefs().getLoadedCommandStack());
 		case LOAD_EDIT_MODE:
 			starfield = getGamePrefs().getLoadedStarfield();
 			getGamePrefs().removeLoadedStarfield();
+			setCommandStack(new CommandStack());
 			break;
 		case EDIT_MODE:
 			starfield = new Starfield(5, 5);
+			setCommandStack(new CommandStack());
 			break;
 		}
 		_starfieldView = new StarfieldView(starfield);
