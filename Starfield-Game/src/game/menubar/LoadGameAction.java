@@ -77,6 +77,7 @@ public class LoadGameAction extends AbstractAction {
 									ois.close();
 									if (o instanceof Starfield){
 										MainWindow.getGamePrefs().setLoadedStarfield((Starfield) o);
+										MainWindow.getGamePrefs().getMainWindow().initGame();
 									}
 									else {
 										JOptionPane.showMessageDialog(null,
