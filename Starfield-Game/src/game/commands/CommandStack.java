@@ -1,5 +1,6 @@
 package game.commands;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -24,6 +25,19 @@ public class CommandStack implements Serializable {
 	
 	/** Position des ersten Fehlers im Play Stack. */
 	private int mistake = 0;
+	
+	/** Korrespondierendes Starfield */
+	private File starfield = null;
+	
+	/**
+	 * Konstruktor
+	 * 
+	 * @param starfield
+	 * - Geladenes Starfield
+	 */
+	public CommandStack(File starfield) {
+		this.starfield = starfield;
+	}
 	
 	/**
 	 * Fügt einen Command zum Time Lapse Stack hinzu.
@@ -72,7 +86,10 @@ public class CommandStack implements Serializable {
 	 * Löscht alle gesetzten Marker.
 	 */
 	public void deleteMarkers() {
-		marker.clear();
+		// TODO: Marker aus den Playstack entfernen, Time Lapse nicht
+		for (int i : marker) {
+			marker.set(i, 0);
+		}
 	}
 	
 	/**
@@ -135,6 +152,16 @@ public class CommandStack implements Serializable {
 		for (AbstractCommand c : playStack) {
 			c.execute();
 		}
+	}
+
+	/**
+	 * Gibt das korrespondierende Starfield zurück.
+	 * 
+	 * @return starfield
+	 * - Korrespondierendes Starfield
+	 */
+	public File getStarfield() {
+		return starfield;
 	}
 	
 }
