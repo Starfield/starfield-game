@@ -1,5 +1,7 @@
 package game.commands;
 
+import game.ui.MainWindow;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -136,9 +138,8 @@ public class CommandStack implements Serializable {
 	 * Sorgt dafür, dass der Spielstand des zuletzt gesetzten Markers wiederhergestellt wird.
 	 */
 	public void undoMarker() {
-		int j = playStack.size();
-		
-		for (int i = j - 1; i > (j - 1 - getCurrentMarker()); i--) {
+		int current = getCurrentMarker();
+		for (int i = playStack.size() - 1; i >= (current - 1); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}

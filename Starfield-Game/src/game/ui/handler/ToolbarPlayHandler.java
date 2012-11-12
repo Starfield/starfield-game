@@ -1,6 +1,3 @@
-/**
- * 
- */
 package game.ui.handler;
 
 import game.commands.RemoveMarkerCommand;
@@ -15,12 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
-import javax.swing.JToolBar;
 
-/**
- * @author Jan
- * 
- */
 public class ToolbarPlayHandler implements ActionListener {
 
 	private PlayToolbar _toolbar;
@@ -39,14 +31,11 @@ public class ToolbarPlayHandler implements ActionListener {
 			setMarker(pE);
 		}
 		if (cmd == "rücksprungMarker"){
-			RemoveMarkerCommand c = new RemoveMarkerCommand(MainWindow.getCommandStack(), pE); 
-			c.execute();
+			removeSingleMarker(pE);
 		}
 		if (cmd == "removeMarker"){
 			removeMarkers();
 		}
-		
-		MainWindow.getActiveToolBar();
 	}		
 
 	public void setMarker(ActionEvent pE){
@@ -63,6 +52,21 @@ public class ToolbarPlayHandler implements ActionListener {
 		}	
 	}
 	
+	public void removeSingleMarker(ActionEvent pE){
+		ArrayList<JLabel> _markerList = _toolbar.getMarkerList();
+		JLabel l = null;
+		for (int i = _markerList.size() - 1; i >= 0; i--){
+			l = _markerList.get(i);
+			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON)))
+			{
+				_markerList.get(i).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+				RemoveMarkerCommand command = new RemoveMarkerCommand(MainWindow.getCommandStack(), pE); 
+				command.execute();
+				return;
+			}
+		}
+	}
+	
 	public void removeMarkers(){
 		ArrayList<JLabel> _markerList = _toolbar.getMarkerList();
 		JLabel l = null; 
@@ -71,25 +75,7 @@ public class ToolbarPlayHandler implements ActionListener {
 			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON)) )
 				_markerList.get(i).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));	
 		}
-		
 		MainWindow.getCommandStack().deleteMarkers();
-	}
-	
-	public void removeSingleMarker(){
-		ArrayList<JLabel> _markerList = _toolbar.getMarkerList();
-		JLabel l = null;
-		int j = 0;
-		boolean gefunden = false;
-		for (int i = 0; i < _markerList.size(); i++){
-			l = _markerList.get(i);
-			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON))  | (gefunden))
-			{
-				_markerList.get(i).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
-				gefunden = true;
-				j = i;
-			}
-		}				
-		MainWindow.getCommandStack().deleteMarker(j);
 	}
 	
 }
