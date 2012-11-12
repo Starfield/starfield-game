@@ -75,5 +75,21 @@ public class ToolbarPlayHandler implements ActionListener {
 		MainWindow.getCommandStack().deleteMarkers();
 	}
 	
+	public void removeSingleMarker(){
+		ArrayList<JLabel> _markerList = _toolbar.getMarkerList();
+		JLabel l = null;
+		int j = 0;
+		boolean gefunden = false;
+		for (int i = 0; i < _markerList.size(); i++){
+			l = _markerList.get(i);
+			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON))  | (gefunden))
+			{
+				_markerList.get(i).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+				gefunden = true;
+				j = i;
+			}
+		}				
+		MainWindow.getCommandStack().deleteMarker(j);
+	}
 	
 }
