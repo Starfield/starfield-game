@@ -37,19 +37,16 @@ public class StarfieldViewHandler implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent pE) {
-		
 
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent pE) {
-		
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent pE) {
-		
 
 	}
 
@@ -88,7 +85,7 @@ public class StarfieldViewHandler implements MouseListener {
 	 * @return
 	 */
 	private AbstractCommand handlePlayEvent(Field field, MouseEvent pE) {
-	
+
 		if (pE.getButton() == MouseEvent.BUTTON1) {
 			if (field.getUserContent() == AllowedContent.CONTENT_EMPTY)
 				return new SetStarCommand(MainWindow.getCommandStack(), pE);
@@ -122,11 +119,21 @@ public class StarfieldViewHandler implements MouseListener {
 			Object o = MainWindow.getActiveToolBar();
 			if (o instanceof EditToolbar) {
 				EditToolbar toolbar = (EditToolbar) o;
-				if (field.getUserContent().toString()
-						.startsWith("CONTENT_ARROW")) {
-					return new RemoveArrowCommand(MainWindow.getCommandStack(),
-							pE);
-				} else if (field.getUserContent() == AllowedContent.CONTENT_EMPTY) {
+
+				// Überprüfen ob das Leerfeld ausgewählt ist
+				if (toolbar.getSelectedArrow() == AllowedContent.CONTENT_EMPTY) {
+
+					if (field.getUserContent().toString()
+							.startsWith("CONTENT_ARROW"))
+						return new RemoveArrowCommand(
+								MainWindow.getCommandStack(), pE);
+
+				}
+
+				// Überprüfen ob im field ein anderer Pfeil ist, als ausgewählt
+				// wurde
+				if (field.getUserContent() != toolbar.getSelectedArrow()
+						&& field.getUserContent() != AllowedContent.CONTENT_STAR) {
 					switch (toolbar.getSelectedArrow()) {
 					case CONTENT_ARROW_UL:
 						return new SetArrowUpLeftCommand(
@@ -153,16 +160,17 @@ public class StarfieldViewHandler implements MouseListener {
 						return new SetArrowDownRightCommand(
 								MainWindow.getCommandStack(), pE);
 					}
-				}
+				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR)
+					return new RemoveArrowCommand(MainWindow.getCommandStack(),
+							pE);
 			}
-	
+
 		}
 		return null;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent pE) {
-		
 
 	}
 

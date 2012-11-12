@@ -66,6 +66,7 @@ public class EditToolbar extends JToolBar {
 		button.addActionListener(_editHandler);
 		// Da der Stern der einzige Button hier ist, muss er selektiert werden.
 		button.setSelected(true);
+		button.setFocusable(false);
 		bg.add(button);
 		panel.add(button);
 		return panel;
@@ -81,7 +82,8 @@ public class EditToolbar extends JToolBar {
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(2, 2, 2, 2);
 
-		JToggleButton button = createToggleButton(Images.ICON_ARROW_UL, "ARROW_UL");
+		JToggleButton button = createToggleButton(Images.ICON_ARROW_UL,
+				"ARROW_UL");
 		c.gridx = 0;
 		c.gridy = 0;
 		panel.add(button, c);
@@ -127,23 +129,23 @@ public class EditToolbar extends JToolBar {
 		arrowBG.add(button);
 
 		// Button zum Löschen anbieten
-		JToggleButton button2 = createToggleButton(null, "EMPTY");
+		JToggleButton button2 = createToggleButton(Images.ICON_EMPTY, "EMPTY");
 		c.gridx = 1;
 		c.gridy = 1;
 		panel.add(button2, c);
 		arrowBG.add(button2);
-		
+
 		return panel;
 	}
 
 	/**
 	 * @return
 	 */
-	private JToggleButton createToggleButton( Images icon, String name) {
-		JToggleButton button = new JToggleButton(
-				ImageResources.getIcon(icon));
+	private JToggleButton createToggleButton(Images icon, String name) {
+		JToggleButton button = new JToggleButton(ImageResources.getIcon(icon));
 		button.addActionListener(_editHandler);
 		button.setActionCommand(name);
+		button.setFocusable(false);
 		return button;
 	}
 
@@ -193,8 +195,9 @@ public class EditToolbar extends JToolBar {
 		panel.add(_ySizeInput, c);
 		// Anwenden Button
 		JButton button = new JButton("Anwenden");
-		button.setName("APPLY");
+		button.setActionCommand("APPLY");
 		button.addActionListener(_editHandler);
+		button.setFocusable(false);
 		c.gridx = 4;
 		panel.add(button, c);
 	}
@@ -213,8 +216,9 @@ public class EditToolbar extends JToolBar {
 		// Button zum Check einfügen
 		JButton button = new JButton("Prüfen");
 		button.addActionListener(_editHandler);
+		button.setFocusable(false);
 		c.gridx = 4;
-		button.setName("CHECK");
+		button.setActionCommand("CHECK");
 		panel.add(button, c);
 
 	}

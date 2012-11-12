@@ -47,6 +47,7 @@ public class ImageResources {
 		ICON_SAVE_GAME("icons/icon_save_game"),
 		ICON_LOAD_GAME("icons/icon_load_game"),
 		ICON_CLOSE_GAME("icons/icon_close_game"),
+		ICON_EMPTY("icons/icon_empty"),
 		ICON_ABOUT("icons/icon_about"),
 		ICON_HELP("icons/icon_help"),
 		ICON_MARKER_ON("icons/icon_marker_on"),
