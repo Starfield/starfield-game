@@ -139,7 +139,7 @@ public class Starfield implements Serializable {
 			for (int y = 0; y < size.getHeight(); y++) {
 
 				if (!listcontainer.get(x).get(y).getUserContent()
-						.equals(listcontainer.get(x).get(y).getUserContent())) {
+						.equals(listcontainer.get(x).get(y).getSolutionContent())) {
 					rightorwrong = false;
 				}
 
