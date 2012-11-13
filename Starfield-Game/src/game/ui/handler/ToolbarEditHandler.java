@@ -25,45 +25,45 @@ public class ToolbarEditHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent pEvent) {
 
-			Object o = MainWindow.getActiveToolBar();
-			if (!(o instanceof EditToolbar))
-				return;
-			EditToolbar toolbar = (EditToolbar) o;
+		Object o = MainWindow.getActiveToolBar();
+		if (!(o instanceof EditToolbar))
+			return;
+		EditToolbar toolbar = (EditToolbar) o;
 
-			/*
-			 * Behandlung der Buttons aus der Gruppe "rechte Maustaste"
-			 */
-			if (pEvent.getActionCommand() == "ARROW_U")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_U);
-			if (pEvent.getActionCommand() == "ARROW_UR")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_UR);
-			if (pEvent.getActionCommand() == "ARROW_UL")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_UL);
-			if (pEvent.getActionCommand() == "ARROW_L")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_L);
-			if (pEvent.getActionCommand() == "ARROW_R")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_R);
-			if (pEvent.getActionCommand() == "ARROW_D")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_D);
-			if (pEvent.getActionCommand() == "ARROW_DR")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DR);
-			if (pEvent.getActionCommand() == "ARROW_DL")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DL);
-			if (pEvent.getActionCommand() == "EMPTY")
-				toolbar.setSelectedArrow(AllowedContent.CONTENT_EMPTY);
+		/*
+		 * Behandlung der Buttons aus der Gruppe "rechte Maustaste"
+		 */
+		if (pEvent.getActionCommand() == "ARROW_U")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_U);
+		if (pEvent.getActionCommand() == "ARROW_UR")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_UR);
+		if (pEvent.getActionCommand() == "ARROW_UL")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_UL);
+		if (pEvent.getActionCommand() == "ARROW_L")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_L);
+		if (pEvent.getActionCommand() == "ARROW_R")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_R);
+		if (pEvent.getActionCommand() == "ARROW_D")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_D);
+		if (pEvent.getActionCommand() == "ARROW_DR")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DR);
+		if (pEvent.getActionCommand() == "ARROW_DL")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_ARROW_DL);
+		if (pEvent.getActionCommand() == "EMPTY")
+			toolbar.setSelectedArrow(AllowedContent.CONTENT_EMPTY);
 
-			/*
-			 * Behandlung der Buttons aus der Gruppe "Einstellungen"
-			 */
+		/*
+		 * Behandlung der Buttons aus der Gruppe "Einstellungen"
+		 */
 
-			if (pEvent.getActionCommand() == "APPLY")
-				handleApply(pEvent);
-			if (pEvent.getActionCommand() == "CHECK")
-				handleCheck(pEvent);
-		
+		if (pEvent.getActionCommand() == "APPLY")
+			handleApply(toolbar);
+		if (pEvent.getActionCommand() == "CHECK")
+			handleCheck(toolbar);
+
 	}
 
-	private void handleApply(ActionEvent pEvent) {
+	private void handleApply(EditToolbar pToolbar) {
 		/*
 		 * TODO Ändern der Größe des Starfields. Die Usereingaben können über
 		 * MainWindow.getActiveToolbar().getInputSizeX() und
@@ -81,15 +81,8 @@ public class ToolbarEditHandler implements ActionListener {
 
 	}
 
-	private void handleCheck(ActionEvent pEvent) {
-		/*
-		 * TODO Check anstoßen ob das Starfield als spielbar gilt. Das Starfield
-		 * kann über MainWindow.getStarfieldView().getCurrentStarfield()
-		 * bekommen werden. Hier muss eine Methode erstellt werden, die
-		 * überprüft ob das Modell so korrekt ist. Das Ergebnis der Überprüfung
-		 * muss über MainWindow.getActiveToolbar().setPlayable(boolean) wieder
-		 * zurück an die Toolbar geschickt werden.
-		 */
-
+	private void handleCheck(EditToolbar pToolbar) {
+		pToolbar.setPlayable(MainWindow.getStarfieldView()
+				.getCurrentStarfield().checkPlayable());
 	}
 }

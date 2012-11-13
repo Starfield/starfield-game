@@ -74,8 +74,10 @@ public class StarfieldViewHandler implements MouseListener {
 
 			// Ist das passende Command zur gewünschten Aktion ermittelt worden,
 			// kann es ausgeführt werden.
-			if (command != null)
+			if (command != null) {
 				command.execute();
+			}
+
 		}
 	}
 
@@ -109,24 +111,33 @@ public class StarfieldViewHandler implements MouseListener {
 	 * @return
 	 */
 	private AbstractCommand handleEditEvent(Field field, MouseEvent pE) {
-		if (pE.getButton() == MouseEvent.BUTTON1) {
-			if (field.getUserContent() == AllowedContent.CONTENT_EMPTY)
-				return new SetStarCommand(MainWindow.getCommandStack(), pE);
-			else if (field.getUserContent() == AllowedContent.CONTENT_STAR)
-				return new RemoveStarCommand(MainWindow.getCommandStack(), pE);
-		}
-		if (pE.getButton() == MouseEvent.BUTTON3) {
-			Object o = MainWindow.getActiveToolBar();
-			if (o instanceof EditToolbar) {
-				EditToolbar toolbar = (EditToolbar) o;
+		Object o = MainWindow.getActiveToolBar();
+		if (o instanceof EditToolbar) {
+			EditToolbar toolbar = (EditToolbar) o;
+
+			// Linke Maustaste
+			if (pE.getButton() == MouseEvent.BUTTON1) {
+				if (field.getUserContent() == AllowedContent.CONTENT_EMPTY) {
+					toolbar.setPlayable(false);
+					return new SetStarCommand(MainWindow.getCommandStack(), pE);
+				} else if (field.getUserContent() == AllowedContent.CONTENT_STAR) {
+					toolbar.setPlayable(false);
+					return new RemoveStarCommand(MainWindow.getCommandStack(),
+							pE);
+				}
+			}
+			// Rechte Maustaste
+			if (pE.getButton() == MouseEvent.BUTTON3) {
 
 				// Überprüfen ob das Leerfeld ausgewählt ist
 				if (toolbar.getSelectedArrow() == AllowedContent.CONTENT_EMPTY) {
 
 					if (field.getUserContent().toString()
-							.startsWith("CONTENT_ARROW"))
+							.startsWith("CONTENT_ARROW")) {
+						toolbar.setPlayable(false);
 						return new RemoveArrowCommand(
 								MainWindow.getCommandStack(), pE);
+					}
 
 				}
 
@@ -136,35 +147,45 @@ public class StarfieldViewHandler implements MouseListener {
 						&& field.getUserContent() != AllowedContent.CONTENT_STAR) {
 					switch (toolbar.getSelectedArrow()) {
 					case CONTENT_ARROW_UL:
+						toolbar.setPlayable(false);
 						return new SetArrowUpLeftCommand(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_U:
+						toolbar.setPlayable(false);
 						return new SetArrowUpCommand(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_UR:
+						toolbar.setPlayable(false);
 						return new SetArrowUpRightCommand(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_L:
+						toolbar.setPlayable(false);
 						return new SetArrowLeftCommand(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_R:
+						toolbar.setPlayable(false);
 						return new SetArrowRightCommand(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_DL:
+						toolbar.setPlayable(false);
 						return new SetArrowDownLeft(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_D:
+						toolbar.setPlayable(false);
 						return new SetArrowDownCommand(
 								MainWindow.getCommandStack(), pE);
 					case CONTENT_ARROW_DR:
+						toolbar.setPlayable(false);
 						return new SetArrowDownRightCommand(
 								MainWindow.getCommandStack(), pE);
 					}
-				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR)
+				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR) {
+					toolbar.setPlayable(false);
 					return new RemoveArrowCommand(MainWindow.getCommandStack(),
 							pE);
-			}
+				}
 
+			}
 		}
 		return null;
 	}
