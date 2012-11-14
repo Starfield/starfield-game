@@ -77,13 +77,25 @@ public class CommandStack implements Serializable {
 	}
 	
 	/**
+	 * Gibt die ArrayList der Marker zurück.
+	 * 
+	 * @return marker
+	 * - Marker ArrayList
+	 */
+	public ArrayList<Integer> getMarker() {
+		return marker;
+	}
+
+	/**
 	 * Setzt einen neuen Marker an der angegebenen Position in die Liste.
 	 * 
 	 * @param number
 	 *  - Übergebener Marker (1-5)
 	 */
 	public void addMarker(int number) {
-		marker.set(number, playStack.size());
+		if (0 <= number && number <= 4) {
+			marker.set(number, playStack.size());
+		}
 	}
 	
 	/**
@@ -93,28 +105,18 @@ public class CommandStack implements Serializable {
 	 *  - Übergebener Marker (1-5)
 	 */
 	public void deleteMarker(int number) {
-		marker.set(number, 0);
+		if (0 <= number && number <= 4) {
+			marker.set(number, 0);
+		}
 	}
 	
 	/**
 	 * Löscht alle gesetzten Marker.
 	 */
 	public void deleteMarkers() {
-		for (int i : marker) {
+		for (int i = 0; i < marker.size(); i++) {
 			marker.set(i, 0);
 		}
-	}
-	
-	/**
-	 * Gibt den Wert des gewünschten Markers (bzw. die Position im Play Stack) zurück.
-	 * 
-	 * @param nr
-	 *  - Übergebener Marker (1-5)
-	 *  
-	 * @return Position im Play Stack
-	 */
-	public int getMarker(int nr) {
-		return marker.get(nr);
 	}
 	
 	/**
@@ -123,7 +125,7 @@ public class CommandStack implements Serializable {
 	 * @return marker
 	 * - Letzter gesetzter Marker
 	 */
-	public int getCurrentMarker() {
+	public int locateCurrentMarker() {
 		for (int i = 4; i >= 0; i--) {
 			if (marker.get(i) != 0) {
 				return marker.get(i);
@@ -133,23 +135,35 @@ public class CommandStack implements Serializable {
 	}
 	
 	/**
-	 * Sorgt dafür, dass der Spielstand des zuletzt gesetzten Markers wiederhergestellt wird.
+	 * Sorgt dafür, dass auf einen vom Parameter <b>marker</b> abhängigen Spielstand zurückgesetzt wird.<br>
+	 * <b>true</b> bedeutet, dass auf einen markierten, <b>false</b> auf einen fehlerfreien Spielstand zurückgesetzt werden soll.
+	 *  
+	 * @param marker
+	 *  - true für Marker, false für Fehler
 	 */
-	public void undoMarker() {
-		int current = getCurrentMarker();
-		for (int i = playStack.size() - 1; i >= (current - 1); i--) {
+	public void goBack(boolean marker) {
+		int stackSize = playStack.size();
+		int type = 0;
+		
+		if (marker) {
+			type = locateCurrentMarker();
+		}
+		else {
+			type = getMistake();
+		}
+		
+		for (int i = stackSize - 1; i >= stackSize - (stackSize - type + 1); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
 		}
 	}
 	
 	/**
-	 * Sorgt dafür, dass der fehlerfreie Spielstand wiederhergestellt wird.
+	 * Führt das Laden eines Spielstands durch.
 	 */
-	public void undoMistake() {
-		for (int i = playStack.size() - 1; i > (getMistake() - 2); i--) {
-			playStack.get(i).undo();
-			playStack.remove(i);
+	public void loadSavegame() {
+		for (AbstractCommand command : playStack) {
+			command.execute();
 		}
 	}
 
@@ -168,15 +182,6 @@ public class CommandStack implements Serializable {
 	public void setMistake() {
 		this.mistake = playStack.size();
 	}
-	
-	/**
-	 * Führt das Laden eines Spielstands durch.
-	 */
-	public void loadSavegame() {
-		for (AbstractCommand command : playStack) {
-			command.execute();
-		}
-	}
 
 	/**
 	 * Gibt das korrespondierende Starfield als File zurück.
@@ -186,6 +191,16 @@ public class CommandStack implements Serializable {
 	 */
 	public File getStarfieldFile() {
 		return starfieldFile;
+	}
+
+	/**
+	 * Gibt den Time Lapse Stack zurück.
+	 * 
+	 * @return timeLapseStack
+	 * - Time Lapse Stack
+	 */
+	public ArrayList<TimeLapseItem> getTimeLapseStack() {
+		return timeLapseStack;
 	}
 	
 }

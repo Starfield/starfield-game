@@ -102,7 +102,7 @@ public class PlayToolbar extends JToolBar {
 		// Marker rücksprung Button hinzufügen
 		button = new JButton("zum letzten Marker zurück");
 		button.addActionListener(_playHandler);
-		button.setActionCommand("rücksprungMarker");
+		button.setActionCommand("undoMarker");
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 5;
@@ -129,6 +129,7 @@ public class PlayToolbar extends JToolBar {
 		// Check Button hinzufügen
 		JButton button = new JButton("Eingaben überprüfen");
 		button.addActionListener(_playHandler);
+		button.setActionCommand("checkSolution");
 		panel.add(button);
 		return panel;
 	}
@@ -147,5 +148,12 @@ public class PlayToolbar extends JToolBar {
 	public void removeLastMarker() {
 		// Logik einfügen, dass beim Aufruf aus dem MarkerHandler das letzte
 		// Icon auf der MarkerList auf "AUS" gesetzt wird
+	}
+
+	/**
+	 * @return the _playHandler
+	 */
+	public ToolbarPlayHandler get_playHandler() {
+		return _playHandler;
 	}
 }

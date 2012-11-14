@@ -1,5 +1,8 @@
 package game.commands;
 
+import game.ui.MainWindow;
+import game.ui.PlayToolbar;
+
 import java.awt.AWTEvent;
 
 /**
@@ -38,6 +41,7 @@ public class SetMarkerCommand extends AbstractCommand {
 	public void execute() {
 		super.execute();
 		getStacks().addMarker(number);
+		((PlayToolbar)MainWindow.getActiveToolBar()).get_playHandler().setMarker();
 	}
 	
 	/**

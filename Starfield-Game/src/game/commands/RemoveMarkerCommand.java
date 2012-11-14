@@ -1,5 +1,8 @@
 package game.commands;
 
+import game.ui.MainWindow;
+import game.ui.PlayToolbar;
+
 import java.awt.AWTEvent;
 
 /**
@@ -29,7 +32,9 @@ public class RemoveMarkerCommand extends AbstractCommand {
 	 */
 	@Override
 	public void execute() {
-		getStacks().undoMarker();
+		super.execute();
+		getStacks().goBack(true);
+		((PlayToolbar)MainWindow.getActiveToolBar()).get_playHandler().removeSingleMarker();
 	}
 
 }
