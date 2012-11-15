@@ -1,6 +1,5 @@
 package game.model;
 
-import game.core.ImageResources.Images;
 import game.model.Field.AllowedContent;
 
 import java.awt.Dimension;
@@ -110,12 +109,10 @@ public class Starfield implements Serializable {
 	 */
 	public int getStarCountX(int column) {
 		int starcounter = 0;
-		for (Field f : listcontainer.get(column)) {
-			if (f.getSolutionContent().equals(AllowedContent.CONTENT_STAR)) {
-				starcounter = starcounter++;
-			}
+		for (int y = 0; y < size.height; y++) {
+			if (getField(column, y).getSolutionContent() == AllowedContent.CONTENT_STAR)
+				starcounter++;
 		}
-
 		return starcounter;
 	}
 
@@ -124,11 +121,9 @@ public class Starfield implements Serializable {
 	 */
 	public int getStarCountY(int row) {
 		int starcounter = 0;
-		for (int i = 0; i < size.getWidth(); i++) {
-			if (listcontainer.get(i).get(row).getSolutionContent()
-					.equals(AllowedContent.CONTENT_STAR)) {
-				starcounter = starcounter++;
-			}
+		for (int x = 0; x < size.width; x++) {
+			if (getField(x, row).getSolutionContent() == AllowedContent.CONTENT_STAR)
+				starcounter++;
 		}
 		return starcounter;
 	}
@@ -163,6 +158,31 @@ public class Starfield implements Serializable {
 	}
 
 	/**
+	 * Diese Methode dient dazu, ein bereits gespeichertes Starfield erneut im
+	 * Editor zu bearbeiten. Damit der User die Lösung bearbeiten kann, werden
+	 * die Daten in den UserContent geladen. <br>
+	 * Diese Methode sollte nur direkt nach dem Laden eines Starfields aus einer
+	 * serialisierten Datei aufgerufen werden. Wenn das Starfield im Anschluss
+	 * im Editor bearbeitet werden soll.
+	 * 
+	 * @return - Das Starfield nach Bearbeitung
+	 */
+	public Starfield prepareUserContent(boolean forPlay) {
+		for (int y = 0; y < size.getHeight(); y++) {
+			for (int x = 0; x < size.getWidth(); x++) {
+				AllowedContent solutionContent = getField(x, y)
+						.getSolutionContent();
+				if (forPlay) {
+					if (solutionContent != AllowedContent.CONTENT_STAR)
+						getField(x, y).setUserContent(solutionContent);
+				} else
+					getField(x, y).setUserContent(solutionContent);
+			}
+		}
+		return this;
+	}
+
+	/**
 	 * Diese Methode dient dazu, vor der Speicherung eines neu Bearbeiteten
 	 * Puzzles den Inhalt, den der User eingegeben hat, als Lösung für
 	 * zukünftige Spielsessions vorzugeben. <br>
@@ -182,20 +202,16 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Diese Methode dient dazu, ein bereits gespeichertes Starfield erneut im
-	 * Editor zu bearbeiten. Damit der User die Lösung bearbeiten kann, werden
-	 * die Daten in den UserContent geladen. <br>
-	 * Diese Methode sollte nur direkt nach dem Laden eines Starfields aus einer
-	 * serialisierten Datei aufgerufen werden. Wenn das Starfield im Anschluss
-	 * im Editor bearbeitet werden soll.
-	 * 
-	 * @return - Das Starfield nach Bearbeitung
+	 * Diese Methode dient dazu, nach dem Laden eines Starfields den UserContent
+	 * zu leeren, damit ein neues Spiel begonnen werden kann. <br>
+	 * Die Methode sollte nur direkt nach dem Laden eines Starfield aus der
+	 * serialisierten Datei aufgerufen werden.
 	 */
-	public Starfield createSolutionfromUserContent() {
+	public Starfield clearUserContent() {
 		for (int y = 0; y < size.getHeight(); y++) {
 			for (int x = 0; x < size.getWidth(); x++) {
-				getField(x, y).setUserContent(
-						getField(x, y).getSolutionContent());
+				getField(x, y).setUserContent(AllowedContent.CONTENT_EMPTY);
+
 			}
 		}
 		return this;
@@ -520,11 +536,9 @@ public class Starfield implements Serializable {
 			for (int y = 0; y < size.getHeight(); y++) {
 				args = getFieldsInDirectionFromStarOrArrow(listcontainer.get(x)
 						.get(y)); // Rückgabe der Argument ArrayListen
-				if (!(args.get(0).isEmpty()
-						&& args.get(3).isEmpty() && args.get(6)
-								.isEmpty())) { // leeres Feld !!!
-					if (args.get(3).isEmpty() && args.get(6)
-							.isEmpty()) {// Pfeil
+				if (!(args.get(0).isEmpty() && args.get(3).isEmpty() && args
+						.get(6).isEmpty())) { // leeres Feld !!!
+					if (args.get(3).isEmpty() && args.get(6).isEmpty()) {// Pfeil
 						if (!ContainsStar(args.get(0))) { // Checkt ob der Pfeil
 															// auf einen Stern
 															// zeigt
@@ -544,8 +558,9 @@ public class Starfield implements Serializable {
 								&& !(IsHitByArrow(args.get(6),
 										AllowedContent.CONTENT_ARROW_U))
 								&& !(IsHitByArrow(args.get(7),
-										AllowedContent.CONTENT_ARROW_UR)) && !(IsHitByArrow(
-									args.get(8), AllowedContent.CONTENT_ARROW_R))) {
+										AllowedContent.CONTENT_ARROW_UR))
+								&& !(IsHitByArrow(args.get(8),
+										AllowedContent.CONTENT_ARROW_R))) {
 							return false;
 						}
 					}
