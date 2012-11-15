@@ -18,10 +18,10 @@ public class RemoveMarkersCommand extends AbstractCommand {
 	 * Konstruktor
 	 * 
 	 * @param stacks
-	 *  - CommandStack Referenz
+	 *            - CommandStack Referenz
 	 * 
 	 * @param e
-	 *  - Das den Command aufrufende Event
+	 *            - Das den Command aufrufende Event
 	 */
 	public RemoveMarkersCommand(CommandStack stacks, AWTEvent e) {
 		super(stacks, e);
@@ -34,7 +34,8 @@ public class RemoveMarkersCommand extends AbstractCommand {
 	public void execute() {
 		super.execute();
 		getStacks().deleteMarkers();
-		((PlayToolbar)MainWindow.getActiveToolBar()).get_playHandler().removeMarkers();
+		((PlayToolbar) MainWindow.getInstance().getActiveToolBar())
+				.get_playHandler().removeMarkers();
 	}
 
 }

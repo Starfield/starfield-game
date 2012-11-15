@@ -32,10 +32,10 @@ public class Starfield implements Serializable {
 	}
 
 	public void createStarfield(int xNumber, int yNumber) {
-		for (int i = 0; i < xNumber; i++) {
+		for (int x = 0; x < xNumber; x++) {
 			ArrayList<Field> yList = new ArrayList<Field>();
 			for (int y = 0; y < yNumber; y++) {
-				yList.add(new Field(i, y));
+				yList.add(new Field(x, y));
 			}
 			listcontainer.add(yList);
 		}
@@ -55,29 +55,64 @@ public class Starfield implements Serializable {
 		return listcontainer.get(xCoord).get(yCoord);
 	}
 
-	// zum Hinzuf√ºgen von Felder in der X-Dimension f√ºr den Editor
-	public void addXFields(int addXRows) {
-		size.setSize(size.getWidth() + addXRows, size.getHeight());
-		for (int i = 0; i < addXRows; i++) {
-			ArrayList<Field> yList = new ArrayList<Field>();
-			for (int y = 0; y < size.getHeight(); y++) {
-				yList.add(new Field(i, y));
+	/**
+	 * Diese Methode ‰ndert die Grˆﬂe des Starfields auf die ¸bergebenen
+	 * Paramatergrˆﬂen
+	 * 
+	 * @param newXSize
+	 *            neue Anzahl an Spalten
+	 * @param newYSize
+	 *            neue Anzahl an Zeilen
+	 */
+	public Starfield changeSize(int newXSize, int newYSize) {
+
+		// ‹berpr¸fen ob sich die Anzahl an Spalten ge‰ndert hat.
+		if (newXSize != size.width) {
+			// Hat sich die Anzahl ge‰ndert wird ¸berpr¸ft ob der Container
+			// breiter oder kleiner gemacht werden muss
+			if (newXSize > size.width) {
+				// Soll der Container breiter werden werden nun Spalten
+				// angeh‰ngt und mit leeren Feldern gef¸llt.
+				for (int i = size.width; i < newXSize; i++) {
+					ArrayList<Field> spalte = new ArrayList<Field>();
+					for (int row = 0; row < size.height; row++)
+						spalte.add(new Field(i, row));
+					listcontainer.add(spalte);
+				}
+			} else {
+				// Soll der Container schmaler werden, werden nun ¸bersch¸ssige
+				// Spalten gelˆscht
+				for (int i = size.width; i > newXSize; i--) {
+					listcontainer.remove(i - 1);
+				}
+
 			}
-			listcontainer.add(yList);
+			// Nachdem der Container angepasst wurde, wird die neue size gesetzt
+			size.width = newXSize;
 		}
-	}
-
-	// zum Hinzuf√ºgen von Felder in der Y-Dimension f√ºr den Editor
-	public void addYFields(int addYRows) {
-
-		for (int i = 0; i < size.getWidth(); i++) {
-			for (int y = 0; y < addYRows; y++) {
-
-				listcontainer.get(i).add(
-						new Field(i, (int) (size.getHeight() + y + 1)));
+		// ‹berpr¸fen ob sich die Anzahl an Zeilen ge‰ndert hat
+		if (newYSize != size.height) {
+			// Hat sich die Anzahl ge‰ndert wird ¸berpr¸ft ob der Container
+			// l‰nger oder k¸rzer gemacht werden soll
+			if (newYSize > size.height) {
+				// Soll der Container l‰nger werden, werden nun an jeden
+				// Spaltenvektor neue leere Field gehangen
+				for (int i = 0; i < size.width; i++) {
+					for (int column = size.height; column < newYSize; column++)
+						listcontainer.get(i).add(new Field(i, column));
+				}
+			} else {
+				// Soll der Container k¸rzer werden, wird von jeder Spalte die
+				// Differenz an Zeilen gelˆscht
+				for (int i = 0; i < size.width; i++) {
+					for (int column = size.height; column > newYSize; column--)
+						listcontainer.get(i).remove(column - 1);
+				}
 			}
+			// Nachdem der Container angepasst wurde, wird die neue size gesetzt
+			size.height = newYSize;
 		}
-		size.setSize(size.getWidth(), size.getHeight() + addYRows);
+		return this;
 	}
 
 	// zum √Ñndern des Feldes f√ºr den Editor X-Dimension
@@ -133,8 +168,12 @@ public class Starfield implements Serializable {
 		for (int x = 0; x < size.getWidth(); x++) {
 			for (int y = 0; y < size.getHeight(); y++) {
 
-				if (!listcontainer.get(x).get(y).getUserContent()
-						.equals(listcontainer.get(x).get(y).getSolutionContent())) {
+				if (!listcontainer
+						.get(x)
+						.get(y)
+						.getUserContent()
+						.equals(listcontainer.get(x).get(y)
+								.getSolutionContent())) {
 					rightorwrong = false;
 				}
 

@@ -3,11 +3,11 @@
  */
 package game.core;
 
-import java.io.File;
-
 import game.commands.CommandStack;
 import game.model.Starfield;
 import game.ui.MainWindow;
+
+import java.io.File;
 
 /**
  * Preferences die für das gesamte Spiel gelten.
@@ -22,12 +22,10 @@ public class GamePreferences {
 	 * Belegt die Optionswerte mit ihren Defaults.
 	 * 
 	 */
-	public GamePreferences(MainWindow parentWindow) {
-		_mainWindow = parentWindow;
-		_imageSize = ImageResources.SIZE_64;
-		_appMode = AppMode.GAME_MODE;
+	public GamePreferences() {
+		_appMode = AppMode.FIRST_START;
 		_loadedCommandStack = null;
-
+		_resolution = initResolution();
 	}
 
 	/**
@@ -36,15 +34,36 @@ public class GamePreferences {
 	 * werden.
 	 */
 	public enum AppMode {
-		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE, LOAD_EDIT_MODE;
+		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE, LOAD_EDIT_MODE, FIRST_START;
 	}
 
-	/** Das MainWindow */
-	private final MainWindow _mainWindow;
+	public enum Resolution {
+		R800X600(800, 600),
+		R1024X768(1024, 768),
+		R1280X800(1280, 800),
+		R1366X768(1366, 768),
+		R1400X900(1400, 900),
+		R1680X1050(1680, 1050);
+
+		private final int width;
+		private final int height;
+
+		Resolution(int pWidth, int pHeight) {
+			width = pWidth;
+			height = pHeight;
+		}
+
+		public int getHeight() {
+			return height;
+		}
+
+		public int getWidth() {
+			return width;
+		}
+
+	}
 
 	// Optionsvariablen
-	/** ImageSize */
-	private int _imageSize;
 	/** AppModus */
 	private AppMode _appMode;
 	/** Geladener CommandStack */
@@ -53,13 +72,35 @@ public class GamePreferences {
 	private Starfield _loadedStarfield;
 	/** Datei auf dem Filesystem */
 	private File _starfieldFile;
+	/** aktuelle Auflösung */
+	private Resolution _resolution;
 
-	public int getImageSize() {
-		return _imageSize;
-	}
+	private Resolution initResolution() {
 
-	public void setImageSize(int pImageSize) {
-		_imageSize = pImageSize;
+		// Dimension currentScreenSize = Toolkit.getDefaultToolkit()
+		// .getScreenSize();
+		Resolution res = Resolution.R800X600;
+
+		// if (currentScreenSize.height >= Resolution.R800X600.height
+		// || currentScreenSize.width >= Resolution.R800X600.width)
+		// res = Resolution.R800X600;
+		// if (currentScreenSize.height >= Resolution.R1024X768.height
+		// || currentScreenSize.width >= Resolution.R1024X768.width)
+		// res = Resolution.R1024X768;
+		// if (currentScreenSize.height >= Resolution.R1280X800.height
+		// || currentScreenSize.width >= Resolution.R1280X800.width)
+		// res = Resolution.R1280X800;
+		// if (currentScreenSize.height >= Resolution.R1366X768.height
+		// || currentScreenSize.width >= Resolution.R1366X768.width)
+		// res = Resolution.R1366X768;
+		// if (currentScreenSize.height >= Resolution.R1400X900.height
+		// || currentScreenSize.width >= Resolution.R1400X900.width)
+		// res = Resolution.R1400X900;
+		// if (currentScreenSize.height >= Resolution.R1680X1050.height
+		// || currentScreenSize.width >= Resolution.R1680X1050.width)
+		// res = Resolution.R1680X1050;
+
+		return res;
 	}
 
 	/**
@@ -75,6 +116,29 @@ public class GamePreferences {
 	 */
 	public void setAppMode(AppMode pAppMode) {
 		_appMode = pAppMode;
+	}
+
+	/**
+	 * @return the resolution
+	 */
+	public Resolution getResolution() {
+		return _resolution;
+	}
+
+	/**
+	 * Setzt die neue Auflösung
+	 * 
+	 * @param pResolution
+	 *            die neue Auflösung
+	 */
+	public void setResolution(Resolution pResolution) {
+		// Nichts unternehmen, wenn keine Änderung eingetreten ist
+		if (_resolution == pResolution)
+			return;
+		// neue Auflösung setzen
+		_resolution = pResolution;
+		// neuAufbau der GUI Elemente anstoßen
+		MainWindow.getInstance().renderElements();
 	}
 
 	/**
@@ -109,13 +173,6 @@ public class GamePreferences {
 	}
 
 	/**
-	 * @return the mainWindow
-	 */
-	public MainWindow getMainWindow() {
-		return _mainWindow;
-	}
-
-	/**
 	 * Holt das vorher gesetzte {@link Starfield} aus den
 	 * {@link GamePreferences}
 	 * 
@@ -146,20 +203,21 @@ public class GamePreferences {
 	public void removeLoadedStarfield() {
 		_loadedStarfield = null;
 	}
-	
+
 	/**
 	 * Setzt die Datei auf der das Starfield auf dem PC gespeichert ist.
+	 * 
 	 * @param pFile
 	 */
-	public void setStarfieldFile(File pFile){
+	public void setStarfieldFile(File pFile) {
 		_starfieldFile = pFile;
 	}
-	
-	public File getStarfieldFile(){
+
+	public File getStarfieldFile() {
 		return _starfieldFile;
 	}
-	
-	public void removeStarfieldFile(){
+
+	public void removeStarfieldFile() {
 		_starfieldFile = null;
 	}
 

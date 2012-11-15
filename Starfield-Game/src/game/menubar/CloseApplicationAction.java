@@ -3,6 +3,7 @@
  */
 package game.menubar;
 
+import game.core.GamePreferences.AppMode;
 import game.ui.MainWindow;
 
 import java.awt.event.ActionEvent;
@@ -38,6 +39,9 @@ public class CloseApplicationAction extends AbstractAction {
 	public void actionPerformed(ActionEvent pE) {
 		// Überprüfen ob nichtgespeicherte Änderungen vorliegen
 		// TODO
+		if (MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.FIRST_START) {
+			exitApplication();
+		}
 
 		// Confirm Dialog ob Änderungen gespeichert werden sollen
 		final int userChoice = JOptionPane.showConfirmDialog(null,
@@ -64,7 +68,7 @@ public class CloseApplicationAction extends AbstractAction {
 
 	private void saveGame() {
 		AbstractAction saveAction = null;
-		switch (MainWindow.getGamePrefs().getAppMode()) {
+		switch (MainWindow.getInstance().getGamePrefs().getAppMode()) {
 		case LOAD_EDIT_MODE:
 		case EDIT_MODE:
 			saveAction = new SavePuzzleAction(null, null);

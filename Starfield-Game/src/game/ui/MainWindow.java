@@ -5,17 +5,21 @@ package game.ui;
 
 import game.commands.CommandStack;
 import game.core.GamePreferences;
+import game.core.GamePreferences.AppMode;
+import game.core.GamePreferences.Resolution;
+import game.core.ImageResources;
+import game.core.ImageResources.Images;
 import game.menubar.CloseApplicationAction;
 import game.menubar.MainMenuBar;
 import game.model.Starfield;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -23,34 +27,38 @@ import javax.swing.WindowConstants;
 
 /**
  * Das Hauptfenster der Anwendung. <br>
+ * Wird als Singleton behandelt, um Zugriff auf die einzelnen Elemente zu
+ * gewähren.
  * 
  * @author Jan
  * 
  */
 public class MainWindow extends JFrame {
 
+	// Singleton:
+	private static MainWindow _mainWindow;
 	// GameUI Elemente
 	/** Die MenüLeiste */
 	private JMenuBar _menuBar;
 	/** Toolbar */
-	private static JToolBar _toolbar;
+	private JToolBar _toolbar;
 	/** StarfieldView */
-	private static StarfieldView _starfieldView;
+	private StarfieldView _starfieldView;
 
 	// Unsichtbare Hilfmittel
 	/** GamePreferences */
-	private static GamePreferences _gamePrefs;
+	private GamePreferences _gamePrefs;
 	/** ConentPane */
 	private JPanel _contentPane;
 	/** Der CommandStack */
-	private static CommandStack _commandStack;
+	private CommandStack _commandStack;
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public MainWindow() {
+	private MainWindow() {
 		super("Starfield - The Game");
 		// **************************************************
 		// Diese Schritte werden nur einmal durchlaufen beim
@@ -69,16 +77,73 @@ public class MainWindow extends JFrame {
 	 * Folgende Schritte müssen vor jedem neuen Spiel erneut aufgerufen werden
 	 */
 	public void initGame() {
+		// alte Elemente entfernen
+		_contentPane.removeAll();
 		// Toolbar anzeigen
 		initToolbar();
 		// Starfield und CommandStack erzeugen
 		initStarfieldView();
 		// Optionen für die Platzierung auf dem Bildschirm
-		pack();
-		if (isAppSizeBiggerThanDisplay()) {
-			setSize(new Dimension(800, 600));
-			setExtendedState(MAXIMIZED_BOTH);
+		renderElements();
+
+	}
+
+	/**
+	 * Rendert das Starfield anhand der eingestellten Optionen
+	 */
+	public void renderElements() {
+
+		// eingestellte Auflösung auslesen
+		Resolution res = _gamePrefs.getResolution();
+
+		// Auflösung des Window ändern
+		setSize(res.getWidth(), res.getHeight());
+
+		if (_gamePrefs.getAppMode() == AppMode.FIRST_START) {
+			_contentPane.setBackground(new Color(000066));
+			setLocationRelativeTo(null);
+			return;
 		}
+		// Alte Farbe wiederherstellen
+		if (_contentPane.getBackground() != new Color(238, 238, 238))
+			_contentPane.setBackground(new Color(238, 238, 238));
+
+		// CalcWidth wird anhand der Breite des Fenster berechnet
+		int allowedWidth = (res.getWidth() - 6)
+				- _toolbar.getPreferredSize().width;
+		int calcWidth = (allowedWidth / getCurrentStarfield().getSize().width) - 4;
+
+		// CalcHeight wird anhand der Höhe des Fensters berechnet
+		int allowedHeight = res.getHeight() - _menuBar.getHeight();
+		int calcHeight = (allowedHeight)
+				/ getCurrentStarfield().getSize().height - 14;
+
+		// Im Game oder Load_Game Mode muss die Breite der angezeigten Zahlen
+		// noch abgezogen werden.
+		switch (_gamePrefs.getAppMode()) {
+		case GAME_MODE:
+		case LOAD_GAME_MODE:
+			calcWidth -= 15;
+			calcHeight -= 15;
+			break;
+		}
+		// Mit dem kleineren der beiden Werte wird weitergerechnet
+		int calcSize = calcWidth;
+		if (calcHeight < calcWidth)
+			calcSize = calcHeight;
+
+		// Obergrenze festlegen
+		if (calcSize > ImageResources.getMaxSize())
+			calcSize = ImageResources.getMaxSize();
+		// Untergrenze festlegen
+		if (calcSize < ImageResources.getMinSize())
+			calcSize = ImageResources.getMinSize();
+
+		// errechnete Bildgröße festlegen
+		ImageResources.setScalingSize(calcSize);
+		// repaint der Elemente veranlassen
+		_mainWindow.validate();
+		// das Window wieder mittig platzieren
 		setLocationRelativeTo(null);
 	}
 
@@ -99,12 +164,10 @@ public class MainWindow extends JFrame {
 							.actionPerformed(null);
 			}
 		});
-		// Size sollte nicht hart angepasst werden, sondern über PrefferedSizes
-		// von Unterobjekten
-		setSize(new Dimension(800, 600));
+		setResizable(false);
 		// ContentPane erstellen und Layout festlegen
 		_contentPane = new JPanel();
-		_contentPane.setLayout(new BorderLayout(5, 5));
+		_contentPane.setLayout(new BorderLayout(0, 5));
 		setContentPane(_contentPane);
 
 	}
@@ -123,7 +186,7 @@ public class MainWindow extends JFrame {
 	 */
 	private void initPreferences() {
 		// ggf. Preferences aus altem Stand laden
-		_gamePrefs = new GamePreferences(this);
+		_gamePrefs = new GamePreferences();
 	}
 
 	/**
@@ -131,9 +194,6 @@ public class MainWindow extends JFrame {
 	 * gesetzt werden soll und fügt diese dem UI hinzu.
 	 */
 	private void initToolbar() {
-		// Reste entfernen
-		if (_toolbar != null)
-			_contentPane.remove(_toolbar);
 		// Anhand des AppMode entscheiden welche Toolbar gesetzt wird
 		switch (getGamePrefs().getAppMode()) {
 		case GAME_MODE:
@@ -145,7 +205,10 @@ public class MainWindow extends JFrame {
 			_toolbar = new EditToolbar();
 			break;
 		}
-		_contentPane.add(_toolbar, BorderLayout.LINE_START);
+
+		if (getGamePrefs().getAppMode() != AppMode.FIRST_START) {
+			_contentPane.add(_toolbar, BorderLayout.LINE_START);
+		}
 	}
 
 	/**
@@ -154,23 +217,26 @@ public class MainWindow extends JFrame {
 	 * alte Spielstand wiederhergestellt.
 	 */
 	private void initStarfieldView() {
-		// Reste entfernen
-		if (_starfieldView != null)
-			_contentPane.remove(_starfieldView);
 		// Anhand des AppMode entscheiden, ob ein neues leeres Starfield geladen
 		// werden soll oder ein gespeichertes Spiel wiederhergestellt werden
 		// soll.
 
 		Starfield starfield = null;
 		switch (getGamePrefs().getAppMode()) {
+		case FIRST_START:
+			_contentPane.add(
+					new JLabel(ImageResources.getIcon(Images.SPLASHSCREEN)),
+					BorderLayout.CENTER);
+			return;
 		case GAME_MODE:
 			// Im GameMode wird nur der Startbildschirm angezeigt, darum
 			// brauchen wir kein Starfield und können einen neuen leeren
 			// Commandstack setzen
 			starfield = getGamePrefs().getLoadedStarfield();
 			getGamePrefs().removeLoadedStarfield();
-			setCommandStack(new CommandStack(MainWindow.getGamePrefs().getStarfieldFile()));
-			MainWindow.getGamePrefs().removeStarfieldFile();
+			setCommandStack(new CommandStack(MainWindow.getInstance()
+					.getGamePrefs().getStarfieldFile()));
+			MainWindow.getInstance().getGamePrefs().removeStarfieldFile();
 			break;
 		case LOAD_GAME_MODE:
 			// Im LoadGameMode sind durch die Actions im Vorhinein die
@@ -189,34 +255,14 @@ public class MainWindow extends JFrame {
 		}
 		_starfieldView = new StarfieldView(starfield);
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
+
 	}
 
-	/**
-	 * Überprüft ob die Größe nicht zu groß für den Bildschirm ist.
-	 */
-	private boolean isAppSizeBiggerThanDisplay() {
-		boolean answer = false;
-
-		Dimension programSize = getSize();
-		Dimension displaySize = Toolkit.getDefaultToolkit().getScreenSize();
-
-		if (programSize.getHeight() > displaySize.getHeight())
-			answer = true;
-		if (programSize.getWidth() > displaySize.getWidth())
-			answer = true;
-		return answer;
-	}
-
-	@Override
-	public JMenuBar getJMenuBar() {
-		return _menuBar;
-	}
-
-	public static GamePreferences getGamePrefs() {
+	public GamePreferences getGamePrefs() {
 		return _gamePrefs;
 	}
 
-	public static CommandStack getCommandStack() {
+	public CommandStack getCommandStack() {
 		return _commandStack;
 	}
 
@@ -229,8 +275,8 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @return - die StarfieldView
 	 */
-	public static StarfieldView getStarfieldView() {
-		return _starfieldView;
+	public Starfield getCurrentStarfield() {
+		return _starfieldView.getCurrentStarfield();
 	}
 
 	/**
@@ -238,7 +284,18 @@ public class MainWindow extends JFrame {
 	 * 
 	 * @return - die Toolbar
 	 */
-	public static JToolBar getActiveToolBar() {
+	public JToolBar getActiveToolBar() {
 		return _toolbar;
+	}
+
+	/**
+	 * Liefert die Singleton-Instanz des MainWindow
+	 * 
+	 * @return
+	 */
+	public static synchronized MainWindow getInstance() {
+		if (_mainWindow == null)
+			_mainWindow = new MainWindow();
+		return _mainWindow;
 	}
 }

@@ -19,20 +19,24 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author schroeder_jan
- *
+ * 
  */
 public class SaveGameAction extends AbstractAction {
 
-	public SaveGameAction(String text, ImageIcon icon){
+	public SaveGameAction(String text, ImageIcon icon) {
 		super(text, icon);
 	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pE) {
@@ -41,13 +45,13 @@ public class SaveGameAction extends AbstractAction {
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		jfc.setMultiSelectionEnabled(false);
 		jfc.setFileHidingEnabled(true);
-		FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand", "save");
+		FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand",
+				"save");
 		jfc.addChoosableFileFilter(ff);
 		if (jfc.showSaveDialog(jfc) == JFileChooser.APPROVE_OPTION) {
-	        String temppfad = jfc.getSelectedFile().getAbsolutePath();
-			if (temppfad.endsWith(".save")){
-			}
-			else {
+			String temppfad = jfc.getSelectedFile().getAbsolutePath();
+			if (temppfad.endsWith(".save")) {
+			} else {
 				temppfad = temppfad + ".save";
 			}
 			try {
@@ -55,7 +59,7 @@ public class SaveGameAction extends AbstractAction {
 				FileOutputStream fos = new FileOutputStream(f);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.flush();
-				oos.writeObject(MainWindow.getCommandStack());
+				oos.writeObject(MainWindow.getInstance().getCommandStack());
 				oos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -63,5 +67,5 @@ public class SaveGameAction extends AbstractAction {
 			}
 		}
 
-	    }		
+	}
 }

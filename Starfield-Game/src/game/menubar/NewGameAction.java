@@ -58,13 +58,6 @@ public class NewGameAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pArg0) {
-		// TODO
-		// 1. NewGameDialog aufrufen
-		// 2. Alten Inhalt des GameWindow leeren
-		// 3. Neues Puzzle laden
-		// Ändert zum Testen den AppMode und forced einen NeuAufbau des
-		// Starfields.
-		
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		jfc.setMultiSelectionEnabled(false);
@@ -82,12 +75,17 @@ public class NewGameAction extends AbstractAction {
 					Object o = ois.readObject();
 					if (o instanceof Starfield) {
 						// Starfield zur Bearbeitung vorbereiten
-						((Starfield) o).createSolutionfromUserContent();
+						((Starfield) o).clearUserContent();
+						((Starfield) o).prepareUserContent(true);
 						// Starfield in die GamePrefs zur Abholung bereit
 						// stellen
-						MainWindow.getGamePrefs().setLoadedStarfield(
-								(Starfield) o);
-						MainWindow.getGamePrefs().setStarfieldFile(f);
+						MainWindow.getInstance().getGamePrefs()
+								.setLoadedStarfield((Starfield) o);
+						MainWindow.getInstance().getGamePrefs()
+								.setStarfieldFile(f);
+						MainWindow.getInstance().getGamePrefs()
+								.setAppMode(AppMode.GAME_MODE);
+						MainWindow.getInstance().initGame();
 					}
 					ois.close();
 				} catch (Exception e) {
@@ -95,9 +93,6 @@ public class NewGameAction extends AbstractAction {
 				}
 			}
 		}
-		
-		MainWindow.getGamePrefs().setAppMode(AppMode.GAME_MODE);
-		MainWindow.getGamePrefs().getMainWindow().initGame();
 
 	}
 }

@@ -61,7 +61,7 @@ public class StarfieldViewHandler implements MouseListener {
 			AbstractCommand command = null;
 
 			// Abhängig von der AppMode wird das passende Command festgelegt
-			switch (MainWindow.getGamePrefs().getAppMode()) {
+			switch (MainWindow.getInstance().getGamePrefs().getAppMode()) {
 			case GAME_MODE:
 			case LOAD_GAME_MODE:
 				command = handlePlayEvent((Field) o, pE);
@@ -90,15 +90,19 @@ public class StarfieldViewHandler implements MouseListener {
 
 		if (pE.getButton() == MouseEvent.BUTTON1) {
 			if (field.getUserContent() == AllowedContent.CONTENT_EMPTY)
-				return new SetStarCommand(MainWindow.getCommandStack(), pE);
+				return new SetStarCommand(MainWindow.getInstance()
+						.getCommandStack(), pE);
 			else if (field.getUserContent() == AllowedContent.CONTENT_STAR)
-				return new RemoveStarCommand(MainWindow.getCommandStack(), pE);
+				return new RemoveStarCommand(MainWindow.getInstance()
+						.getCommandStack(), pE);
 		}
 		if (pE.getButton() == MouseEvent.BUTTON3) {
 			if (field.getUserContent() == AllowedContent.CONTENT_EMPTY)
-				return new SetGrayedCommand(MainWindow.getCommandStack(), pE);
+				return new SetGrayedCommand(MainWindow.getInstance()
+						.getCommandStack(), pE);
 			else if (field.getUserContent() == AllowedContent.CONTENT_GRAYED)
-				return new RemoveGrayedCommand(MainWindow.getCommandStack(), pE);
+				return new RemoveGrayedCommand(MainWindow.getInstance()
+						.getCommandStack(), pE);
 		}
 		return null;
 	}
@@ -111,7 +115,7 @@ public class StarfieldViewHandler implements MouseListener {
 	 * @return
 	 */
 	private AbstractCommand handleEditEvent(Field field, MouseEvent pE) {
-		Object o = MainWindow.getActiveToolBar();
+		Object o = MainWindow.getInstance().getActiveToolBar();
 		if (o instanceof EditToolbar) {
 			EditToolbar toolbar = (EditToolbar) o;
 
@@ -119,11 +123,12 @@ public class StarfieldViewHandler implements MouseListener {
 			if (pE.getButton() == MouseEvent.BUTTON1) {
 				if (field.getUserContent() == AllowedContent.CONTENT_EMPTY) {
 					toolbar.setPlayable(false);
-					return new SetStarCommand(MainWindow.getCommandStack(), pE);
+					return new SetStarCommand(MainWindow.getInstance()
+							.getCommandStack(), pE);
 				} else if (field.getUserContent() == AllowedContent.CONTENT_STAR) {
 					toolbar.setPlayable(false);
-					return new RemoveStarCommand(MainWindow.getCommandStack(),
-							pE);
+					return new RemoveStarCommand(MainWindow.getInstance()
+							.getCommandStack(), pE);
 				}
 			}
 			// Rechte Maustaste
@@ -135,8 +140,8 @@ public class StarfieldViewHandler implements MouseListener {
 					if (field.getUserContent().toString()
 							.startsWith("CONTENT_ARROW")) {
 						toolbar.setPlayable(false);
-						return new RemoveArrowCommand(
-								MainWindow.getCommandStack(), pE);
+						return new RemoveArrowCommand(MainWindow.getInstance()
+								.getCommandStack(), pE);
 					}
 
 				}
@@ -148,41 +153,41 @@ public class StarfieldViewHandler implements MouseListener {
 					switch (toolbar.getSelectedArrow()) {
 					case CONTENT_ARROW_UL:
 						toolbar.setPlayable(false);
-						return new SetArrowUpLeftCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowUpLeftCommand(MainWindow
+								.getInstance().getCommandStack(), pE);
 					case CONTENT_ARROW_U:
 						toolbar.setPlayable(false);
-						return new SetArrowUpCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowUpCommand(MainWindow.getInstance()
+								.getCommandStack(), pE);
 					case CONTENT_ARROW_UR:
 						toolbar.setPlayable(false);
-						return new SetArrowUpRightCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowUpRightCommand(MainWindow
+								.getInstance().getCommandStack(), pE);
 					case CONTENT_ARROW_L:
 						toolbar.setPlayable(false);
-						return new SetArrowLeftCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowLeftCommand(MainWindow.getInstance()
+								.getCommandStack(), pE);
 					case CONTENT_ARROW_R:
 						toolbar.setPlayable(false);
-						return new SetArrowRightCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowRightCommand(MainWindow
+								.getInstance().getCommandStack(), pE);
 					case CONTENT_ARROW_DL:
 						toolbar.setPlayable(false);
-						return new SetArrowDownLeft(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowDownLeft(MainWindow.getInstance()
+								.getCommandStack(), pE);
 					case CONTENT_ARROW_D:
 						toolbar.setPlayable(false);
-						return new SetArrowDownCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowDownCommand(MainWindow.getInstance()
+								.getCommandStack(), pE);
 					case CONTENT_ARROW_DR:
 						toolbar.setPlayable(false);
-						return new SetArrowDownRightCommand(
-								MainWindow.getCommandStack(), pE);
+						return new SetArrowDownRightCommand(MainWindow
+								.getInstance().getCommandStack(), pE);
 					}
 				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR) {
 					toolbar.setPlayable(false);
-					return new RemoveArrowCommand(MainWindow.getCommandStack(),
-							pE);
+					return new RemoveArrowCommand(MainWindow.getInstance()
+							.getCommandStack(), pE);
 				}
 
 			}

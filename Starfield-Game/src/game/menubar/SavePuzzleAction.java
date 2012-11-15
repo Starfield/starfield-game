@@ -42,8 +42,8 @@ public class SavePuzzleAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent pE) {
 		// Speichern nur möglich wenn im Edit-Modus
-		if (MainWindow.getGamePrefs().getAppMode() == AppMode.EDIT_MODE
-				|| MainWindow.getGamePrefs().getAppMode() == AppMode.LOAD_EDIT_MODE) {
+		if (MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.EDIT_MODE
+				|| MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.LOAD_EDIT_MODE) {
 			JFileChooser jfc = new JFileChooser();
 			jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			jfc.setMultiSelectionEnabled(false);
@@ -63,7 +63,7 @@ public class SavePuzzleAction extends AbstractAction {
 					FileOutputStream fos = new FileOutputStream(f);
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
 					oos.flush();
-					oos.writeObject(MainWindow.getStarfieldView()
+					oos.writeObject(MainWindow.getInstance()
 							.getCurrentStarfield().copyUserToSolutionContent());
 					oos.close();
 				} catch (IOException e) {

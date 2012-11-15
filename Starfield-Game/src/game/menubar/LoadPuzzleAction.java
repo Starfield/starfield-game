@@ -3,6 +3,7 @@
  */
 package game.menubar;
 
+import game.core.GamePreferences.AppMode;
 import game.model.Starfield;
 import game.ui.MainWindow;
 
@@ -58,14 +59,16 @@ public class LoadPuzzleAction extends AbstractAction {
 					Object o = ois.readObject();
 					if (o instanceof Starfield) {
 						// Starfield zur Bearbeitung vorbereiten
-						((Starfield) o).createSolutionfromUserContent();
+						((Starfield) o).prepareUserContent(false);
 						// Starfield in die GamePrefs zur Abholung bereit
 						// stellen
-						MainWindow.getGamePrefs().setLoadedStarfield(
-								(Starfield) o);
+						MainWindow.getInstance().getGamePrefs()
+								.setLoadedStarfield((Starfield) o);
 						// Dem MainWindow bescheid geben, die Elemente neu zu
 						// erstellen
-						MainWindow.getGamePrefs().getMainWindow().initGame();
+						MainWindow.getInstance().getGamePrefs()
+								.setAppMode(AppMode.LOAD_EDIT_MODE);
+						MainWindow.getInstance().initGame();
 					}
 					ois.close();
 				} catch (Exception e) {

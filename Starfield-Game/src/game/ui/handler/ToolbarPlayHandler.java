@@ -23,11 +23,11 @@ import javax.swing.JOptionPane;
 public class ToolbarPlayHandler implements ActionListener {
 
 	private PlayToolbar _toolbar = null;
-	
+
 	ArrayList<JLabel> _markerList = null;
 
 	JLabel l = null;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -37,99 +37,105 @@ public class ToolbarPlayHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent pE) {
 		String cmd = pE.getActionCommand();
-		_toolbar = (PlayToolbar) MainWindow.getActiveToolBar();
+		_toolbar = (PlayToolbar) MainWindow.getInstance().getActiveToolBar();
 		_markerList = _toolbar.getMarkerList();
-		
+
 		if (cmd == "setMarker") {
 			if (lastOn() != 4) {
-				SetMarkerCommand command = new SetMarkerCommand(MainWindow.getCommandStack(), pE, firstOff());
+				SetMarkerCommand command = new SetMarkerCommand(MainWindow
+						.getInstance().getCommandStack(), pE, firstOff());
 				command.execute();
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Die maximale Anzahl an Markern ist verbraucht!");
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"Die maximale Anzahl an Markern ist verbraucht!");
 			}
 		}
-		
+
 		if (cmd == "undoMarker") {
 			if (firstOff() != 0) {
-				RemoveMarkerCommand command = new RemoveMarkerCommand(MainWindow.getCommandStack(), pE); 
-				command.execute();	
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Es wurde bisher noch keine Marker gesetzt!");
+				RemoveMarkerCommand command = new RemoveMarkerCommand(
+						MainWindow.getInstance().getCommandStack(), pE);
+				command.execute();
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"Es wurde bisher noch keine Marker gesetzt!");
 			}
 		}
-		
+
 		if (cmd == "removeMarker") {
 			if (firstOff() != 0) {
-				RemoveMarkersCommand command = new RemoveMarkersCommand(MainWindow.getCommandStack(), pE);
+				RemoveMarkersCommand command = new RemoveMarkersCommand(
+						MainWindow.getInstance().getCommandStack(), pE);
 				command.execute();
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Es wurde bisher noch keine Marker gesetzt!");
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"Es wurde bisher noch keine Marker gesetzt!");
 			}
 		}
-		
+
 		if (cmd == "checkSolution") {
 			checkInput();
 		}
-	}		
+	}
 
 	public void setMarker() {
-		_markerList.get(firstOff()).setIcon(ImageResources.getIcon(Images.ICON_MARKER_ON));
+		_markerList.get(firstOff()).setIcon(
+				ImageResources.getIcon(Images.ICON_MARKER_ON));
 	}
-	
+
 	public void removeSingleMarker() {
-		_markerList.get(lastOn()).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		_markerList.get(lastOn()).setIcon(
+				ImageResources.getIcon(Images.ICON_MARKER_OFF));
 	}
-	
+
 	public void removeMarkers() {
 		for (int i = 0; i < _markerList.size(); i++) {
 			l = _markerList.get(i);
-			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON)))
-				_markerList.get(i).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+			if (l.getIcon().equals(
+					ImageResources.getIcon(Images.ICON_MARKER_ON)))
+				_markerList.get(i).setIcon(
+						ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		}
 	}
-	
+
 	public void checkInput() {
-		if (MainWindow.getStarfieldView().getCurrentStarfield().checkSolution()) {
+		if (MainWindow.getInstance().getCurrentStarfield().checkSolution()) {
 			JOptionPane.showMessageDialog(null, "Richtig!");
-		}
-		else {
+		} else {
 			JOptionPane.showMessageDialog(null, "Falsch!");
 		}
 	}
-	
+
 	/**
 	 * Ermittelt den von links gesehen letzten gesetzten Marker.
 	 * 
-	 * @return
-	 *  - letzter gesetzter Marker
+	 * @return - letzter gesetzter Marker
 	 */
 	private int lastOn() {
 		for (int i = _markerList.size() - 1; i >= 0; i--) {
 			l = _markerList.get(i);
-			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_ON))){
+			if (l.getIcon().equals(
+					ImageResources.getIcon(Images.ICON_MARKER_ON))) {
 				return i;
 			}
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Ermittelt den von links gesehen ersten <b>nicht</b> gesetzten Marker.
 	 * 
-	 * @return
-	 *  - erster nicht gesetzter Marker 
+	 * @return - erster nicht gesetzter Marker
 	 */
 	private int firstOff() {
 		for (int i = 0; i < _markerList.size(); i++) {
 			l = _markerList.get(i);
-			if (l.getIcon().equals(ImageResources.getIcon(Images.ICON_MARKER_OFF))){
+			if (l.getIcon().equals(
+					ImageResources.getIcon(Images.ICON_MARKER_OFF))) {
 				return i;
 			}
 		}
 		return 4;
 	}
-	
+
 }

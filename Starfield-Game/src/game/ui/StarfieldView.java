@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  * Das eigentliche Spielfeld <br>
@@ -19,7 +20,7 @@ import javax.swing.JPanel;
  * @author schroeder_jan
  * 
  */
-public class StarfieldView extends JPanel {
+public class StarfieldView extends JScrollPane {
 
 	/**
 	 * 
@@ -29,15 +30,18 @@ public class StarfieldView extends JPanel {
 	/** Das Modell */
 	private final Starfield _starfield;
 	/** Der Handler für Aktionen */
-	private final StarfieldViewHandler _handler = new StarfieldViewHandler();;
+	private final StarfieldViewHandler _handler = new StarfieldViewHandler();
+	/** ContentPanel */
+	private static JPanel _content = new JPanel();
 
 	public StarfieldView(Starfield pStarfield) {
+		super(_content);
+		_content.removeAll();
 		_starfield = pStarfield;
 		if (_starfield != null) {
 			initWindowsPrefs();
 			fillView();
 		}
-		// TODO Großes Logo anzeigen, wenn kein Starfield übergeben wird
 	}
 
 	/**
@@ -46,7 +50,7 @@ public class StarfieldView extends JPanel {
 	 */
 	private void initWindowsPrefs() {
 		GridBagLayout gridLayout = new GridBagLayout();
-		setLayout(gridLayout);
+		_content.setLayout(gridLayout);
 
 	}
 
@@ -54,6 +58,9 @@ public class StarfieldView extends JPanel {
 	 * Füllt das anzeigbare Starfield mit den Daten aus dem Modell
 	 */
 	private void fillView() {
+		if (_starfield == null)
+			return;
+
 		Dimension size = _starfield.getSize();
 		// Fields des Modell abbilden
 		for (int y = 0; y < size.getHeight(); y++) {
@@ -63,9 +70,23 @@ public class StarfieldView extends JPanel {
 				c.gridy = y + 1;
 				game.model.Field field = _starfield.getField(x, y);
 				field.addMouseListener(_handler);
-				add(field, c);
+				_content.add(field, c);
 			}
 		}
+
+		// Rand nur setzen, wenn im Game oder Load_Game Mode
+		switch (MainWindow.getInstance().getGamePrefs().getAppMode()) {
+		case LOAD_GAME_MODE:
+		case GAME_MODE:
+			createHintBorder(size);
+			break;
+		}
+	}
+
+	/**
+	 * @param size
+	 */
+	private void createHintBorder(Dimension size) {
 		// Anzahl der Sterne auf der UI anzeigen
 		// Oberer Rand
 		for (int x = 0; x < size.getWidth(); x++) {
@@ -73,7 +94,7 @@ public class StarfieldView extends JPanel {
 			c.gridx = x + 1;
 			c.gridy = 0;
 			c.ipady = 5;
-			add(new JLabel("" + _starfield.getStarCountX(x)), c);
+			_content.add(new JLabel("" + _starfield.getStarCountX(x)), c);
 		}
 		// Linker Rand
 		for (int y = 0; y < size.getHeight(); y++) {
@@ -81,7 +102,7 @@ public class StarfieldView extends JPanel {
 			c.gridx = 0;
 			c.ipadx = 5;
 			c.gridy = y + 1;
-			add(new JLabel("" + _starfield.getStarCountY(y)), c);
+			_content.add(new JLabel("" + _starfield.getStarCountY(y)), c);
 		}
 	}
 
@@ -92,5 +113,20 @@ public class StarfieldView extends JPanel {
 	 */
 	public Starfield getCurrentStarfield() {
 		return _starfield;
+	}
+
+	@Override
+	public void repaint() {
+		if (_starfield != null) {
+			// Komplettes Feld durchlaufen und Icons neu setzen
+			for (int x = 0; x < _starfield.getSize().getWidth(); x++) {
+				for (int y = 0; y < _starfield.getSize().getHeight(); y++) {
+					_starfield.getField(x, y).setUserContent(
+							_starfield.getField(x, y).getUserContent());
+				}
+			}
+		}
+		super.revalidate();
+		super.repaint();
 	}
 }

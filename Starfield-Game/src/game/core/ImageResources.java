@@ -3,8 +3,6 @@
  */
 package game.core;
 
-import game.ui.MainWindow;
-
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,14 +24,16 @@ public class ImageResources {
 	private final static String FOLDER = "images/";
 	/** Endung der Bilddateien */
 	private final static String FILE_TYPE = ".png";
-	/** Schalter für kleine Bilder */
-	public final static int SIZE_32 = 0;
-	/** Schalter für große Bilder */
-	public final static int SIZE_64 = 1;
+	/** Skalierungsfaktor */
+	private static int _scalingSize = 32;
+	/** Maximale Größe */
+	private final static int _maxSize = 128;
+	/** Minimale Größe */
+	private final static int _minSize = 32;
 
 	// Klassenvariablen
 	/** SimpleImageCache */
-	private final static Map<Images, ImageIcon> _imageCache = new HashMap<ImageResources.Images, ImageIcon>();
+	private static Map<Images, ImageIcon> _imageCache = new HashMap<ImageResources.Images, ImageIcon>();
 
 	/**
 	 * Auflistung aller bekannten Bilder
@@ -47,11 +47,13 @@ public class ImageResources {
 		ICON_SAVE_GAME("icons/icon_save_game"),
 		ICON_LOAD_GAME("icons/icon_load_game"),
 		ICON_CLOSE_GAME("icons/icon_close_game"),
+		ICON_DISPLAY_SIZE("icons/icon_display_size"),
 		ICON_EMPTY("icons/icon_empty"),
 		ICON_ABOUT("icons/icon_about"),
 		ICON_HELP("icons/icon_help"),
 		ICON_MARKER_ON("icons/icon_marker_on"),
 		ICON_MARKER_OFF("icons/icon_marker_off"),
+		ICON_OPTIONS("icons/icon_options"),
 		ICON_PLAYABLE_TRUE("icons/icon_playable_true"),
 		ICON_PLAYABLE_FALSE("icons/icon_playable_false"),
 		ICON_ARROW_U("icons/arrows/UpArrowIcon"),
@@ -72,7 +74,8 @@ public class ImageResources {
 		CONTENT_ARROW_UR("content/arrows/UpRightArrowContent"),
 		CONTENT_ARROW_UL("content/arrows/UpLeftArrowContent"),
 		CONTENT_ARROW_DR("content/arrows/DownRightArrowContent"),
-		CONTENT_ARROW_DL("content/arrows/DownLeftArrowContent");
+		CONTENT_ARROW_DL("content/arrows/DownLeftArrowContent"),
+		SPLASHSCREEN("splashscreen");
 
 		private final String name;
 
@@ -91,19 +94,16 @@ public class ImageResources {
 	 * @return ImageIcon des Bildes
 	 */
 	public static ImageIcon getIcon(Images image) {
+
 		if (image == null)
 			return null;
-		if (_imageCache.containsKey(image))
-			return _imageCache.get(image);
-		else {
-			String pfad = getImagePath(image);
-			if (pfad != null) {
-				ImageIcon imageIcon = new ImageIcon(pfad);
-				_imageCache.put(image, imageIcon);
-				return imageIcon;
-			}
-		}
-		return null;
+		// Sonderregel für den SplashScreen
+		if (image == Images.SPLASHSCREEN)
+			return new ImageIcon(FOLDER + image.name + FILE_TYPE);
+		// Icons werden immer klein angezeigt
+		if (image.toString().startsWith("ICON_"))
+			return getScaledIcon(32, image, Image.SCALE_SMOOTH);
+		return getScaledIcon(getScalingSize(), image, Image.SCALE_SMOOTH);
 	}
 
 	/**
@@ -119,12 +119,23 @@ public class ImageResources {
 	 *            - eine Scaling Methode aus {@link Image}
 	 * @return
 	 */
-	public static ImageIcon getScaledIcon(int width, int height, Images image,
-			int ScaleHint) {
-		ImageIcon icon = getIcon(image);
-		icon.setImage(icon.getImage().getScaledInstance(width, height,
-				ScaleHint));
-		return icon;
+	public static ImageIcon getScaledIcon(int size, Images image, int ScaleHint) {
+
+		ImageIcon icon = null;
+		if (_imageCache.containsKey(image))
+			icon = _imageCache.get(image);
+		else {
+			String pfad = getImagePath(image, size);
+			if (pfad != null) {
+				icon = new ImageIcon(pfad);
+				icon.setImage(icon.getImage().getScaledInstance(size, size,
+						ScaleHint));
+				_imageCache.put(image, icon);
+			}
+		}
+		if (icon != null)
+			return icon;
+		return null;
 	}
 
 	/**
@@ -134,15 +145,51 @@ public class ImageResources {
 	 *            nach dem gesucht werden soll
 	 * @return Pfad zur Bilddatei in richtiger Größe
 	 */
-	private static String getImagePath(Images image) {
-		// Icons werden immer klein angezeigt
-		if (image.toString().startsWith("ICON_"))
+	private static String getImagePath(Images image, int pSize) {
+
+		if (pSize < 33)
 			return FOLDER + image.name + "32" + FILE_TYPE;
-		// Ansonsten wird nach Optionseinstellung entschieden
-		if (MainWindow.getGamePrefs().getImageSize() == SIZE_32)
-			return FOLDER + image.name + "32" + FILE_TYPE;
-		if (MainWindow.getGamePrefs().getImageSize() == SIZE_64)
-			return FOLDER + image.name + "64" + FILE_TYPE;
-		return null;
+		return FOLDER + image.name + "64" + FILE_TYPE;
+	}
+
+	/**
+	 * Leert den ImageCache <br>
+	 * Kann nötig sein, wenn sich zB die ImageSize geändert hat
+	 */
+	private static void clearCache() {
+		_imageCache.clear();
+	}
+
+	/**
+	 * 
+	 * @return die maximale SkalierGröße
+	 */
+	public static int getMaxSize() {
+		return _maxSize;
+	}
+
+	/**
+	 * 
+	 * @return die minimale SkalierGröße
+	 */
+	public static int getMinSize() {
+		return _minSize;
+	}
+
+	/**
+	 * 
+	 * @return the _scalingSize
+	 */
+	public static int getScalingSize() {
+		return _scalingSize;
+	}
+
+	/**
+	 * 
+	 * @param pSize
+	 */
+	public static void setScalingSize(int pSize) {
+		clearCache();
+		_scalingSize = pSize;
 	}
 }

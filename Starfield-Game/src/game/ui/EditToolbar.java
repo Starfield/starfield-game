@@ -275,7 +275,7 @@ public class EditToolbar extends JToolBar {
 		String input = text.getText();
 		int size = 0;
 		if (input.equals("")) {
-			Dimension dim = MainWindow.getStarfieldView().getCurrentStarfield()
+			Dimension dim = MainWindow.getInstance().getCurrentStarfield()
 					.getSize();
 			if (text == _xSizeInput)
 				size = (int) dim.getHeight();

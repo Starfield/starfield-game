@@ -13,27 +13,27 @@ import java.awt.AWTEvent;
 public class SetMarkerCommand extends AbstractCommand {
 
 	private static final long serialVersionUID = 1321357760307364966L;
-	
+
 	/** Nummer des Markers */
-	private int number;
-	
+	private final int number;
+
 	/**
 	 * Konstruktor
 	 * 
 	 * @param stacks
-	 *  - CommandStack Referenz
+	 *            - CommandStack Referenz
 	 * 
 	 * @param e
-	 *  - Das den Command aufrufende Event
-	 *  
-	 *  @param number
-	 *  - Nummer des Markers
+	 *            - Das den Command aufrufende Event
+	 * 
+	 * @param number
+	 *            - Nummer des Markers
 	 */
 	public SetMarkerCommand(CommandStack stacks, AWTEvent e, int number) {
 		super(stacks, e);
 		this.number = number;
 	}
-	
+
 	/**
 	 * Initiiert das Setzen eines Markers.
 	 */
@@ -41,9 +41,10 @@ public class SetMarkerCommand extends AbstractCommand {
 	public void execute() {
 		super.execute();
 		getStacks().addMarker(number);
-		((PlayToolbar)MainWindow.getActiveToolBar()).get_playHandler().setMarker();
+		((PlayToolbar) MainWindow.getInstance().getActiveToolBar())
+				.get_playHandler().setMarker();
 	}
-	
+
 	/**
 	 * Initiiert das Zurücksetzen eines Markers.
 	 */

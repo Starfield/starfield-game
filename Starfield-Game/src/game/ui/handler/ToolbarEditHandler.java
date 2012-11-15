@@ -3,6 +3,7 @@
  */
 package game.ui.handler;
 
+import game.core.GamePreferences.AppMode;
 import game.model.Field.AllowedContent;
 import game.ui.EditToolbar;
 import game.ui.MainWindow;
@@ -25,7 +26,7 @@ public class ToolbarEditHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent pEvent) {
 
-		Object o = MainWindow.getActiveToolBar();
+		Object o = MainWindow.getInstance().getActiveToolBar();
 		if (!(o instanceof EditToolbar))
 			return;
 		EditToolbar toolbar = (EditToolbar) o;
@@ -70,19 +71,27 @@ public class ToolbarEditHandler implements ActionListener {
 		 * MainWindow.getActiveToolbar().getInputSizeY() bekommen werden (Casten
 		 * in EditToolbar nicht vergessen)
 		 */
-		System.out
-				.println("SizeX: "
-						+ ((EditToolbar) MainWindow.getActiveToolBar())
-								.getInputSizeX());
-		System.out
-				.println("SizeY: "
-						+ ((EditToolbar) MainWindow.getActiveToolBar())
-								.getInputSizeY());
+		Object o = MainWindow.getInstance().getActiveToolBar();
+		if (o instanceof EditToolbar) {
+			int newXSize = ((EditToolbar) o).getInputSizeX();
+			int newYSize = ((EditToolbar) o).getInputSizeY();
+			// Um die Änderungen sichtbar zu machen, muss das Starfield neu
+			// initialiert werden. Dazu wird das Starfield zwischengespeichert
+			MainWindow
+					.getInstance()
+					.getGamePrefs()
+					.setLoadedStarfield(
+							MainWindow.getInstance().getCurrentStarfield()
+									.changeSize(newXSize, newYSize));
+			MainWindow.getInstance().getGamePrefs()
+					.setAppMode(AppMode.LOAD_EDIT_MODE);
+			MainWindow.getInstance().initGame();
+		}
 
 	}
 
 	private void handleCheck(EditToolbar pToolbar) {
-		pToolbar.setPlayable(MainWindow.getStarfieldView()
-				.getCurrentStarfield().checkPlayable());
+		pToolbar.setPlayable(MainWindow.getInstance().getCurrentStarfield()
+				.checkPlayable());
 	}
 }

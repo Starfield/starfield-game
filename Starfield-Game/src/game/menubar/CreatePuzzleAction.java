@@ -34,11 +34,10 @@ public class CreatePuzzleAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pE) {
-		// TODO Dialog für Erstellung eines neuen Puzzles
-		// Ändert zum Testen den AppMode und forced einen NeuAufbau des
-		// Starfields.
-		MainWindow.getGamePrefs().setAppMode(AppMode.EDIT_MODE);
-		MainWindow.getGamePrefs().getMainWindow().initGame();
+		// Erstellt ein Standardpuzzle das im Editor über die Toolbar
+		// weiterbearbeitet werden kann.
+		MainWindow.getInstance().getGamePrefs().setAppMode(AppMode.EDIT_MODE);
+		MainWindow.getInstance().initGame();
 
 	}
 
