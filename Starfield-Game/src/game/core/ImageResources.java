@@ -154,10 +154,17 @@ public class ImageResources {
 
 	/**
 	 * Leert den ImageCache <br>
-	 * Kann nötig sein, wenn sich zB die ImageSize geändert hat
+	 * Kann nötig sein, wenn sich zB die ImageSize geändert hat <br>
+	 * Hierbei werden die Icons nicht gelöscht, da diese sowieso nicht skaliert
+	 * werden!
 	 */
 	private static void clearCache() {
-		_imageCache.clear();
+		for (Images image : Images.values()) {
+			if (!image.toString().startsWith("ICON_")) {
+				if (_imageCache.containsKey(image))
+					_imageCache.remove(image);
+			}
+		}
 	}
 
 	/**
