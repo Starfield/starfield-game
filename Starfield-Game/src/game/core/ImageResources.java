@@ -4,6 +4,7 @@
 package game.core;
 
 import java.awt.Image;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +21,6 @@ import javax.swing.ImageIcon;
 public class ImageResources {
 
 	// Konstanten
-	/** Ordner in dem die Bilder liegen */
-	private final static String FOLDER = "images/";
 	/** Endung der Bilddateien */
 	private final static String FILE_TYPE = ".png";
 	/** Skalierungsfaktor */
@@ -98,8 +97,11 @@ public class ImageResources {
 		if (image == null)
 			return null;
 		// Sonderregel für den SplashScreen
-		if (image == Images.SPLASHSCREEN)
-			return new ImageIcon(FOLDER + image.name + FILE_TYPE);
+		if (image == Images.SPLASHSCREEN) {
+			URL pfad = getImagePath(image, 99);
+			if (pfad != null)
+				return new ImageIcon(pfad);
+		}
 		// Icons werden immer klein angezeigt
 		if (image.toString().startsWith("ICON_"))
 			return getScaledIcon(32, image, Image.SCALE_SMOOTH);
@@ -125,7 +127,7 @@ public class ImageResources {
 		if (_imageCache.containsKey(image))
 			icon = _imageCache.get(image);
 		else {
-			String pfad = getImagePath(image, size);
+			URL pfad = getImagePath(image, size);
 			if (pfad != null) {
 				icon = new ImageIcon(pfad);
 				icon.setImage(icon.getImage().getScaledInstance(size, size,
@@ -145,13 +147,25 @@ public class ImageResources {
 	 *            nach dem gesucht werden soll
 	 * @return Pfad zur Bilddatei in richtiger Größe
 	 */
-	private static String getImagePath(Images image, int pSize) {
+	private static URL getImagePath(Images image, int pSize) {
 
-		if (pSize < 33)
-			return FOLDER + image.name + "32" + FILE_TYPE;
+		String size = "128";
+
+		if (pSize < 33) {
+			size = "32";
+		}
 		if (pSize < 65)
-			return FOLDER + image.name + "64" + FILE_TYPE;
-		return FOLDER + image.name + "128" + FILE_TYPE;
+			size = "64";
+		// Ausnahme für Icons einfügen
+		if (image.toString().startsWith("ICON_"))
+			size = "32";
+		// Ausnahme für den Splashscreen einfügen
+		if (image == Images.SPLASHSCREEN)
+			size = "";
+
+		URL url = ClassLoader.class.getResource("/" + image.name + size
+				+ FILE_TYPE);
+		return url;
 	}
 
 	/**
