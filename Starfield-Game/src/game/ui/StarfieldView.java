@@ -94,7 +94,8 @@ public class StarfieldView extends JScrollPane {
 			c.gridx = x + 1;
 			c.gridy = 0;
 			c.ipady = 5;
-			_content.add(new JLabel("" + _starfield.getStarCountX(x)), c);
+			JLabel label = new JLabel("<html><font size='5'>" + _starfield.getStarCountX(x)+ "</font></html>");
+			_content.add(label, c);
 		}
 		// Linker Rand
 		for (int y = 0; y < size.getHeight(); y++) {
@@ -102,7 +103,8 @@ public class StarfieldView extends JScrollPane {
 			c.gridx = 0;
 			c.ipadx = 5;
 			c.gridy = y + 1;
-			_content.add(new JLabel("" + _starfield.getStarCountY(y)), c);
+			JLabel label = new JLabel("<html><font size='5'>" + _starfield.getStarCountY(y)+ "</font></html>");
+			_content.add(label, c);
 		}
 	}
 
