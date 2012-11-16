@@ -47,7 +47,7 @@ public class LoadPuzzleAction extends AbstractAction {
 		jfc.setMultiSelectionEnabled(false);
 		jfc.setFileHidingEnabled(true);
 		FileFilter ff = new FileNameExtensionFilter("Starfield-Puzzle", "star");
-		jfc.addChoosableFileFilter(ff);
+		jfc.setFileFilter(ff);
 		// Nur laden wenn User OK geklickt hat
 		if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 			String temppfad = jfc.getSelectedFile().getAbsolutePath();

@@ -47,7 +47,7 @@ public class SaveGameAction extends AbstractAction {
 		jfc.setFileHidingEnabled(true);
 		FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand",
 				"save");
-		jfc.addChoosableFileFilter(ff);
+		jfc.setFileFilter(ff);
 		if (jfc.showSaveDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 			String temppfad = jfc.getSelectedFile().getAbsolutePath();
 			if (temppfad.endsWith(".save")) {

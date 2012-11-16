@@ -53,7 +53,7 @@ public class LoadGameAction extends AbstractAction {
 		jfc.setFileHidingEnabled(true);
 		FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand",
 				"save");
-		jfc.addChoosableFileFilter(ff);
+		jfc.setFileFilter(ff);
 		int fileok = 1;
 		do {
 			fileok = 1;

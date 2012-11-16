@@ -50,7 +50,7 @@ public class SavePuzzleAction extends AbstractAction {
 			jfc.setFileHidingEnabled(true);
 			FileFilter ff = new FileNameExtensionFilter("Starfield-Puzzle",
 					"star");
-			jfc.addChoosableFileFilter(ff);
+			jfc.setFileFilter(ff);
 			// Nur speichern wenn OK gedrückt
 			if (jfc.showSaveDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 				String temppfad = jfc.getSelectedFile().getAbsolutePath();
