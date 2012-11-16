@@ -115,23 +115,6 @@ public class Starfield implements Serializable {
 		return this;
 	}
 
-	// zum Ändern des Feldes für den Editor X-Dimension
-	public void deleteXFields(int deleteXRows) {
-		size.setSize(size.getWidth() - deleteXRows, size.getHeight());
-		for (int i = 0; i < deleteXRows; i++) {
-			listcontainer.remove(listcontainer.size() - 1);
-		}
-
-	}
-
-	// zum Ändern des Feldes für den Editor Y-Dimension
-	public void deleteYFields(int deleteYRows) {
-
-		for (int y = 0; y < listcontainer.size(); y++) {
-			listcontainer.get(y).remove(listcontainer.get(y).size() - 1);
-		}
-
-	}
 
 	// gibt die Größe des Spieldfeldes zurück
 	public Dimension getSize() {
@@ -167,15 +150,19 @@ public class Starfield implements Serializable {
 		boolean rightorwrong = true;
 		for (int x = 0; x < size.getWidth(); x++) {
 			for (int y = 0; y < size.getHeight(); y++) {
-
-				if (!listcontainer
+				if (listcontainer
+						.get(x)
+						.get(y)
+						.getUserContent()!=(AllowedContent.CONTENT_GRAYED))
+				{
+				if (listcontainer
 						.get(x)
 						.get(y)
 						.getUserContent()
-						.equals(listcontainer.get(x).get(y)
+						!=(listcontainer.get(x).get(y)
 								.getSolutionContent())) {
 					rightorwrong = false;
-				}
+				}}
 
 			}
 		}
