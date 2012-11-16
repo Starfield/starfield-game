@@ -29,7 +29,7 @@ public class ImageResources {
 	/** Maximale Größe */
 	private final static int _maxSize = 128;
 	/** Minimale Größe */
-	private final static int _minSize = 32;
+	private final static int _minSize = 24;
 
 	// Klassenvariablen
 	/** SimpleImageCache */

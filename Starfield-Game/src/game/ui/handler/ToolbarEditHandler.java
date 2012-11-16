@@ -65,12 +65,6 @@ public class ToolbarEditHandler implements ActionListener {
 	}
 
 	private void handleApply(EditToolbar pToolbar) {
-		/*
-		 * TODO Ändern der Größe des Starfields. Die Usereingaben können über
-		 * MainWindow.getActiveToolbar().getInputSizeX() und
-		 * MainWindow.getActiveToolbar().getInputSizeY() bekommen werden (Casten
-		 * in EditToolbar nicht vergessen)
-		 */
 		Object o = MainWindow.getInstance().getActiveToolBar();
 		if (o instanceof EditToolbar) {
 			int newXSize = ((EditToolbar) o).getInputSizeX();

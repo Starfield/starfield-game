@@ -177,7 +177,7 @@ public class EditToolbar extends JToolBar {
 		// Textfield für x-Achsenlänge hinzufügen
 		_xSizeInput = new JTextField(2);
 		_xSizeInput
-				.setToolTipText("Geben Sie eine ganze Zahl zwischen 1 und 99 ein");
+				.setToolTipText("Breite einstellen (1 - 99)");
 		// _xSizeInput.setText(Double.toString(MainWindow.getStarfieldView()
 		// .getCurrentStarfield().getSize().height));
 		c.gridx = 1;
@@ -188,7 +188,7 @@ public class EditToolbar extends JToolBar {
 		// Textfield für y-Achsenlänge hinzufügen
 		_ySizeInput = new JTextField(2);
 		_ySizeInput
-				.setToolTipText("Geben Sie eine ganze Zahl zwischen 1 und 99 ein");
+				.setToolTipText("Höhe einstellen (1 - 99)");
 		// _ySizeInput.setText(Double.toString(MainWindow.getStarfieldView()
 		// .getCurrentStarfield().getSize().width));
 		c.gridx = 3;
@@ -278,9 +278,9 @@ public class EditToolbar extends JToolBar {
 			Dimension dim = MainWindow.getInstance().getCurrentStarfield()
 					.getSize();
 			if (text == _xSizeInput)
-				size = (int) dim.getHeight();
-			if (text == _ySizeInput)
 				size = (int) dim.getWidth();
+			if (text == _ySizeInput)
+				size = (int) dim.getHeight();
 		} else {
 			size = Integer.valueOf(input);
 		}
