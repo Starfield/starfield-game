@@ -32,18 +32,10 @@ public class MainMenuBarHandler implements ActionListener {
 	private Resolution getSelectedResolution(ActionEvent pEvent) {
 		String cmd = pEvent.getActionCommand();
 
-		if (cmd.equals(Resolution.R800X600.toString()))
-			return Resolution.R800X600;
-		if (cmd.equals(Resolution.R1024X768.toString()))
-			return Resolution.R1024X768;
-		if (cmd.equals(Resolution.R1280X800.toString()))
-			return Resolution.R1280X800;
-		if (cmd.equals(Resolution.R1366X768.toString()))
-			return Resolution.R1366X768;
-		if (cmd.equals(Resolution.R1400X900.toString()))
-			return Resolution.R1400X900;
-		if (cmd.equals(Resolution.R1680X1050.toString()))
-			return Resolution.R1680X1050;
+		for (Resolution res : Resolution.values()) {
+			if (cmd.equals(res.toString()))
+				return res;
+		}
 		return null;
 	}
 

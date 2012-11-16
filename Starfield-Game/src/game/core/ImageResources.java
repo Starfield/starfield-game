@@ -149,7 +149,9 @@ public class ImageResources {
 
 		if (pSize < 33)
 			return FOLDER + image.name + "32" + FILE_TYPE;
-		return FOLDER + image.name + "64" + FILE_TYPE;
+		if (pSize < 65)
+			return FOLDER + image.name + "64" + FILE_TYPE;
+		return FOLDER + image.name + "128" + FILE_TYPE;
 	}
 
 	/**

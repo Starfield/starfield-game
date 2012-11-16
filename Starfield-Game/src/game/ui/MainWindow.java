@@ -93,58 +93,25 @@ public class MainWindow extends JFrame {
 	 */
 	public void renderElements() {
 
-		// eingestellte Auflösung auslesen
-		Resolution res = _gamePrefs.getResolution();
-
-		// Auflösung des Window ändern
-		setSize(res.getWidth(), res.getHeight());
-
+		// Sonderfall des ersten Starts abfangen
 		if (_gamePrefs.getAppMode() == AppMode.FIRST_START) {
 			_contentPane.setBackground(new Color(000066));
+			// eingestellte Auflösung auslesen
+			Resolution res = _gamePrefs.getResolution();
+
+			// Auflösung des Window ändern
+			setSize(res.getWidth(), res.getHeight());
 			setLocationRelativeTo(null);
 			return;
 		}
+
 		// Alte Farbe wiederherstellen
 		if (_contentPane.getBackground() != new Color(238, 238, 238))
 			_contentPane.setBackground(new Color(238, 238, 238));
 
-		// CalcWidth wird anhand der Breite des Fenster berechnet
-		int allowedWidth = (res.getWidth() - 6)
-				- _toolbar.getPreferredSize().width;
-		int calcWidth = (allowedWidth / getCurrentStarfield().getSize().width) - 4;
-
-		// CalcHeight wird anhand der Höhe des Fensters berechnet
-		int allowedHeight = res.getHeight() - _menuBar.getHeight();
-		int calcHeight = (allowedHeight)
-				/ getCurrentStarfield().getSize().height - 14;
-
-		// Im Game oder Load_Game Mode muss die Breite der angezeigten Zahlen
-		// noch abgezogen werden.
-		switch (_gamePrefs.getAppMode()) {
-		case GAME_MODE:
-		case LOAD_GAME_MODE:
-			calcWidth -= 15;
-			calcHeight -= 15;
-			break;
-		}
-		// Mit dem kleineren der beiden Werte wird weitergerechnet
-		int calcSize = calcWidth;
-		if (calcHeight < calcWidth)
-			calcSize = calcHeight;
-
-		// Obergrenze festlegen
-		if (calcSize > ImageResources.getMaxSize())
-			calcSize = ImageResources.getMaxSize();
-		// Untergrenze festlegen
-		if (calcSize < ImageResources.getMinSize())
-			calcSize = ImageResources.getMinSize();
-
-		// errechnete Bildgröße festlegen
-		ImageResources.setScalingSize(calcSize);
 		// repaint der Elemente veranlassen
 		_mainWindow.validate();
-		// das Window wieder mittig platzieren
-		setLocationRelativeTo(null);
+		_mainWindow.repaint();
 	}
 
 	/**
@@ -164,7 +131,7 @@ public class MainWindow extends JFrame {
 							.actionPerformed(null);
 			}
 		});
-		setResizable(false);
+		// setResizable(false);
 		// ContentPane erstellen und Layout festlegen
 		_contentPane = new JPanel();
 		_contentPane.setLayout(new BorderLayout(0, 5));

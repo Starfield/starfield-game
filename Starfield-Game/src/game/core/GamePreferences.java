@@ -25,7 +25,7 @@ public class GamePreferences {
 	public GamePreferences() {
 		_appMode = AppMode.FIRST_START;
 		_loadedCommandStack = null;
-		_resolution = initResolution();
+		_resolution = Resolution.R800X600;
 	}
 
 	/**
@@ -41,9 +41,11 @@ public class GamePreferences {
 		R800X600(800, 600),
 		R1024X768(1024, 768),
 		R1280X800(1280, 800),
+		R1280X1024(1280, 1024),
 		R1366X768(1366, 768),
 		R1400X900(1400, 900),
-		R1680X1050(1680, 1050);
+		R1680X1050(1680, 1050),
+		R1900X1080(1900, 1080);
 
 		private final int width;
 		private final int height;
@@ -74,34 +76,6 @@ public class GamePreferences {
 	private File _starfieldFile;
 	/** aktuelle Auflösung */
 	private Resolution _resolution;
-
-	private Resolution initResolution() {
-
-		// Dimension currentScreenSize = Toolkit.getDefaultToolkit()
-		// .getScreenSize();
-		Resolution res = Resolution.R800X600;
-
-		// if (currentScreenSize.height >= Resolution.R800X600.height
-		// || currentScreenSize.width >= Resolution.R800X600.width)
-		// res = Resolution.R800X600;
-		// if (currentScreenSize.height >= Resolution.R1024X768.height
-		// || currentScreenSize.width >= Resolution.R1024X768.width)
-		// res = Resolution.R1024X768;
-		// if (currentScreenSize.height >= Resolution.R1280X800.height
-		// || currentScreenSize.width >= Resolution.R1280X800.width)
-		// res = Resolution.R1280X800;
-		// if (currentScreenSize.height >= Resolution.R1366X768.height
-		// || currentScreenSize.width >= Resolution.R1366X768.width)
-		// res = Resolution.R1366X768;
-		// if (currentScreenSize.height >= Resolution.R1400X900.height
-		// || currentScreenSize.width >= Resolution.R1400X900.width)
-		// res = Resolution.R1400X900;
-		// if (currentScreenSize.height >= Resolution.R1680X1050.height
-		// || currentScreenSize.width >= Resolution.R1680X1050.width)
-		// res = Resolution.R1680X1050;
-
-		return res;
-	}
 
 	/**
 	 * @return the {@link AppMode}
@@ -138,7 +112,10 @@ public class GamePreferences {
 		// neue Auflösung setzen
 		_resolution = pResolution;
 		// neuAufbau der GUI Elemente anstoßen
-		MainWindow.getInstance().renderElements();
+		MainWindow.getInstance().setSize(_resolution.getWidth(),
+				_resolution.getHeight());
+		MainWindow.getInstance().validate();
+		MainWindow.getInstance().setLocationRelativeTo(null);
 	}
 
 	/**
