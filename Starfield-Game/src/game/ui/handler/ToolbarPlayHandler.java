@@ -2,6 +2,7 @@ package game.ui.handler;
 
 import game.commands.RemoveMarkerCommand;
 import game.commands.RemoveMarkersCommand;
+import game.commands.RemoveMistakeCommand;
 import game.commands.SetMarkerCommand;
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
@@ -72,6 +73,17 @@ public class ToolbarPlayHandler implements ActionListener {
 						"Es wurde bisher noch keine Marker gesetzt!");
 			}
 		}
+		
+		if (cmd == "undoError") {
+            if (MainWindow.getInstance().getCommandStack().getMistake() != 0) {
+                RemoveMistakeCommand command = new RemoveMistakeCommand(
+                        MainWindow.getInstance().getCommandStack(), pE);
+                command.execute();                
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Es gibt keinen Fehler!");
+            }
+        }
 
 		if (cmd == "checkSolution") {
 			checkInput();

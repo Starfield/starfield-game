@@ -9,6 +9,7 @@ import game.ui.handler.ToolbarPlayHandler;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 
@@ -120,19 +121,31 @@ public class PlayToolbar extends JToolBar {
 		return panel;
 	}
  
-	private JPanel initCheck() {
-		// Internes Panel zur Ablage
-		JPanel panel = new JPanel();
-		// Rahmen festlegen
-		Border border = BorderFactory.createTitledBorder("Ergebnisüberprüfung");
-		panel.setBorder(border);
-		// Check Button hinzufügen
-		JButton button = new JButton("Eingaben überprüfen");
-		button.addActionListener(_playHandler);
-		button.setActionCommand("checkSolution");
-		panel.add(button);
-		return panel;
-	}
+    private JPanel initCheck() {
+
+        // Internes Panel zur Ablage
+        JPanel panel = new JPanel(new GridLayout(2,2));
+        // Rahmen festlegen
+        GridBagConstraints c = new GridBagConstraints();
+        Border border = BorderFactory.createTitledBorder("Ergebnisüberprüfung");
+        panel.setBorder(border);
+        // Check Button hinzufügen
+        JButton button = new JButton("Eingaben überprüfen");
+        button.addActionListener(_playHandler);
+        button.setActionCommand("checkSolution");
+        c.gridx = 0;
+        c.gridy = 2;
+        panel.add(button, c);
+        
+        // Zurück zum Fehler Button hinzufügen
+        button = new JButton("Zurück zum Fehler springen");
+        button.addActionListener(_playHandler);
+        button.setActionCommand("undoError");
+        c.gridx = 0;
+        c.gridy = 4;
+        panel.add(button, c);
+        return panel;
+    }
 	
 	public ArrayList<JLabel> getMarkerList(){
 		return this._markerList;
