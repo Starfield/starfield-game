@@ -4,12 +4,14 @@
 package game.ui;
 
 import game.core.ImageResources;
+import game.model.Field;
 import game.model.Starfield;
 import game.ui.handler.StarfieldViewHandler;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,7 +39,7 @@ public class StarfieldView extends JScrollPane {
 
 	private GridBagLayout _layout;
 
-	public StarfieldView(Starfield pStarfield) {
+	public StarfieldView(final Starfield pStarfield) {
 		super(_content);
 		setBorder(null);
 		_content.removeAll();
@@ -65,15 +67,15 @@ public class StarfieldView extends JScrollPane {
 		if (_starfield == null)
 			return;
 
-		Dimension size = _starfield.getSize();
+		final Dimension size = _starfield.getSize();
 		// Fields des Modell abbilden
 		for (int y = 0; y < size.getHeight(); y++) {
-			GridBagConstraints c = new GridBagConstraints();
+			final GridBagConstraints c = new GridBagConstraints();
 			c.anchor = GridBagConstraints.ABOVE_BASELINE;
 			for (int x = 0; x < size.getWidth(); x++) {
 				c.gridx = x + 1;
 				c.gridy = y + 1;
-				game.model.Field field = _starfield.getField(x, y);
+				final game.model.Field field = _starfield.getField(x, y);
 				// nach fünf spalten soll eine Linie kommen
 				// if (((x + 1) % 5) == 0) {
 				// c.ipadx = 4;
@@ -86,7 +88,8 @@ public class StarfieldView extends JScrollPane {
 				// } else {
 				// c.ipady = 0;
 				// }
-				field.addMouseListener(_handler);
+				if (!checkIfListenersRegistered(field))
+					field.addMouseListener(_handler);
 				_content.add(field, c);
 
 			}
@@ -99,34 +102,54 @@ public class StarfieldView extends JScrollPane {
 		case GAME_MODE:
 			createHintBorder(size);
 			break;
+		default:
+			break;
 		}
 	}
 
 	/**
 	 * @param size
 	 */
-	private void createHintBorder(Dimension size) {
+	private void createHintBorder(final Dimension size) {
 		// Anzahl der Sterne auf der UI anzeigen
 		// Oberer Rand
 		for (int x = 0; x < size.getWidth(); x++) {
-			GridBagConstraints c = new GridBagConstraints();
+			final GridBagConstraints c = new GridBagConstraints();
 			c.gridx = x + 1;
 			c.gridy = 0;
 			c.ipady = 5;
-			JLabel label = new JLabel("<html><font size='5'>"
+			final JLabel label = new JLabel("<html><font size='5'>"
 					+ _starfield.getStarCountX(x) + "</font></html>");
 			_content.add(label, c);
 		}
 		// Linker Rand
 		for (int y = 0; y < size.getHeight(); y++) {
-			GridBagConstraints c = new GridBagConstraints();
+			final GridBagConstraints c = new GridBagConstraints();
 			c.gridx = 0;
 			c.ipadx = 5;
 			c.gridy = y + 1;
-			JLabel label = new JLabel("<html><font size='5'>"
+			final JLabel label = new JLabel("<html><font size='5'>"
 					+ _starfield.getStarCountY(y) + "</font></html>");
 			_content.add(label, c);
 		}
+	}
+
+	/**
+	 * Diese Methode überprüft, ob auf diesem Feld bereits ein MouseListener
+	 * registriert ist.
+	 * 
+	 * @param pField
+	 *            - Das Feld
+	 * @return <code>true</code> wenn mindestens ein Listener gefunden,
+	 *         ansonsten <code>false</code>
+	 */
+	private boolean checkIfListenersRegistered(final Field pField) {
+		boolean registered = false;
+		final MouseListener[] listeners = pField.getMouseListeners();
+		if (listeners.length > 0)
+			registered = true;
+
+		return registered;
 	}
 
 	/**
@@ -143,13 +166,13 @@ public class StarfieldView extends JScrollPane {
 
 		if (_starfield != null) {
 			// CalcWidth wird anhand der Breite des Fenster berechnet
-			int allowedWidth = MainWindow.getInstance().getSize().width
+			final int allowedWidth = MainWindow.getInstance().getSize().width
 					- MainWindow.getInstance().getActiveToolBar()
 							.getPreferredSize().width;
 			int calcWidth = allowedWidth / _starfield.getSize().width - 8;
 
 			// CalcHeight wird anhand der Höhe des Fensters berechnet
-			int allowedHeight = MainWindow.getInstance().getSize().height
+			final int allowedHeight = MainWindow.getInstance().getSize().height
 					- MainWindow.getInstance().getJMenuBar().getHeight();
 			int calcHeight = allowedHeight / _starfield.getSize().height - 4;
 
@@ -161,6 +184,8 @@ public class StarfieldView extends JScrollPane {
 			case LOAD_GAME_MODE:
 				calcWidth -= 15;
 				calcHeight -= 15;
+				break;
+			default:
 				break;
 			}
 			// Mit dem kleineren der beiden Werte wird weitergerechnet

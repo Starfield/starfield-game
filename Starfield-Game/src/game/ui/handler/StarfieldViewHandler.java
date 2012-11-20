@@ -70,6 +70,8 @@ public class StarfieldViewHandler implements MouseListener {
 			case LOAD_EDIT_MODE:
 				command = handleEditEvent((Field) o, pE);
 				break;
+			default:
+				break;
 			}
 
 			// Ist das passende Command zur gewünschten Aktion ermittelt worden,
@@ -183,6 +185,8 @@ public class StarfieldViewHandler implements MouseListener {
 						toolbar.setPlayable(false);
 						return new SetArrowDownRightCommand(MainWindow
 								.getInstance().getCommandStack(), pE);
+					default:
+						break;
 					}
 				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR) {
 					toolbar.setPlayable(false);
