@@ -4,7 +4,6 @@
 package game.ui;
 
 import game.core.ImageResources;
-import game.model.Field;
 import game.model.Starfield;
 import game.ui.handler.StarfieldViewHandler;
 
@@ -88,8 +87,10 @@ public class StarfieldView extends JScrollPane {
 				// } else {
 				// c.ipady = 0;
 				// }
-				if (!checkIfListenersRegistered(field))
-					field.addMouseListener(_handler);
+				// if (!checkIfListenersRegistered(field))
+				for (MouseListener ml : field.getMouseListeners())
+					field.removeMouseListener(ml);
+				field.addMouseListener(_handler);
 				_content.add(field, c);
 
 			}
@@ -134,23 +135,23 @@ public class StarfieldView extends JScrollPane {
 		}
 	}
 
-	/**
-	 * Diese Methode überprüft, ob auf diesem Feld bereits ein MouseListener
-	 * registriert ist.
-	 * 
-	 * @param pField
-	 *            - Das Feld
-	 * @return <code>true</code> wenn mindestens ein Listener gefunden,
-	 *         ansonsten <code>false</code>
-	 */
-	private boolean checkIfListenersRegistered(final Field pField) {
-		boolean registered = false;
-		final MouseListener[] listeners = pField.getMouseListeners();
-		if (listeners.length > 0)
-			registered = true;
-
-		return registered;
-	}
+	// /**
+	// * Diese Methode überprüft, ob auf diesem Feld bereits ein MouseListener
+	// * registriert ist.
+	// *
+	// * @param pField
+	// * - Das Feld
+	// * @return <code>true</code> wenn mindestens ein Listener gefunden,
+	// * ansonsten <code>false</code>
+	// */
+	// private boolean checkIfListenersRegistered(final Field pField) {
+	// boolean registered = false;
+	// final MouseListener[] listeners = pField.getMouseListeners();
+	// if (listeners.length > 0)
+	// registered = true;
+	//
+	// return registered;
+	// }
 
 	/**
 	 * Liefert das aktuell angezeigte {@link Starfield}
