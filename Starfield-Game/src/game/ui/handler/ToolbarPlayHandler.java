@@ -4,8 +4,10 @@ import game.commands.RemoveMarkerCommand;
 import game.commands.RemoveMarkersCommand;
 import game.commands.RemoveMistakeCommand;
 import game.commands.SetMarkerCommand;
+import game.core.GamePreferences.AppMode;
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
+import game.model.Starfield;
 import game.ui.MainWindow;
 import game.ui.PlayToolbar;
 
@@ -73,17 +75,16 @@ public class ToolbarPlayHandler implements ActionListener {
 						"Es wurde bisher noch keine Marker gesetzt!");
 			}
 		}
-		
+
 		if (cmd == "undoError") {
-            if (MainWindow.getInstance().getCommandStack().getMistake() != 0) {
-                RemoveMistakeCommand command = new RemoveMistakeCommand(
-                        MainWindow.getInstance().getCommandStack(), pE);
-                command.execute();                
-            } else {
-                JOptionPane.showMessageDialog(null,
-                        "Es gibt keinen Fehler!");
-            }
-        }
+			if (MainWindow.getInstance().getCommandStack().getMistake() != 0) {
+				RemoveMistakeCommand command = new RemoveMistakeCommand(
+						MainWindow.getInstance().getCommandStack(), pE);
+				command.execute();
+			} else {
+				JOptionPane.showMessageDialog(null, "Es gibt keinen Fehler!");
+			}
+		}
 
 		if (cmd == "checkSolution") {
 			checkInput();
@@ -112,9 +113,29 @@ public class ToolbarPlayHandler implements ActionListener {
 
 	public void checkInput() {
 		if (MainWindow.getInstance().getCurrentStarfield().checkSolution()) {
-			JOptionPane.showMessageDialog(null, "Richtig!");
-		} else {
-			JOptionPane.showMessageDialog(null, "Falsch!");
+			String success = "<html><p>Herzlichen Glückwunsch</p><p>Sie haben das Spiel gewonnen</p><p></p><p>Wollen Sie das Replay ansehen?</p></html>";
+			if (JOptionPane.showConfirmDialog(MainWindow.getInstance(),
+					success, "Spiel erfolgreich beendet",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				// Das Starfield wird geleert und zwischengespeichert
+				Starfield starfield = MainWindow.getInstance()
+						.getCurrentStarfield();
+				starfield.clearUserContent();
+				starfield.prepareUserContent(true);
+				MainWindow.getInstance().getGamePrefs()
+						.setLoadedStarfield(starfield);
+				// Der aktuelle CommandStack wird zwischengespeichert
+				MainWindow
+						.getInstance()
+						.getGamePrefs()
+						.setLoadedCommandStack(
+								MainWindow.getInstance().getCommandStack());
+				// Die Replay Ansicht wird hergestellt
+				MainWindow.getInstance().getGamePrefs()
+						.setAppMode(AppMode.REPLAY_MODE);
+				MainWindow.getInstance().initGame();
+			}
+
 		}
 	}
 

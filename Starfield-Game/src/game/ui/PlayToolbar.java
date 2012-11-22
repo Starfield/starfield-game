@@ -42,9 +42,12 @@ public class PlayToolbar extends JToolBar {
 		// EventHandler erzeugen
 		_playHandler = new ToolbarPlayHandler();
 		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, VERTICAL));
+		BoxLayout layout = new BoxLayout(panel, VERTICAL);
+		panel.setLayout(layout);
+
 		panel.add(initMarker());
-		panel.add(initCheck());
+		panel.add(initError());
+
 		add(panel);
 	}
 
@@ -65,7 +68,8 @@ public class PlayToolbar extends JToolBar {
 		// Markervisualierung hinzufügen
 		_markerList = new ArrayList<JLabel>();
 
-		JLabel label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		JLabel label = new JLabel(
+				ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		_markerList.add(label);
 		c.gridx = 0;
 		c.gridy = 0;
@@ -99,7 +103,7 @@ public class PlayToolbar extends JToolBar {
 		c.gridy = 2;
 		c.gridwidth = 5;
 		panel.add(button, c);
-		
+
 		// Marker rücksprung Button hinzufügen
 		button = new JButton("zum letzten Marker zurück");
 		button.addActionListener(_playHandler);
@@ -108,8 +112,7 @@ public class PlayToolbar extends JToolBar {
 		c.gridy = 4;
 		c.gridwidth = 5;
 		panel.add(button, c);
-		
-		
+
 		// Marker entfernen Button hinzufügen
 		button = new JButton("Alle Marker entfernen");
 		button.addActionListener(_playHandler);
@@ -120,42 +123,36 @@ public class PlayToolbar extends JToolBar {
 		panel.add(button, c);
 		return panel;
 	}
- 
-    private JPanel initCheck() {
 
-        // Internes Panel zur Ablage
-        JPanel panel = new JPanel(new GridLayout(2,2));
-        // Rahmen festlegen
-        GridBagConstraints c = new GridBagConstraints();
-        Border border = BorderFactory.createTitledBorder("Ergebnisüberprüfung");
-        panel.setBorder(border);
-        // Check Button hinzufügen
-        JButton button = new JButton("Eingaben überprüfen");
-        button.addActionListener(_playHandler);
-        button.setActionCommand("checkSolution");
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(button, c);
-        
-        // Zurück zum Fehler Button hinzufügen
-        button = new JButton("Zurück zum Fehler springen");
-        button.addActionListener(_playHandler);
-        button.setActionCommand("undoError");
-        c.gridx = 0;
-        c.gridy = 4;
-        panel.add(button, c);
-        return panel;
-    }
-	
-	public ArrayList<JLabel> getMarkerList(){
+	private JPanel initError() {
+
+		// Internes Panel zur Ablage
+		JPanel panel = new JPanel(new GridLayout(2, 2));
+		// Rahmen festlegen
+		GridBagConstraints c = new GridBagConstraints();
+		Border border = BorderFactory.createTitledBorder("Fehlertracking");
+		panel.setBorder(border);
+
+		// Zurück zum Fehler Button hinzufügen
+		JButton button = new JButton("Zurück zum Fehler springen");
+		button.addActionListener(_playHandler);
+		button.setActionCommand("undoError");
+		c.gridx = 0;
+		c.gridy = 2;
+		panel.add(button, c);
+		return panel;
+	}
+
+	public ArrayList<JLabel> getMarkerList() {
 		return this._markerList;
 	}
 
 	public void setNextMarker() {
 		// Logik einfügen, dass beim Aufruf aus dem MarkerHandler das nächste
 		// Icon in der markerList auf "AN" gesetzt wird
-		_markerList.get(0).setIcon(ImageResources.getIcon(Images.ICON_MARKER_OFF));
-		
+		_markerList.get(0).setIcon(
+				ImageResources.getIcon(Images.ICON_MARKER_OFF));
+
 	}
 
 	public void removeLastMarker() {

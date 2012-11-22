@@ -21,6 +21,7 @@ import game.model.Field;
 import game.model.Field.AllowedContent;
 import game.ui.EditToolbar;
 import game.ui.MainWindow;
+import game.ui.PlayToolbar;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -78,6 +79,10 @@ public class StarfieldViewHandler implements MouseListener {
 			// kann es ausgeführt werden.
 			if (command != null) {
 				command.execute();
+				o = MainWindow.getInstance().getActiveToolBar();
+				if (o instanceof PlayToolbar) {
+					((PlayToolbar) o).get_playHandler().checkInput();
+				}
 			}
 
 		}

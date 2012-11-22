@@ -37,9 +37,9 @@ public class CloseApplicationAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pE) {
-		// Überprüfen ob nichtgespeicherte Änderungen vorliegen
-		// TODO
-		if (MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.FIRST_START) {
+		// TODO Überprüfen ob nichtgespeicherte Änderungen vorliegen
+		if (MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.FIRST_START
+				| MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.REPLAY_MODE) {
 			exitApplication();
 		}
 
@@ -76,6 +76,8 @@ public class CloseApplicationAction extends AbstractAction {
 		case LOAD_GAME_MODE:
 		case GAME_MODE:
 			saveAction = new SaveGameAction(null, null);
+			break;
+		default:
 			break;
 		}
 		if (saveAction != null)

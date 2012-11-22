@@ -20,7 +20,6 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
@@ -35,11 +34,11 @@ import javax.swing.WindowConstants;
  */
 public class MainWindow extends JFrame {
 
-	// Singleton:
+	/** Singleton-Instanz */
 	private static MainWindow _mainWindow;
 	// GameUI Elemente
 	/** Die MenüLeiste */
-	private JMenuBar _menuBar;
+	private MainMenuBar _menuBar;
 	/** Toolbar */
 	private JToolBar _toolbar;
 	/** StarfieldView */
@@ -97,7 +96,7 @@ public class MainWindow extends JFrame {
 		if (_gamePrefs.getAppMode() == AppMode.FIRST_START) {
 			_contentPane.setBackground(new Color(000066));
 			// eingestellte Auflösung auslesen
-			Resolution res = _gamePrefs.getResolution();
+			final Resolution res = _gamePrefs.getResolution();
 
 			// Auflösung des Window ändern
 			setSize(res.getWidth(), res.getHeight());
@@ -122,7 +121,7 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent pE) {
+			public void windowClosing(final WindowEvent pE) {
 				// Nur der Schließen-Button soll überschrieben werden
 				if (pE.getID() == WindowEvent.WINDOW_CLOSING)
 					// Soll nur die CloseAction aufrufen, benötigt keine GUI
@@ -171,6 +170,11 @@ public class MainWindow extends JFrame {
 		case LOAD_EDIT_MODE:
 			_toolbar = new EditToolbar();
 			break;
+		case REPLAY_MODE:
+			_toolbar = new ReplayToolbar();
+			break;
+		default:
+			break;
 		}
 
 		if (getGamePrefs().getAppMode() != AppMode.FIRST_START) {
@@ -206,6 +210,7 @@ public class MainWindow extends JFrame {
 			MainWindow.getInstance().getGamePrefs().removeStarfieldFile();
 			break;
 		case LOAD_GAME_MODE:
+		case REPLAY_MODE:
 			// Im LoadGameMode sind durch die Actions im Vorhinein die
 			// anzuzeigenden Elemente gesetzt worden
 			starfield = getGamePrefs().getLoadedStarfield();
@@ -218,6 +223,8 @@ public class MainWindow extends JFrame {
 		case EDIT_MODE:
 			starfield = new Starfield(5, 5);
 			setCommandStack(new CommandStack());
+			break;
+		default:
 			break;
 		}
 		_starfieldView = new StarfieldView(starfield);
@@ -233,7 +240,7 @@ public class MainWindow extends JFrame {
 		return _commandStack;
 	}
 
-	private void setCommandStack(CommandStack pCommandStack) {
+	private void setCommandStack(final CommandStack pCommandStack) {
 		_commandStack = pCommandStack;
 	}
 

@@ -34,7 +34,12 @@ public class GamePreferences {
 	 * werden.
 	 */
 	public enum AppMode {
-		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE, LOAD_EDIT_MODE, FIRST_START;
+		GAME_MODE,
+		LOAD_GAME_MODE,
+		EDIT_MODE,
+		LOAD_EDIT_MODE,
+		FIRST_START,
+		REPLAY_MODE;
 	}
 
 	public enum Resolution {
