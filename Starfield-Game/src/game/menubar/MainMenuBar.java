@@ -112,15 +112,15 @@ public class MainMenuBar extends JMenuBar {
 	}
 
 	private JMenu initOptions() {
-		MainMenuBarHandler handler = new MainMenuBarHandler();
+		final MainMenuBarHandler handler = new MainMenuBarHandler();
 		_options = new JMenu("Optionen");
-		JMenu resolution = new JMenu("Auflösung");
+		final JMenu resolution = new JMenu("Auflösung");
 		resolution.setIcon(ImageResources.getScaledIcon(24,
 				Images.ICON_DISPLAY_SIZE, Image.SCALE_SMOOTH));
 
 		boolean first = true;
-		for (Resolution res : Resolution.values()) {
-			JMenuItem item = new JMenuItem(res.getWidth() + " x "
+		for (final Resolution res : Resolution.values()) {
+			final JMenuItem item = new JMenuItem(res.getWidth() + " x "
 					+ res.getHeight());
 			item.setActionCommand(res.toString());
 			item.addActionListener(handler);
@@ -163,9 +163,10 @@ public class MainMenuBar extends JMenuBar {
 	 * @param pHeight
 	 *            die zu überprüfende Höhe
 	 */
-	private void enableItem(JMenuItem pItem, int pWidth, int pHeight) {
+	private void enableItem(final JMenuItem pItem, final int pWidth,
+			final int pHeight) {
 
-		Dimension displayDimension = Toolkit.getDefaultToolkit()
+		final Dimension displayDimension = Toolkit.getDefaultToolkit()
 				.getScreenSize();
 		boolean enable = true;
 		if (pWidth > displayDimension.getWidth())

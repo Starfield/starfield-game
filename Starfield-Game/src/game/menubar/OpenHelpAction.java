@@ -3,6 +3,8 @@
  */
 package game.menubar;
 
+import game.help.HelpWindow;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -32,7 +34,7 @@ public class OpenHelpAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent pArg0) {
 		// TODO HilfeSeite aufrufen
-		System.out.println("Hilfeseite noch nicht erstellt.");
+		HelpWindow.getInstance();
 	}
 
 }
