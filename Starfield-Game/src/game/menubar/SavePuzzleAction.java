@@ -89,7 +89,7 @@ public class SavePuzzleAction extends AbstractAction {
 								ObjectOutputStream oos = new ObjectOutputStream(fos);
 								oos.flush();
 								oos.writeObject(MainWindow.getInstance()
-										.getCurrentStarfield().copyUserToSolutionContent());
+										.getCurrentStarfield().copyUserToSolutionContent().setPlayable(MainWindow.getInstance().getCurrentStarfield().checkPlayable()));
 								oos.close();
 							} catch (IOException e) {
 								e.printStackTrace();
