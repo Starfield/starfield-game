@@ -2,6 +2,7 @@ package game.commands;
 
 import game.model.Field;
 import game.model.Field.AllowedContent;
+import game.ui.MainWindow;
 
 import java.awt.AWTEvent;
 
@@ -33,9 +34,7 @@ public class SetGrayedCommand extends AbstractCommand {
 	@Override
 	public void execute() {
 		super.execute();
-		if (this.getE().getSource() instanceof Field) {
-			((Field) this.getE().getSource()).setUserContent(AllowedContent.CONTENT_GRAYED);
-		}
+		((Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord())).setUserContent(AllowedContent.CONTENT_GRAYED);
 	}
 	
 	/**
@@ -44,9 +43,7 @@ public class SetGrayedCommand extends AbstractCommand {
 	@Override
 	public void undo() {
 		super.undo();
-		if (this.getE().getSource() instanceof Field) {
-			((Field) this.getE().getSource()).setUserContent(AllowedContent.CONTENT_EMPTY);
-		}
+		((Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord())).setUserContent(AllowedContent.CONTENT_EMPTY);
 	}
 
 }

@@ -2,6 +2,7 @@ package game.commands;
 
 import game.model.Field;
 import game.model.Field.AllowedContent;
+import game.ui.MainWindow;
 
 import java.awt.AWTEvent;
 
@@ -32,9 +33,7 @@ public class SetArrowDownCommand extends AbstractCommand {
 	 */
 	@Override
 	public void execute() {
-		if (this.getE().getSource() instanceof Field) {
-			((Field) this.getE().getSource()).setUserContent(AllowedContent.CONTENT_ARROW_D);
-		}
+		((Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord())).setUserContent(AllowedContent.CONTENT_ARROW_D);
 	}
 
 }

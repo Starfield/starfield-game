@@ -4,6 +4,7 @@ import java.awt.AWTEvent;
 
 import game.model.Field;
 import game.model.Field.AllowedContent;
+import game.ui.MainWindow;
 
 /**
  * Der SetStarCommand ist für das Setzen eines Sterns verantwortlich.
@@ -33,8 +34,10 @@ public class SetStarCommand extends AbstractCommand {
 	@Override
 	public void execute() {
 		super.execute();
-		if (this.getE().getSource() instanceof Field) {
-			((Field) this.getE().getSource()).setUserContent(AllowedContent.CONTENT_STAR);
+		Field f = (Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord());
+		f.setUserContent(AllowedContent.CONTENT_STAR);
+		if (!f.IsCurrentContentRight()) {
+			getStacks().addMistake();
 		}
 	}
 
@@ -44,9 +47,7 @@ public class SetStarCommand extends AbstractCommand {
 	@Override
 	public void undo() {
 		super.undo();
-		if (this.getE().getSource() instanceof Field) {
-			((Field) this.getE().getSource()).setUserContent(AllowedContent.CONTENT_EMPTY);
-		}
+		((Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord())).setUserContent(AllowedContent.CONTENT_EMPTY);
 	}
 
 }

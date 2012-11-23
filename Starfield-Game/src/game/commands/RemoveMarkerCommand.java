@@ -6,8 +6,7 @@ import game.ui.PlayToolbar;
 import java.awt.AWTEvent;
 
 /**
- * Der RemoveMarkerCommand ist für das Zurücksetzen auf den Spielstandes eines
- * Markers verantwortlich.
+ * Der RemoveMarkerCommand ist für das Zurücksetzen auf den Spielstandes eines Markers verantwortlich.
  * 
  * @author Nikolaj
  */
@@ -19,10 +18,10 @@ public class RemoveMarkerCommand extends AbstractCommand {
 	 * Konstruktor
 	 * 
 	 * @param stacks
-	 *            - CommandStack Referenz
+	 * - CommandStack Referenz
 	 * 
 	 * @param e
-	 *            - Das den Command aufrufende Event
+	 * - Das den Command aufrufende Event
 	 */
 	public RemoveMarkerCommand(CommandStack stacks, AWTEvent e) {
 		super(stacks, e);
@@ -35,8 +34,7 @@ public class RemoveMarkerCommand extends AbstractCommand {
 	public void execute() {
 		super.execute();
 		getStacks().goBack(true);
-		((PlayToolbar) MainWindow.getInstance().getActiveToolBar())
-				.get_playHandler().removeSingleMarker();
+		((PlayToolbar) MainWindow.getInstance().getActiveToolBar()).get_playHandler().removeSingleMarker();
 	}
 
 }

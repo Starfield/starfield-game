@@ -1,5 +1,7 @@
 package game.commands;
 
+import game.model.Field;
+
 import java.awt.AWTEvent;
 import java.io.Serializable;
 
@@ -15,8 +17,11 @@ public abstract class AbstractCommand implements Serializable {
 	/** Speichert eine Instanz des Command Stacks */
 	private CommandStack stacks = null;
 	
-	/** Speichert das beim Aufruf eines Commands erzeugte Event */
-	private AWTEvent e = null;
+	/** Speichert die X-Koordinate des Felds, auf welches der Command ausgeführt wurde */
+	private int xCoord = 0;
+
+	/** Speichert die Y-Koordinate des Felds, auf welches der Command ausgeführt wurde */
+	private int yCoord = 0;
 	
 	/**
 	 * Konstruktor
@@ -29,7 +34,10 @@ public abstract class AbstractCommand implements Serializable {
 	 */
 	public AbstractCommand(CommandStack stacks, AWTEvent e) {
 		this.stacks = stacks;
-		this.e = e;
+		if (e.getSource() instanceof Field) {
+			this.xCoord = ((Field)e.getSource()).getxPos();
+			this.yCoord = ((Field)e.getSource()).getyPos();
+		}
 	}
 	
 	/**
@@ -57,30 +65,23 @@ public abstract class AbstractCommand implements Serializable {
 	}
 
 	/**
-	 * @param stacks
-	 *  - Das CommandStack Element
+	 * Gibt die X-Koordinate des Felds, auf welches der Command ausgefüht wurde, zurück.
+	 * 
+	 * @return the xCoord
+	 * - X-Koordinate
 	 */
-	public void setStacks(CommandStack stacks) {
-		this.stacks = stacks;
+	public int getxCoord() {
+		return xCoord;
 	}
 
 	/**
-	 * Gibt das Event des Aufrufers zurück.
+	 * Gibt die Y-Koordinate des Felds, auf welches der Command ausgefüht wurde, zurück.
 	 * 
-	 * @return Das Event
+	 * @return the yCoord
+	 * - Y-Koordinate
 	 */
-	public AWTEvent getE() {
-		return e;
-	}
-
-	/**
-	 * Setzt das Event des Aufrufers.
-	 * 
-	 * @param e
-	 *  - Das Event
-	 */
-	public void setE(AWTEvent e) {
-		this.e = e;
+	public int getyCoord() {
+		return yCoord;
 	}
 
 }

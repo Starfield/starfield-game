@@ -23,8 +23,8 @@ public class CommandStack implements Serializable {
 	/** Liste der fünf individuell zu setzenden Marker. */
 	private ArrayList<Integer> marker = new ArrayList<Integer>();
 	
-	/** Position des ersten Fehlers im Play Stack. */
-	private int mistake = 0;
+	/** Liste aller fehlerhaften Eingaben des Nutzers */
+	private ArrayList<Integer> mistake = new ArrayList<Integer>();
 	
 	/** Korrespondierendes Starfield */
 	private File starfieldFile = null;
@@ -135,6 +135,49 @@ public class CommandStack implements Serializable {
 	}
 	
 	/**
+	 * Fügt einen Fehler zur Fehler ArrayList hinzu.
+	 * 
+	 * @param mistake
+	 * - Position des Fehlers im Playstack
+	 */
+	public void addMistake() {
+		this.mistake.add(playStack.size());
+	}
+	
+	/**
+	 * Ermittelt die Position im Playstack, an welchem der letzte Fehler begangen wurde.
+	 *  
+	 * @return
+	 * - Position des Fehlers im Playstack
+	 */
+	public int locateLastMistake() {
+		if (mistake.size() != 0) {
+			return mistake.get(mistake.size() - 1);
+		}
+		return 0;
+	}
+	
+	/**
+	 * Entfernt den Fehler an der angegeben Position
+	 * 
+	 * @param pos
+	 * - Position des Fehlers in der Fehler ArrayList
+	 */
+	public void removeMistake(int pos) {
+		this.mistake.remove(pos);
+	}
+	
+	/**
+	 * Gibt das Fehler Array zurück.
+	 * 
+	 * @return mistake
+	 * - Array mit Fehlern
+	 */
+	public ArrayList<Integer> getMistake() {
+		return mistake;
+	}
+
+	/**
 	 * Sorgt dafür, dass auf einen vom Parameter <b>marker</b> abhängigen Spielstand zurückgesetzt wird.<br>
 	 * <b>true</b> bedeutet, dass auf einen markierten, <b>false</b> auf einen fehlerfreien Spielstand zurückgesetzt werden soll.
 	 *  
@@ -149,7 +192,7 @@ public class CommandStack implements Serializable {
 			type = locateCurrentMarker();
 		}
 		else {
-			type = getMistake();
+			type = locateLastMistake();
 		}
 		
 		for (int i = stackSize - 1; i >= stackSize - (stackSize - type + 1); i--) {
@@ -162,25 +205,14 @@ public class CommandStack implements Serializable {
 	 * Führt das Laden eines Spielstands durch.
 	 */
 	public void loadSavegame() {
-		for (AbstractCommand command : playStack) {
-			command.execute();
+		int stackSize = playStack.size();
+		for (int i = 0; i < stackSize; i++) {
+			playStack.get(i).execute();
 		}
-	}
-
-	/**
-	 * Gibt die Position des ersten Fehlers im Play Stack zurück.
-	 * 
-	 * @return Position des ersten Fehlers im Play Stack
-	 */
-	public int getMistake() {
-		return mistake;
-	}
-
-	/**
-	 * Füllt das Attribut mistake, um zum letzten fehlerfreien Spielstand zurückkehren zu können.
-	 */
-	public void setMistake() {
-		this.mistake = playStack.size();
+		
+		for (int i = playStack.size() - 1; i >= stackSize; i--) {
+			playStack.remove(i);		
+		}
 	}
 
 	/**

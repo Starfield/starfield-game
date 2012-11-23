@@ -21,13 +21,13 @@ public class SetMarkerCommand extends AbstractCommand {
 	 * Konstruktor
 	 * 
 	 * @param stacks
-	 *            - CommandStack Referenz
+	 * - CommandStack Referenz
 	 * 
 	 * @param e
-	 *            - Das den Command aufrufende Event
+	 * - Das den Command aufrufende Event
 	 * 
 	 * @param number
-	 *            - Nummer des Markers
+	 * - Nummer des Markers
 	 */
 	public SetMarkerCommand(CommandStack stacks, AWTEvent e, int number) {
 		super(stacks, e);
@@ -41,8 +41,7 @@ public class SetMarkerCommand extends AbstractCommand {
 	public void execute() {
 		super.execute();
 		getStacks().addMarker(number);
-		((PlayToolbar) MainWindow.getInstance().getActiveToolBar())
-				.get_playHandler().setMarker();
+		((PlayToolbar) MainWindow.getInstance().getActiveToolBar()).get_playHandler().setMarker();
 	}
 
 	/**
