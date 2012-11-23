@@ -5,6 +5,7 @@ import game.model.Field.AllowedContent;
 import java.awt.Dimension;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Model/Logik des Starfields
@@ -21,7 +22,10 @@ public class Starfield implements Serializable {
 	private static final long serialVersionUID = 1L;
 	ArrayList<ArrayList<Field>> listcontainer;
 	Boolean playable;
-
+	HashSet<Field> arrows;
+	HashSet<Field> stars;
+	HashSet<Field> allSolutionStars; //alle Sterne zur KI-Überprüfung
+	HashSet<Field> grayed;
 	Dimension size;
 
 	public Starfield(int xNumber, int yNumber) {
@@ -42,8 +46,9 @@ public class Starfield implements Serializable {
 
 	}
 
-	public void setPlayable(Boolean playable) {
+	public Starfield setPlayable(Boolean playable) {
 		this.playable = playable;
+		return this;
 	}
 
 	public boolean isPlayable() {
@@ -153,14 +158,14 @@ public class Starfield implements Serializable {
 				if (listcontainer
 						.get(x)
 						.get(y)
-						.getUserContent()!=(AllowedContent.CONTENT_GRAYED))
-				{
-				if (listcontainer
-						.get(x)
-						.get(y)
 						.getUserContent()
 						!=(listcontainer.get(x).get(y)
-								.getSolutionContent())) {
+								.getSolutionContent()))
+				{
+				if  (listcontainer
+						.get(x)
+						.get(y)
+						.getUserContent()!=(AllowedContent.CONTENT_GRAYED)){
 					rightorwrong = false;
 				}}
 
@@ -599,4 +604,287 @@ public class Starfield implements Serializable {
 
 	}
 
+	/**
+	 * Falls die Reihe keine Sterne besitzt, setze sie in das HashSet grayed.
+	 */
+	private void setFieldsGrayInRowIfNoStars(int row) {
+		if (getStarCountY(row) == 0) {
+			for (int x = 0; x < listcontainer.size(); x++)
+				grayed.add(listcontainer.get(x).get(row));
+
+		}
+	}
+
+	/**
+	 * Falls die Spalte keine Sterne besitzt, setze sie in das HashSet grayed.
+	 */
+	private void setFieldsGrayInColumnIfNoStars(int column) {
+		if (getStarCountX(column) == 0) {
+			for (int y = 0; y < listcontainer.get(column).size(); y++)
+				grayed.add(listcontainer.get(column).get(y));
+		}
+	}
+
+	/**
+	 * Speichert alle Felder, auf die kein Arrow zeigt grau. 
+	 * Außerdem werden alle Sterne in allSoulitionStars gespeichert
+	 *  und alle Arrows im Hashset arrows.
+	 */
+	private void setAllFieldsGrayNoArrowPointed(){
+		for(ArrayList<Field> list: listcontainer){
+			for(Field field: list){
+				setAllSolutionStars(field);  
+				setArrowInHashSet(field);
+				setFieldGrayNoArrowPointed(field);
+			}
+		}
+	}
+	/**
+	 * Setzt falls ein Stern vorhanden ist ins allSolutionStars Hashset.
+	 */
+	private void setAllSolutionStars(Field field) {
+		if(field.solutionContent==AllowedContent.CONTENT_STAR){
+			allSolutionStars.add(field);
+		}
+		
+	}
+
+	/**
+	 * Guckt ob auf ein "nicht graues" Feld, Arrows zeigen.
+	 */
+	private void setFieldGrayNoArrowPointed(Field field) {
+		if (!grayed.contains(field)) { // Feld bereits ausgegraut
+			
+				if(!isFieldHitByArrow(field)){     	// teste ob ein Arrow aufs Feld zeigt
+				grayed.add(field);                  //auf das Feld zeigt kein Arrow > grau flag
+				}
+			} 
+		}
+
+	/**
+	 * Überprüft ob das Feld von einem passenden Pfeil getroffen wird
+	 * @return boolean isHit
+	 */
+	private boolean isFieldHitByArrow(Field field) {
+		Field outputField = field;
+		boolean isHit = false;
+		while (!(getField_UL(field) == (null))) { // linksoben checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_UL(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_DR) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_U(field) == (null))) { // oben checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_U(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_D) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_UR(field) == (null))) { // rechtsoben checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_UR(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_DL) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_R(field) == (null))) { // rechts checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_R(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_L) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_DR(field) == (null))) { // rechtsunten checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_DR(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_UL) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_D(field) == (null))) { // unten checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_D(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_U) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_DL(field) == (null))) { // linksunten checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_DL(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_UR) {
+				isHit = true;
+			}
+		}
+		field = outputField;
+		while (!(getField_L(field) == (null))) { // links checken ob ein
+													// passender Pfeil vorhanden
+													// ist
+			field = getField_L(field);
+			if (field.getSolutionContent() == AllowedContent.CONTENT_ARROW_R) {
+				isHit = true;
+			}
+
+		}
+
+		return isHit;
+	}
+	/**
+	 * Gibt leere Felder und Sterne in einer Reihe zurück und speichert . 
+	 */
+	private HashSet<Field> getEmptyFieldsInRow(int row){
+		HashSet<Field> fields = new HashSet<Field>();
+		for (int x = 0; x < size.width; x++) {
+			Field currentField = getField(x, row);
+			if(!(grayed.contains(currentField)||arrows.contains(currentField))){
+			if (currentField.getSolutionContent() == AllowedContent.CONTENT_EMPTY){ //Empty
+				fields.add(currentField);
+						}
+			}
+			}
+		return fields;
+		}
+	/**
+	 * Gibt leere und Sternen Felder in einer Spalte zurück. 
+	 */
+	private HashSet<Field> getEmptyFieldsInColumn(int column){
+		HashSet<Field> fields = new HashSet<Field>();
+		for (int y = 0; y < size.height; y++) {
+			Field currentField = getField(column, y);
+			if(!(grayed.contains(currentField)||arrows.contains(currentField))){  //Feldinhalt weder grau noch Arrow
+			if (currentField.getSolutionContent() == AllowedContent.CONTENT_EMPTY){ //Empty
+				fields.add(currentField);
+						}
+			}
+			}
+		
+		return fields;
+	}
+	/**
+	 * Falls in einer Reihe oder Spalte die Anzahl der Soll-Sterne den freien Felder(inkl. vorhandene Sterne) gleicht setze dortin Sterne.
+	 */
+	private void setStarCountEqualEmptyFields(){
+		for(int x=0; x<size.width; x++){           //Spalte
+			if(getEmptyFieldsInColumn(x).size()==getStarCountX(x)){ //freie Felder = Anzahl Soll-Sterne
+				for(Field field : getEmptyFieldsInColumn(x)){       //  setze Sterne 
+					if(!stars.contains(field)){			//falls noch kein Stern vorhanden ist
+						stars.add(field);             //fügt Stern der Hashmap zu
+					}
+				}
+			}
+		}
+		for(int y=0; y<size.height; y++){           //Reihe
+			if(getEmptyFieldsInRow(y).size()==getStarCountY(y)){ //freie Felder = Anzahl Soll-Sterne
+				for(Field field : getEmptyFieldsInRow(y)){       //  setze Sterne 
+					if(!stars.contains(field)){			//falls noch kein Stern vorhanden ist
+						stars.add(field);             //fügt Stern der Hashmap zu
+					}
+				}
+			}
+		}
+		
+	}
+	/**
+	 * Falls in einer Reihe alle Sterne gesetzt sind. Setze restlichen Felder grau.
+	 */
+	private void fillFullRowGray(int row){
+		int rowStarCount = 0;  // Anzahl gesetzte Sterne
+		for (int x = 0; x < size.width; x++) {
+				if(stars.contains(listcontainer.get(x).get(row))){ // zähle gesetzte Sterne
+					rowStarCount = rowStarCount + 1;
+				}
+			
+		}		
+			if(getStarCountY(row)== rowStarCount){           // Sternanzahl == gesetzte Sterne : Rest kann grau  
+				for (int x = 0; x < size.width; x++) {
+					if(!(stars.contains(listcontainer.get(x).get(row)))||!(arrows.contains(listcontainer.get(x).get(row)))||!(grayed.contains(listcontainer.get(x).get(row)))){ // Feld weder Stern,Arrow noch grau.
+						grayed.add(listcontainer.get(x).get(row)); //  setze grau
+					}
+				
+			}	
+			}
+	}
+	/**
+	 * Falls in einer Spalte alle Sterne gesetzt sind. Setze restlichen Felder grau.
+	 */
+	private void fillFullColumnGray(int column){
+		int rowStarCount = 0;  // Anzahl gesetzte Sterne
+		for (int y = 0; y < size.height; y++) {
+			if(stars.contains(listcontainer.get(column).get(y))){ // zähle gesetzte Sterne
+				rowStarCount = rowStarCount + 1; //
+			}
+		
+	}	
+		if(getStarCountX(column)== rowStarCount){           // Sternanzahl == gesetzte Sterne : Rest kann grau  
+			for (int y = 0; y < size.height; y++){
+				if(!(stars.contains(listcontainer.get(column).get(y)))||!(arrows.contains(listcontainer.get(column).get(y)))||!(grayed.contains(listcontainer.get(column).get(y)))){ //  // Feld weder Stern,Arrow noch grau.
+					grayed.add(listcontainer.get(column).get(y)); //  setze grau 
+				}
+			
+		}	
+		}
+	}
+	/**
+	 * Überprüft ob die AI das Rätsel fertig gelöst hat.
+	 */
+	private boolean isAIFinisehd(){ 
+
+		return allSolutionStars.containsAll(stars);
+	}
+	/**
+	 * Überprüfe ob Arrow, falls ja speichere in Arrowliste.
+	 */
+	private void setArrowInHashSet(Field field){
+		if(!(field.getSolutionContent()==AllowedContent.CONTENT_STAR)||!(field.getSolutionContent()==AllowedContent.CONTENT_EMPTY)){
+			arrows.add(field);
+		}
+	}
+	/**
+	 * Überprüft die Schwierigkeit und gibt sie aus.
+	 */
+	public void checkDifficulty(){
+		setFieldsGrayIfNoStars(0,0);  //!!alles grau, wo 0 drüber	
+		setAllFieldsGrayNoArrowPointed(); //alles grau, wo kein Pfeil drauf & Pfeile+LösungsSterne setzen
+		//Schleife
+		while(!isAIFinisehd()){
+		setStarCountEqualEmptyFields(); // freie Plätze = Anzahl Sterne > setze Sterne
+		}
+	}
+
+
+	
+	private void tryToSolve(){
+		for(ArrayList<Field> list: listcontainer){
+			for(Field field: list){
+		fillFullRowColumnGray(field.getxPos(),field.getyPos());
+		setFieldsGrayIfNoStars(field.getxPos(),field.getyPos());
+		
+	}}}
+
+	private void fillFullRowColumnGray(int column,int row) {
+		fillFullRowGray(row);
+		fillFullColumnGray(column);
+	}
+	/**
+	 * Setzt Reihen+Spalten mit einer 0 komplett grau.
+	 */
+	private void setFieldsGrayIfNoStars(int column, int row) {	
+		setFieldsGrayInRowIfNoStars(row);
+		setFieldsGrayInColumnIfNoStars(column);
+	
+}
 }
