@@ -248,6 +248,7 @@ public class EditToolbar extends JToolBar {
 		else
 			_playableLabel.setIcon(ImageResources
 					.getIcon(Images.ICON_PLAYABLE_FALSE));
+		MainWindow.getInstance().getCurrentStarfield().setPlayable(pTruth);
 	}
 
 	/**
