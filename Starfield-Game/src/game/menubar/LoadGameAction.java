@@ -54,6 +54,8 @@ public class LoadGameAction extends AbstractAction {
 		FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand",
 				"save");
 		jfc.setFileFilter(ff);
+		File dirfile = new File("Spielstand");
+		jfc.setCurrentDirectory(dirfile.getAbsoluteFile());
 		int fileok = 1;
 		do {
 			fileok = 1;
@@ -73,8 +75,6 @@ public class LoadGameAction extends AbstractAction {
 						ois.close();
 						if (o instanceof CommandStack) {
 							commandStack = (CommandStack) o;
-							MainWindow.getInstance().getGamePrefs()
-									.setLoadedCommandStack(commandStack);
 							File starfieldf = commandStack.getStarfieldFile();
 							if (starfieldf.exists()) {
 								fis = new FileInputStream(starfieldf);
@@ -83,12 +83,11 @@ public class LoadGameAction extends AbstractAction {
 								ois.close();
 								if (o instanceof Starfield) {
 									MainWindow.getInstance().getGamePrefs()
-											.setLoadedStarfield((Starfield) o);
+											.setLoadedStarfield(((Starfield) o).clearUserContent().prepareUserContent(true));
 									MainWindow.getInstance().getGamePrefs()
 											.setAppMode(AppMode.LOAD_GAME_MODE);
-									// Vor der Initialisierung muss der letzte
-									// Spielstand wiederhergestellt werden.
-									commandStack.loadSavegame();
+									MainWindow.getInstance().getGamePrefs()
+									.setLoadedCommandStack(commandStack);
 									MainWindow.getInstance().initGame();
 								} else {
 									JOptionPane

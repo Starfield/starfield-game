@@ -64,6 +64,8 @@ public class NewGameAction extends AbstractAction {
 		jfc.setFileHidingEnabled(true);
 		FileFilter ff = new FileNameExtensionFilter("Starfield-Puzzle", "star");
 		jfc.setFileFilter(ff);
+		File dirfile = new File("Puzzle");
+		jfc.setCurrentDirectory(dirfile.getAbsoluteFile());
 		// Nur laden wenn User OK geklickt hat
 		if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 			String temppfad = jfc.getSelectedFile().getAbsolutePath();
