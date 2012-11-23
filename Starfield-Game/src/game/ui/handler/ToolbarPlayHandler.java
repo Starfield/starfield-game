@@ -77,7 +77,7 @@ public class ToolbarPlayHandler implements ActionListener {
 		}
 
 		if (cmd == "undoError") {
-			if (MainWindow.getInstance().getCommandStack().getMistake() != 0) {
+			if (MainWindow.getInstance().getCommandStack().getMistake().size() != 0) {
 				RemoveMistakeCommand command = new RemoveMistakeCommand(
 						MainWindow.getInstance().getCommandStack(), pE);
 				command.execute();
