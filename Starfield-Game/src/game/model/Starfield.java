@@ -856,13 +856,14 @@ public class Starfield implements Serializable {
 	/**
 	 * Überprüft die Schwierigkeit und gibt sie aus.
 	 */
-	public void checkDifficulty(){
+	public String checkDifficulty(){
 		setFieldsGrayIfNoStars(0,0);  //!!alles grau, wo 0 drüber	
 		setAllFieldsGrayNoArrowPointed(); //alles grau, wo kein Pfeil drauf & Pfeile+LösungsSterne setzen
 		//Schleife
 		while(!isAIFinisehd()){
 		setStarCountEqualEmptyFields(); // freie Plätze = Anzahl Sterne > setze Sterne
 		}
+		return "Teststring";
 	}
 
 

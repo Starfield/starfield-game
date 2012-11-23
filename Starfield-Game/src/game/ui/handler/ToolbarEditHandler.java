@@ -87,5 +87,6 @@ public class ToolbarEditHandler implements ActionListener {
 	private void handleCheck(EditToolbar pToolbar) {
 		pToolbar.setPlayable(MainWindow.getInstance().getCurrentStarfield()
 				.checkPlayable());
+		pToolbar.changeDifficulty();
 	}
 }

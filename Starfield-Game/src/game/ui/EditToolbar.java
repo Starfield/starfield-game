@@ -44,6 +44,8 @@ public class EditToolbar extends JToolBar {
 	private JTextField _ySizeInput;
 	/** PlayableAnzeige */
 	private JLabel _playableLabel;
+	/** Schwierigkleitsanzeige */
+	private JLabel _difficultyLabel;
 
 	public EditToolbar() {
 		_editHandler = new ToolbarEditHandler();
@@ -154,6 +156,7 @@ public class EditToolbar extends JToolBar {
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(2, 2, 2, 2);
+		c.anchor = GridBagConstraints.WEST;
 		Border border = BorderFactory.createTitledBorder("Einstellungen");
 		panel.setBorder(border);
 
@@ -176,8 +179,7 @@ public class EditToolbar extends JToolBar {
 		panel.add(new JLabel("Größe:"), c);
 		// Textfield für x-Achsenlänge hinzufügen
 		_xSizeInput = new JTextField(2);
-		_xSizeInput
-				.setToolTipText("Breite einstellen (1 - 99)");
+		_xSizeInput.setToolTipText("Breite einstellen (1 - 99)");
 		// _xSizeInput.setText(Double.toString(MainWindow.getStarfieldView()
 		// .getCurrentStarfield().getSize().height));
 		c.gridx = 1;
@@ -187,8 +189,7 @@ public class EditToolbar extends JToolBar {
 		panel.add(new JLabel("x"), c);
 		// Textfield für y-Achsenlänge hinzufügen
 		_ySizeInput = new JTextField(2);
-		_ySizeInput
-				.setToolTipText("Höhe einstellen (1 - 99)");
+		_ySizeInput.setToolTipText("Höhe einstellen (1 - 99)");
 		// _ySizeInput.setText(Double.toString(MainWindow.getStarfieldView()
 		// .getCurrentStarfield().getSize().width));
 		c.gridx = 3;
@@ -220,6 +221,19 @@ public class EditToolbar extends JToolBar {
 		c.gridx = 4;
 		button.setActionCommand("CHECK");
 		panel.add(button, c);
+
+		// Label für Schwierigkeit
+		JLabel label = new JLabel("Schwierigkeit:");
+
+		c.gridx = 0;
+		c.gridwidth = 4;
+		c.gridy = 4;
+		panel.add(label, c);
+
+		// Difficulty anzeigen
+		_difficultyLabel = new JLabel("Nicht geprüft!");
+		c.gridy = 5;
+		panel.add(_difficultyLabel, c);
 
 	}
 
@@ -287,6 +301,12 @@ public class EditToolbar extends JToolBar {
 		}
 
 		return size;
+	}
+
+	public void changeDifficulty() {
+
+		_difficultyLabel.setText(MainWindow.getInstance().getCurrentStarfield()
+				.checkDifficulty());
 	}
 
 }
