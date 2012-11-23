@@ -215,6 +215,7 @@ public class MainWindow extends JFrame {
 			// anzuzeigenden Elemente gesetzt worden
 			starfield = getGamePrefs().getLoadedStarfield();
 			setCommandStack(getGamePrefs().getLoadedCommandStack());
+			break;
 		case LOAD_EDIT_MODE:
 			starfield = getGamePrefs().getLoadedStarfield();
 			getGamePrefs().removeLoadedStarfield();
@@ -228,6 +229,10 @@ public class MainWindow extends JFrame {
 			break;
 		}
 		_starfieldView = new StarfieldView(starfield);
+		// Soll ein Spiel geladen werden, muss der UserStand wiederhergestellt
+		// werden
+		if (_gamePrefs.getAppMode() == AppMode.LOAD_GAME_MODE)
+			_commandStack.loadSavegame();
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
 
 	}
