@@ -41,6 +41,8 @@ public class MainWindow extends JFrame {
 	private MainMenuBar _menuBar;
 	/** Toolbar */
 	private JToolBar _toolbar;
+	/** Statusleiste */
+	private StatusBar _statusbar;
 	/** StarfieldView */
 	private StarfieldView _starfieldView;
 
@@ -76,10 +78,14 @@ public class MainWindow extends JFrame {
 	 * Folgende Schritte müssen vor jedem neuen Spiel erneut aufgerufen werden
 	 */
 	public void initGame() {
+		if (_statusbar != null)
+			_statusbar.close();
 		// alte Elemente entfernen
 		_contentPane.removeAll();
 		// Toolbar anzeigen
 		initToolbar();
+		// Statusleiste anzeigen
+		initStatusbar();
 		// Starfield und CommandStack erzeugen
 		initStarfieldView();
 		// Optionen für die Platzierung auf dem Bildschirm
@@ -133,7 +139,7 @@ public class MainWindow extends JFrame {
 		// setResizable(false);
 		// ContentPane erstellen und Layout festlegen
 		_contentPane = new JPanel();
-		_contentPane.setLayout(new BorderLayout(0, 5));
+		_contentPane.setLayout(new BorderLayout(3, 3));
 		setContentPane(_contentPane);
 
 	}
@@ -180,6 +186,29 @@ public class MainWindow extends JFrame {
 		if (getGamePrefs().getAppMode() != AppMode.FIRST_START) {
 			_contentPane.add(_toolbar, BorderLayout.LINE_START);
 		}
+	}
+
+	/**
+	 * Erstellt die Statusbar, die Informationen für den User anzeigt.
+	 */
+	private void initStatusbar() {
+		_statusbar = null;
+		// Anhand des AppMode entscheiden ob die Statusbar gesetzt wird
+		switch (getGamePrefs().getAppMode()) {
+		case FIRST_START:
+			return;
+		case LOAD_GAME_MODE:
+		case GAME_MODE:
+			_statusbar = new StatusBar();
+			break;
+		case EDIT_MODE:
+		case LOAD_EDIT_MODE:
+			break;
+		default:
+			break;
+		}
+		if (_statusbar != null)
+			_contentPane.add(_statusbar, BorderLayout.SOUTH);
 	}
 
 	/**
@@ -265,6 +294,15 @@ public class MainWindow extends JFrame {
 	 */
 	public JToolBar getActiveToolBar() {
 		return _toolbar;
+	}
+
+	/**
+	 * Liefert die Statusbar
+	 * 
+	 * @return - die Statusbar
+	 */
+	public StatusBar getStatusBar() {
+		return _statusbar;
 	}
 
 	/**

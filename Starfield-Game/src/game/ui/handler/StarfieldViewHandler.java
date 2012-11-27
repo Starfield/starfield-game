@@ -22,6 +22,7 @@ import game.model.Field.AllowedContent;
 import game.ui.EditToolbar;
 import game.ui.MainWindow;
 import game.ui.PlayToolbar;
+import game.ui.StatusBar;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -79,10 +80,16 @@ public class StarfieldViewHandler implements MouseListener {
 			// kann es ausgeführt werden.
 			if (command != null) {
 				command.execute();
+				o = MainWindow.getInstance().getStatusBar();
+				if (o instanceof StatusBar)
+					((StatusBar) o).increaseMove();
 				o = MainWindow.getInstance().getActiveToolBar();
 				if (o instanceof PlayToolbar) {
 					((PlayToolbar) o).get_playHandler().checkInput();
 				}
+				if (o instanceof EditToolbar)
+					((EditToolbar) o).setPlayable(MainWindow.getInstance()
+							.getCurrentStarfield().checkPlayable(), true);
 			}
 
 		}
@@ -129,11 +136,9 @@ public class StarfieldViewHandler implements MouseListener {
 			// Linke Maustaste
 			if (pE.getButton() == MouseEvent.BUTTON1) {
 				if (field.getUserContent() == AllowedContent.CONTENT_EMPTY) {
-					toolbar.setPlayable(false);
 					return new SetStarCommand(MainWindow.getInstance()
 							.getCommandStack(), pE);
 				} else if (field.getUserContent() == AllowedContent.CONTENT_STAR) {
-					toolbar.setPlayable(false);
 					return new RemoveStarCommand(MainWindow.getInstance()
 							.getCommandStack(), pE);
 				}
@@ -146,7 +151,6 @@ public class StarfieldViewHandler implements MouseListener {
 
 					if (field.getUserContent().toString()
 							.startsWith("CONTENT_ARROW")) {
-						toolbar.setPlayable(false);
 						return new RemoveArrowCommand(MainWindow.getInstance()
 								.getCommandStack(), pE);
 					}
@@ -159,45 +163,35 @@ public class StarfieldViewHandler implements MouseListener {
 						&& field.getUserContent() != AllowedContent.CONTENT_STAR) {
 					switch (toolbar.getSelectedArrow()) {
 					case CONTENT_ARROW_UL:
-						toolbar.setPlayable(false);
 						return new SetArrowUpLeftCommand(MainWindow
 								.getInstance().getCommandStack(), pE);
 					case CONTENT_ARROW_U:
-						toolbar.setPlayable(false);
 						return new SetArrowUpCommand(MainWindow.getInstance()
 								.getCommandStack(), pE);
 					case CONTENT_ARROW_UR:
-						toolbar.setPlayable(false);
 						return new SetArrowUpRightCommand(MainWindow
 								.getInstance().getCommandStack(), pE);
 					case CONTENT_ARROW_L:
-						toolbar.setPlayable(false);
 						return new SetArrowLeftCommand(MainWindow.getInstance()
 								.getCommandStack(), pE);
 					case CONTENT_ARROW_R:
-						toolbar.setPlayable(false);
 						return new SetArrowRightCommand(MainWindow
 								.getInstance().getCommandStack(), pE);
 					case CONTENT_ARROW_DL:
-						toolbar.setPlayable(false);
 						return new SetArrowDownLeft(MainWindow.getInstance()
 								.getCommandStack(), pE);
 					case CONTENT_ARROW_D:
-						toolbar.setPlayable(false);
 						return new SetArrowDownCommand(MainWindow.getInstance()
 								.getCommandStack(), pE);
 					case CONTENT_ARROW_DR:
-						toolbar.setPlayable(false);
 						return new SetArrowDownRightCommand(MainWindow
 								.getInstance().getCommandStack(), pE);
 					default:
 						break;
 					}
-				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR) {
-					toolbar.setPlayable(false);
+				} else if (field.getUserContent() != AllowedContent.CONTENT_STAR)
 					return new RemoveArrowCommand(MainWindow.getInstance()
 							.getCommandStack(), pE);
-				}
 
 			}
 		}

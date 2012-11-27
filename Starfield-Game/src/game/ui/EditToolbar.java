@@ -255,13 +255,18 @@ public class EditToolbar extends JToolBar {
 		return _selectedArrow;
 	}
 
-	public void setPlayable(boolean pTruth) {
-		if (pTruth)
+	public void setPlayable(boolean pTruth, boolean fromUserChange) {
+		if (fromUserChange) {
 			_playableLabel.setIcon(ImageResources
-					.getIcon(Images.ICON_PLAYABLE_TRUE));
-		else
-			_playableLabel.setIcon(ImageResources
-					.getIcon(Images.ICON_PLAYABLE_FALSE));
+					.getIcon(Images.ICON_PLAYABLE_UNSURE));
+		} else {
+			if (pTruth)
+				_playableLabel.setIcon(ImageResources
+						.getIcon(Images.ICON_PLAYABLE_TRUE));
+			else
+				_playableLabel.setIcon(ImageResources
+						.getIcon(Images.ICON_PLAYABLE_FALSE));
+		}
 		MainWindow.getInstance().getCurrentStarfield().setPlayable(pTruth);
 	}
 

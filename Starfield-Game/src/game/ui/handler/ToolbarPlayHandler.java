@@ -113,9 +113,26 @@ public class ToolbarPlayHandler implements ActionListener {
 
 	public void checkInput() {
 		if (MainWindow.getInstance().getCurrentStarfield().checkSolution()) {
-			String success = "<html><p>Herzlichen Glückwunsch</p><p>Sie haben das Spiel gewonnen</p><p></p><p>Wollen Sie das Replay ansehen?</p></html>";
+			// Uhr anhalten
+			String time = MainWindow.getInstance().getStatusBar().stopClock();
+			String moves = MainWindow.getInstance().getStatusBar()
+					.getMoveCount();
+			// Meldung ausgeben
+			StringBuilder success = new StringBuilder();
+			success.append("<html>");
+
+			success.append("<p>Herzlichen Glückwunsch!</p>");
+			success.append("<p>Sie haben das Spiel gewonnen</p>");
+			success.append("<br>");
+			success.append("<p>Bearbeitungszeit  : " + time + "</p>");
+			success.append("<p>benötigte Aktionen: " + moves + "</p>");
+			success.append("<br><br>");
+			success.append("<p>Wollen Sie das Replay ansehen?</p>");
+
+			success.append("</html>");
+
 			if (JOptionPane.showConfirmDialog(MainWindow.getInstance(),
-					success, "Spiel erfolgreich beendet",
+					success.toString(), "Spiel erfolgreich beendet",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				// Das Starfield wird geleert und zwischengespeichert
 				Starfield starfield = MainWindow.getInstance()
