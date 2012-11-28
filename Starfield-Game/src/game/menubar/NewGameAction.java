@@ -67,10 +67,14 @@ public class NewGameAction extends AbstractAction {
 		jfc.setFileFilter(ff);
 		File dirfile = new File("Puzzle");
 		jfc.setCurrentDirectory(dirfile.getAbsoluteFile());
+		StarfieldPreviewComponent previewComp = new StarfieldPreviewComponent();
+		jfc.setAccessory(previewComp);
+		jfc.addPropertyChangeListener(previewComp);
+
 		// Nur laden wenn User OK geklickt hat
-		int w=0;
-		do{
-			w=0;
+		int w = 0;
+		do {
+			w = 0;
 			if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 				String temppfad = jfc.getSelectedFile().getAbsolutePath();
 				if (temppfad.endsWith(".star")) {
@@ -80,11 +84,12 @@ public class NewGameAction extends AbstractAction {
 						ObjectInputStream ois = new ObjectInputStream(fis);
 						Object o = ois.readObject();
 						if (o instanceof Starfield) {
-							if( ((Starfield) o).isPlayable()){
+							if (((Starfield) o).isPlayable()) {
 								// Starfield zur Bearbeitung vorbereiten
 								((Starfield) o).clearUserContent();
 								((Starfield) o).prepareUserContent(true);
-								// Starfield in die GamePrefs zur Abholung bereit
+								// Starfield in die GamePrefs zur Abholung
+								// bereit
 								// stellen
 								MainWindow.getInstance().getGamePrefs()
 										.setLoadedStarfield((Starfield) o);
@@ -93,28 +98,33 @@ public class NewGameAction extends AbstractAction {
 								MainWindow.getInstance().getGamePrefs()
 										.setAppMode(AppMode.GAME_MODE);
 								MainWindow.getInstance().initGame();
-							}
-							else{
-								int auswahl = JOptionPane.showConfirmDialog(null, "Wollen Sie ein anderes Puzzle laden?", "Puzzle nicht spielbar", JOptionPane.YES_NO_OPTION);
-								switch (auswahl){
+							} else {
+								int auswahl = JOptionPane.showConfirmDialog(
+										null,
+										"Wollen Sie ein anderes Puzzle laden?",
+										"Puzzle nicht spielbar",
+										JOptionPane.YES_NO_OPTION);
+								switch (auswahl) {
 								case 0:
-									w=1;
+									w = 1;
 									break;
 								case 1:
-									w=0;
+									w = 0;
 									break;
 								}
-									
+
 							}
-						}
-						else{
-							int auswahl2 = JOptionPane.showConfirmDialog(null, "Wollen Sie ein anderes Puzzle laden?", "Datei nicht lesbar", JOptionPane.YES_NO_OPTION);
-							switch (auswahl2){
+						} else {
+							int auswahl2 = JOptionPane.showConfirmDialog(null,
+									"Wollen Sie ein anderes Puzzle laden?",
+									"Datei nicht lesbar",
+									JOptionPane.YES_NO_OPTION);
+							switch (auswahl2) {
 							case 0:
-								w=1;
+								w = 1;
 								break;
 							case 1:
-								w=0;
+								w = 0;
 								break;
 							}
 						}
@@ -124,6 +134,6 @@ public class NewGameAction extends AbstractAction {
 					}
 				}
 			}
-		}while(w==1);
+		} while (w == 1);
 	}
 }

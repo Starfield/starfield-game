@@ -13,9 +13,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseListener;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 
 /**
  * Das eigentliche Spielfeld <br>
@@ -173,18 +176,30 @@ public class StarfieldView extends JScrollPane {
 
 		if (_starfield != null) {
 			// CalcWidth wird anhand der Breite des Fenster berechnet
-			final int allowedWidth = MainWindow.getInstance().getSize().width
-					- MainWindow.getInstance().getActiveToolBar().getWidth();
-			int calcWidth = allowedWidth / _starfield.getSize().width - 6;
+			int allowedWidth = MainWindow.getInstance().getSize().width;
+			int allowedHeight = MainWindow.getInstance().getSize().height;
 
-			// CalcHeight wird anhand der Höhe des Fensters berechnet
-			int allowedHeight = MainWindow.getInstance().getActiveToolBar()
-					.getHeight()
-					- MainWindow.getInstance().getJMenuBar().getHeight();
-			if (MainWindow.getInstance().getStatusBar() != null)
+			// Größe der Toolbar abziehen
+			JToolBar toolbar = MainWindow.getInstance().getActiveToolBar();
+			if (toolbar != null) {
+				allowedWidth -= toolbar.getWidth();
+			}
+
+			// Größe der JMenuBar abziehen
+			JMenuBar menubar = MainWindow.getInstance().getJMenuBar();
+			if (menubar != null) {
+				allowedHeight -= menubar.getHeight();
+			}
+
+			// Größe der Statusbar abziehen
+			StatusBar statusbar = MainWindow.getInstance().getStatusBar();
+			if (statusbar != null)
 				allowedHeight -= MainWindow.getInstance().getStatusBar()
 						.getHeight();
-			int calcHeight = allowedHeight / _starfield.getSize().height;
+
+			// Einzelne Kantenlänge berechnen
+			int calcWidth = allowedWidth / _starfield.getSize().width - 5;
+			int calcHeight = allowedHeight / _starfield.getSize().height - 8;
 
 			// Im Game oder Load_Game Mode muss die Breite der angezeigten
 			// Zahlen
@@ -226,5 +241,9 @@ public class StarfieldView extends JScrollPane {
 		}
 
 		super.repaint();
+	}
+
+	public JComponent getContent() {
+		return _content;
 	}
 }
