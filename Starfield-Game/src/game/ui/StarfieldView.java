@@ -42,6 +42,9 @@ public class StarfieldView extends JScrollPane {
 
 	private GridBagLayout _layout;
 
+	/** Size der HintBorder */
+	private Dimension _hintBorderSize = new Dimension(0, 0);
+
 	public StarfieldView(final Starfield pStarfield) {
 		super(_content);
 		setBorder(null);
@@ -130,6 +133,7 @@ public class StarfieldView extends JScrollPane {
 			c.ipady = 5;
 			final JLabel label = new JLabel("<html><font size='5'>"
 					+ _starfield.getStarCountX(x) + "</font></html>");
+			_hintBorderSize = label.getPreferredSize();
 			_content.add(label, c);
 		}
 		// Linker Rand
@@ -176,8 +180,10 @@ public class StarfieldView extends JScrollPane {
 
 		if (_starfield != null) {
 			// CalcWidth wird anhand der Breite des Fenster berechnet
-			int allowedWidth = MainWindow.getInstance().getSize().width;
-			int allowedHeight = MainWindow.getInstance().getSize().height;
+			int allowedWidth = MainWindow.getInstance().getContentPane()
+					.getSize().width;
+			int allowedHeight = MainWindow.getInstance().getContentPane()
+					.getSize().height;
 
 			// Größe der Toolbar abziehen
 			JToolBar toolbar = MainWindow.getInstance().getActiveToolBar();
@@ -193,17 +199,21 @@ public class StarfieldView extends JScrollPane {
 
 			// Größe der Statusbar abziehen
 			StatusBar statusbar = MainWindow.getInstance().getStatusBar();
-			if (statusbar != null)
-				allowedHeight -= MainWindow.getInstance().getStatusBar()
-						.getHeight();
+			if (statusbar != null) {
+				allowedHeight -= statusbar.getHeight();
+			}
 
 			// Dicke der Border abziehen
-			allowedHeight -= (_starfield.getSize().height - 1) * 2;
-			allowedWidth -= (_starfield.getSize().width - 1) * 2;
+			allowedHeight -= _starfield.getSize().height * 2;
+			allowedWidth -= _starfield.getSize().width * 2;
+
+			// HintBorder abziehen
+			allowedHeight -= _hintBorderSize.height;
+			allowedWidth -= _hintBorderSize.width;
 
 			// Einzelne Kantenlänge berechnen
-			int calcWidth = allowedWidth / _starfield.getSize().width - 5;
-			int calcHeight = allowedHeight / _starfield.getSize().height - 8;
+			int calcWidth = allowedWidth / _starfield.getSize().width;
+			int calcHeight = allowedHeight / _starfield.getSize().height;
 
 			// Im Game oder Load_Game Mode muss die Breite der angezeigten
 			// Zahlen

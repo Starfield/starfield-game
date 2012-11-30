@@ -151,6 +151,11 @@ public class ToolbarPlayHandler implements ActionListener {
 				MainWindow.getInstance().getGamePrefs()
 						.setAppMode(AppMode.REPLAY_MODE);
 				MainWindow.getInstance().initGame();
+			} else {
+				// Wird nein geklickt, wird der Splashscreen aufgerufen
+				MainWindow.getInstance().getGamePrefs()
+						.setAppMode(AppMode.FIRST_START);
+				MainWindow.getInstance().initGame();
 			}
 
 		}

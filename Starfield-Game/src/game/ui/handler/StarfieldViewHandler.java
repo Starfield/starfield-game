@@ -221,13 +221,17 @@ public class StarfieldViewHandler implements MouseListener {
 			// kann es ausgeführt werden.
 			if (command != null) {
 				command.execute();
+				// Gibt es eine Statusbar, werden die SpielerAktionen
+				// aktualisiert
 				o = MainWindow.getInstance().getStatusBar();
 				if (o instanceof StatusBar)
 					((StatusBar) o).increaseMove();
+				// Im Spielmodus wird überprüft ob das Spiel gewonnen ist
 				o = MainWindow.getInstance().getActiveToolBar();
 				if (o instanceof PlayToolbar) {
 					((PlayToolbar) o).get_playHandler().checkInput();
 				}
+				// Im Editmodus wird überprüft, ob das Spielfeld lösbar ist
 				if (o instanceof EditToolbar)
 					((EditToolbar) o).setPlayable(MainWindow.getInstance()
 							.getCurrentStarfield().checkPlayable(), true);

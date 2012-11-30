@@ -107,6 +107,9 @@ public class MainWindow extends JFrame {
 			// Auflösung des Window ändern
 			setSize(res.getWidth(), res.getHeight());
 			setLocationRelativeTo(null);
+			if (_mainWindow != null) {
+				_mainWindow.validate();
+			}
 			return;
 		}
 

@@ -166,4 +166,11 @@ public class PlayToolbar extends JToolBar {
 	public ToolbarPlayHandler get_playHandler() {
 		return _playHandler;
 	}
+
+	// public void removeListeners() {
+	// getc
+	// for (Component c : this.getComponents()) {
+	// c.remove
+	// }
+	// }
 }
