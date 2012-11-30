@@ -84,10 +84,10 @@ public class MainWindow extends JFrame {
 		_contentPane.removeAll();
 		// Toolbar anzeigen
 		initToolbar();
-		// Statusleiste anzeigen
-		initStatusbar();
 		// Starfield und CommandStack erzeugen
 		initStarfieldView();
+		// Statusleiste anzeigen
+		initStatusbar();
 		// Optionen für die Platzierung auf dem Bildschirm
 		renderElements();
 

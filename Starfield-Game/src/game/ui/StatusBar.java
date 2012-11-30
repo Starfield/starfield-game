@@ -3,6 +3,8 @@
  */
 package game.ui;
 
+import game.commands.CommandStack;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Date;
@@ -32,9 +34,16 @@ public class StatusBar extends JPanel {
 	/** Ladebalken */
 	private JProgressBar _progress;
 	/** Anzahl Moves */
-	private JLabel _moves;
+	private JLabel _movesLabel;
 	/** Zeitanzeige */
-	private JLabel _time;
+	private JLabel _timeLabel;
+	/** Zeit */
+	private long _time;
+	/** bisher gebrauchte Zeit beim laden */
+	private long _timeOffset;
+	private int _moves;
+	/** bisher gebrauchte Aktionen beim Laden */
+	private int _movesOffset;
 	/** Startzeit */
 	private final Date _startTime = new Date();
 	/** der Zeitthread */
@@ -43,6 +52,12 @@ public class StatusBar extends JPanel {
 	public StatusBar() {
 		BorderLayout layout = new BorderLayout(2, 2);
 		setLayout(layout);
+		// Zeit und Aktionen aus dem CommandStack laden
+		Object o = MainWindow.getInstance().getCommandStack();
+		if (o instanceof CommandStack) {
+			_timeOffset = ((CommandStack) o).getTime();
+			_movesOffset = ((CommandStack) o).getAttempts();
+		}
 		initPrefs();
 		setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		stopProgress();
@@ -76,8 +91,8 @@ public class StatusBar extends JPanel {
 		JPanel panel = new JPanel();
 
 		panel.add(new JLabel("Aktionen: "));
-		_moves = new JLabel("0");
-		panel.add(_moves);
+		_movesLabel = new JLabel(String.valueOf(_movesOffset));
+		panel.add(_movesLabel);
 
 		return panel;
 	}
@@ -86,8 +101,13 @@ public class StatusBar extends JPanel {
 	 * Setzt den Versuchszähler um eins nach oben
 	 */
 	public void increaseMove() {
-		int moves = Integer.parseInt(_moves.getText());
-		_moves.setText(String.valueOf(moves + 1));
+		_moves += 1;
+		_movesLabel.setText(getMoveCount());
+		// Zeit in CommandStack speichern
+		Object o = MainWindow.getInstance().getCommandStack();
+		if (o instanceof CommandStack) {
+			((CommandStack) o).setAttempts(_moves + _movesOffset);
+		}
 	}
 
 	/**
@@ -96,7 +116,8 @@ public class StatusBar extends JPanel {
 	 * @return - die Anzahl der Aktionen
 	 */
 	public String getMoveCount() {
-		return _moves.getText();
+		int sumMoves = _moves + _movesOffset;
+		return String.valueOf(sumMoves);
 	}
 
 	/**
@@ -110,11 +131,9 @@ public class StatusBar extends JPanel {
 		// Erklärungstext
 		panel.add(new JLabel("Zeit: "));
 		// laufender Ticker
-		_time = new JLabel();
-		panel.add(_time);
+		_timeLabel = new JLabel();
+		panel.add(_timeLabel);
 		_cThread = new ClockThread();
-		// sec anzeige
-		panel.add(new JLabel(" Sekunden"));
 		return panel;
 	}
 
@@ -123,6 +142,7 @@ public class StatusBar extends JPanel {
 	 */
 	public void startClock() {
 		_cThread.start();
+		// _moves += _moveOffset;
 	}
 
 	/**
@@ -132,7 +152,15 @@ public class StatusBar extends JPanel {
 	 */
 	public String stopClock() {
 		_cThread.pause();
-		return _time.getText();
+		return _timeLabel.getText();
+	}
+
+	public void setTimeOffset(long time) {
+		_timeOffset = time;
+	}
+
+	public void setMovesOffset(int moves) {
+		_movesOffset = moves;
 	}
 
 	public void close() {
@@ -165,13 +193,20 @@ public class StatusBar extends JPanel {
 				try {
 
 					final Date currentTime = new Date();
-					final String time = String.format("%1$tM:%1$tS",
-							currentTime.getTime() - _startTime.getTime())
-							.toString();
+					_time = currentTime.getTime() - _startTime.getTime();
+					_time += _timeOffset;
+					// Total hässliches unperformantes Setzen der Zeit in den
+					// Commandstack
+					Object o = MainWindow.getInstance().getCommandStack();
+					if (o instanceof CommandStack) {
+						((CommandStack) o).setTime(_time);
+					}
+					final String timeString = String.format("%1$tM:%1$tS",
+							_time).toString();
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
-							_time.setText(String.valueOf(time));
+							_timeLabel.setText(String.valueOf(timeString));
 						}
 					});
 
