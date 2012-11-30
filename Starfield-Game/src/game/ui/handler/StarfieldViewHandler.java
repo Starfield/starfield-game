@@ -17,15 +17,20 @@ import game.commands.SetArrowUpLeftCommand;
 import game.commands.SetArrowUpRightCommand;
 import game.commands.SetGrayedCommand;
 import game.commands.SetStarCommand;
+import game.core.GamePreferences.LinealMode;
 import game.model.Field;
 import game.model.Field.AllowedContent;
+import game.model.Starfield;
 import game.ui.EditToolbar;
 import game.ui.MainWindow;
 import game.ui.PlayToolbar;
 import game.ui.StatusBar;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.border.LineBorder;
 
 /**
  * Der StarfieldViewHandler reagiert auf UserEvents auf dem Starfield. <br>
@@ -44,12 +49,148 @@ public class StarfieldViewHandler implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent pE) {
+		Object o = pE.getSource();
+		LineBorder blackBorder = new LineBorder(Color.BLACK, 1);
+		LineBorder grayBorder = new LineBorder(Color.LIGHT_GRAY, 1);
 
+		if (o instanceof Field) {
+			Field selField = (Field) o;
+			Starfield starfield = MainWindow.getInstance()
+					.getCurrentStarfield();
+			if (starfield == null)
+				return;
+			if (MainWindow.getInstance().getGamePrefs().getLinealMode() != LinealMode.NO) {
+				// Selektiertes Feld mit schwarzem Hintergrund setzen
+				((Field) o).setBorder(blackBorder);
+				// Alle Felder nach oben grau umranden
+				Field nextField = selField;
+				while ((nextField = starfield.getField_U(nextField)) != null) {
+					nextField.setBorder(grayBorder);
+
+				}
+				// ALle Felder nach unten umranden
+				nextField = selField;
+				while ((nextField = starfield.getField_D(nextField)) != null) {
+					nextField.setBorder(grayBorder);
+
+				}
+				// ALle Felder nach links umranden
+				nextField = selField;
+				while ((nextField = starfield.getField_L(nextField)) != null) {
+					nextField.setBorder(grayBorder);
+
+				}
+				// ALle Felder nach rechts umranden
+				nextField = selField;
+				while ((nextField = starfield.getField_R(nextField)) != null) {
+					nextField.setBorder(grayBorder);
+
+				}
+
+				// Zusätzlich wenn STAR ausgewählt
+				if (MainWindow.getInstance().getGamePrefs().getLinealMode() == LinealMode.STAR) {
+					// ALle Felder nach links oben umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_UL(nextField)) != null) {
+						nextField.setBorder(grayBorder);
+
+					}
+					// ALle Felder nach links unten umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_DL(nextField)) != null) {
+						nextField.setBorder(grayBorder);
+
+					}
+					// ALle Felder nach rechts oben umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_UR(nextField)) != null) {
+						nextField.setBorder(grayBorder);
+
+					}
+					// ALle Felder nach rechts unten umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_DR(nextField)) != null) {
+						nextField.setBorder(grayBorder);
+
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent pE) {
 
+		Object o = pE.getSource();
+		LineBorder whiteBorder = new LineBorder(Color.WHITE, 1);
+
+		if (o instanceof Field) {
+			Field selField = (Field) o;
+			Starfield starfield = MainWindow.getInstance()
+					.getCurrentStarfield();
+			if (starfield == null)
+				return;
+
+			if (MainWindow.getInstance().getGamePrefs().getLinealMode() != LinealMode.NO) {
+
+				// Selektiertes Feld Umrandung löschen
+				selField.setBorder(whiteBorder);
+
+				// Alle Felder nach oben Umrandung wegmachen
+				Field nextField = selField;
+				while ((nextField = starfield.getField_U(nextField)) != null) {
+					nextField.setBorder(whiteBorder);
+
+				}
+				// Alle Felder nach unten Umrandung wegmachen
+				nextField = selField;
+				while ((nextField = starfield.getField_D(nextField)) != null) {
+					nextField.setBorder(whiteBorder);
+
+				}
+				// Alle Felder nach links Umrandung wegmachen
+				nextField = selField;
+				while ((nextField = starfield.getField_L(nextField)) != null) {
+					nextField.setBorder(whiteBorder);
+
+				}
+				// Alle Felder nach rechts Umrandung wegmachen
+				nextField = selField;
+				while ((nextField = starfield.getField_R(nextField)) != null) {
+					nextField.setBorder(whiteBorder);
+
+				}
+
+				// Zusätzlich wenn STAR ausgewählt
+				if (MainWindow.getInstance().getGamePrefs().getLinealMode() == LinealMode.STAR) {
+					// ALle Felder nach links oben umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_UL(nextField)) != null) {
+						nextField.setBorder(whiteBorder);
+
+					}
+					// ALle Felder nach links unten umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_DL(nextField)) != null) {
+						nextField.setBorder(whiteBorder);
+
+					}
+					// ALle Felder nach rechts oben umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_UR(nextField)) != null) {
+						nextField.setBorder(whiteBorder);
+
+					}
+					// ALle Felder nach rechts unten umranden
+					nextField = selField;
+					while ((nextField = starfield.getField_DR(nextField)) != null) {
+						nextField.setBorder(whiteBorder);
+
+					}
+				}
+
+			}
+		}
 	}
 
 	@Override

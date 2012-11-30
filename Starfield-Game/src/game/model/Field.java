@@ -3,7 +3,10 @@ package game.model;
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
 
+import java.awt.Color;
+
 import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
 
 public class Field extends JLabel {
 
@@ -20,17 +23,7 @@ public class Field extends JLabel {
 	 */
 
 	public enum AllowedContent {
-		CONTENT_STAR,
-		CONTENT_EMPTY,
-		CONTENT_GRAYED,
-		CONTENT_ARROW_U,
-		CONTENT_ARROW_D,
-		CONTENT_ARROW_L,
-		CONTENT_ARROW_R,
-		CONTENT_ARROW_UR,
-		CONTENT_ARROW_UL,
-		CONTENT_ARROW_DR,
-		CONTENT_ARROW_DL;
+		CONTENT_STAR, CONTENT_EMPTY, CONTENT_GRAYED, CONTENT_ARROW_U, CONTENT_ARROW_D, CONTENT_ARROW_L, CONTENT_ARROW_R, CONTENT_ARROW_UR, CONTENT_ARROW_UL, CONTENT_ARROW_DR, CONTENT_ARROW_DL;
 
 	}
 
@@ -111,6 +104,7 @@ public class Field extends JLabel {
 		this.yPos = yPos;
 		setUserContent(AllowedContent.CONTENT_EMPTY);
 		setSolutionContent(AllowedContent.CONTENT_EMPTY);
+		setBorder(new LineBorder(Color.WHITE, 1));
 
 	}
 

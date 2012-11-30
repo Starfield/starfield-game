@@ -3,6 +3,7 @@
  */
 package game.menubar.handler;
 
+import game.core.GamePreferences.LinealMode;
 import game.core.GamePreferences.Resolution;
 import game.ui.MainWindow;
 
@@ -23,14 +24,29 @@ public class MainMenuBarHandler implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pEvent) {
+		String cmd = pEvent.getActionCommand();
+		if (cmd.equalsIgnoreCase("NO")) {
+			MainWindow.getInstance().getGamePrefs()
+					.setLinealMode(LinealMode.NO);
+			return;
+		}
+		if (cmd.equalsIgnoreCase("CROSS")) {
+			MainWindow.getInstance().getGamePrefs()
+					.setLinealMode(LinealMode.CROSS);
+			return;
+		}
+		if (cmd.equalsIgnoreCase("STAR")) {
+			MainWindow.getInstance().getGamePrefs()
+					.setLinealMode(LinealMode.STAR);
+			return;
+		}
 		// Änderung des Users in die Optionen schreiben
 		MainWindow.getInstance().getGamePrefs()
-				.setResolution(getSelectedResolution(pEvent));
+				.setResolution(getSelectedResolution(cmd));
 
 	}
 
-	private Resolution getSelectedResolution(ActionEvent pEvent) {
-		String cmd = pEvent.getActionCommand();
+	private Resolution getSelectedResolution(String cmd) {
 
 		for (Resolution res : Resolution.values()) {
 			if (cmd.equals(res.toString()))

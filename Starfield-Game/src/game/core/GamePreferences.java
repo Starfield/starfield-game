@@ -26,6 +26,7 @@ public class GamePreferences {
 		_appMode = AppMode.FIRST_START;
 		_loadedCommandStack = null;
 		_resolution = Resolution.R800X600;
+		_lineal = LinealMode.NO;
 	}
 
 	/**
@@ -34,23 +35,13 @@ public class GamePreferences {
 	 * werden.
 	 */
 	public enum AppMode {
-		GAME_MODE,
-		LOAD_GAME_MODE,
-		EDIT_MODE,
-		LOAD_EDIT_MODE,
-		FIRST_START,
-		REPLAY_MODE;
+		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE, LOAD_EDIT_MODE, FIRST_START, REPLAY_MODE;
 	}
 
 	public enum Resolution {
-		R800X600(800, 600),
-		R1024X768(1024, 768),
-		R1280X800(1280, 800),
-		R1280X1024(1280, 1024),
-		R1366X768(1366, 768),
-		R1400X900(1400, 900),
-		R1680X1050(1680, 1050),
-		R1900X1080(1900, 1080);
+		R800X600(800, 600), R1024X768(1024, 768), R1280X800(1280, 800), R1280X1024(
+				1280, 1024), R1366X768(1366, 768), R1400X900(1400, 900), R1680X1050(
+				1680, 1050), R1900X1080(1900, 1080);
 
 		private final int width;
 		private final int height;
@@ -70,6 +61,10 @@ public class GamePreferences {
 
 	}
 
+	public enum LinealMode {
+		NO, CROSS, STAR;
+	}
+
 	// Optionsvariablen
 	/** AppModus */
 	private AppMode _appMode;
@@ -81,6 +76,8 @@ public class GamePreferences {
 	private File _starfieldFile;
 	/** aktuelle Auflösung */
 	private Resolution _resolution;
+	/** LinealMode */
+	private LinealMode _lineal;
 
 	/**
 	 * @return the {@link AppMode}
@@ -203,4 +200,11 @@ public class GamePreferences {
 		_starfieldFile = null;
 	}
 
+	public void setLinealMode(LinealMode newMode) {
+		_lineal = newMode;
+	}
+
+	public LinealMode getLinealMode() {
+		return _lineal;
+	}
 }

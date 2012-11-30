@@ -12,9 +12,11 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 
 /**
  * Die MenuBar des MainWindows.
@@ -129,8 +131,33 @@ public class MainMenuBar extends JMenuBar {
 			resolution.add(item);
 			first = false;
 		}
-
 		_options.add(resolution);
+
+		// Auswahlbereich für Linealanzeige erstellen
+		final JMenu lineal = new JMenu("Lineal");
+		ButtonGroup bg = new ButtonGroup();
+		// Kein Lineal
+		JRadioButtonMenuItem radioButton = new JRadioButtonMenuItem(
+				"Kein Lineal");
+		radioButton.setActionCommand("NO");
+		radioButton.addActionListener(handler);
+		bg.add(radioButton);
+		radioButton.setSelected(true); // Standard
+		lineal.add(radioButton);
+		// Kreuz
+		radioButton = new JRadioButtonMenuItem("Kreuz");
+		radioButton.setActionCommand("CROSS");
+		radioButton.addActionListener(handler);
+		bg.add(radioButton);
+		lineal.add(radioButton);
+		// Stern
+		radioButton = new JRadioButtonMenuItem("Stern");
+		radioButton.setActionCommand("STAR");
+		radioButton.addActionListener(handler);
+		bg.add(radioButton);
+		lineal.add(radioButton);
+
+		_options.add(lineal);
 		return _options;
 	}
 
