@@ -8,8 +8,11 @@ import game.model.Field.AllowedContent;
 import game.ui.EditToolbar;
 import game.ui.MainWindow;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JOptionPane;
 
 /**
  * @author Jan
@@ -69,6 +72,15 @@ public class ToolbarEditHandler implements ActionListener {
 		if (o instanceof EditToolbar) {
 			int newXSize = ((EditToolbar) o).getInputSizeX();
 			int newYSize = ((EditToolbar) o).getInputSizeY();
+			if (newXSize < 3 | newYSize < 3) {
+				// Minimalgröße ist 3x3
+				Toolkit.getDefaultToolkit().beep();
+				JOptionPane.showMessageDialog(null,
+						"Minimale Feldgröße beträgt 3x3 Felder",
+						"Minimale Feldgröße unterschritten",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 			// Um die Änderungen sichtbar zu machen, muss das Starfield neu
 			// initialiert werden. Dazu wird das Starfield zwischengespeichert
 			MainWindow

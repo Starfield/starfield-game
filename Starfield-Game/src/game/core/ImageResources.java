@@ -49,6 +49,7 @@ public class ImageResources {
 		ICON_DISPLAY_SIZE("icons/icon_display_size"),
 		ICON_EMPTY("icons/icon_empty"),
 		ICON_ABOUT("icons/icon_about"),
+		ICON_LINEAL("icons/icon_lineal"),
 		ICON_HELP("icons/icon_help"),
 		ICON_MARKER_ON("icons/icon_marker_on"),
 		ICON_MARKER_OFF("icons/icon_marker_off"),

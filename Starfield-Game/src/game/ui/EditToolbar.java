@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -25,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 public class EditToolbar extends JToolBar {
 
@@ -179,7 +183,8 @@ public class EditToolbar extends JToolBar {
 		panel.add(new JLabel("Größe:"), c);
 		// Textfield für x-Achsenlänge hinzufügen
 		_xSizeInput = new JTextField(2);
-		_xSizeInput.setToolTipText("Breite einstellen (1 - 99)");
+		_xSizeInput.setDocument(new CustomDocument());
+		_xSizeInput.setToolTipText("Breite einstellen (3 - 99)");
 		// _xSizeInput.setText(Double.toString(MainWindow.getStarfieldView()
 		// .getCurrentStarfield().getSize().height));
 		c.gridx = 1;
@@ -189,7 +194,8 @@ public class EditToolbar extends JToolBar {
 		panel.add(new JLabel("x"), c);
 		// Textfield für y-Achsenlänge hinzufügen
 		_ySizeInput = new JTextField(2);
-		_ySizeInput.setToolTipText("Höhe einstellen (1 - 99)");
+		_ySizeInput.setDocument(new CustomDocument());
+		_ySizeInput.setToolTipText("Höhe einstellen (3 - 99)");
 		// _ySizeInput.setText(Double.toString(MainWindow.getStarfieldView()
 		// .getCurrentStarfield().getSize().width));
 		c.gridx = 3;
@@ -198,7 +204,7 @@ public class EditToolbar extends JToolBar {
 		JButton button = new JButton("Anwenden");
 		button.setActionCommand("APPLY");
 		button.addActionListener(_editHandler);
-		button.setFocusable(false);
+		// button.setFocusable(false);
 		c.gridx = 4;
 		panel.add(button, c);
 	}
@@ -312,6 +318,44 @@ public class EditToolbar extends JToolBar {
 
 		_difficultyLabel.setText(MainWindow.getInstance().getCurrentStarfield()
 				.checkDifficulty());
+	}
+
+	private class CustomDocument extends PlainDocument {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void insertString(int offset, String s, AttributeSet attributeSet) {
+
+			// Nicht numerische Zahlen ausschließen
+			try {
+				Integer.parseInt(s);
+			} catch (NumberFormatException e) {
+				Toolkit.getDefaultToolkit().beep();
+				return;
+			}
+			// Nicht einfügen wenn Text schon Länge 2 hat
+			if (getLength() >= 2) {
+				Toolkit.getDefaultToolkit().beep();
+				return;
+			}
+			// Nicht einfügen, wenn Text + Change Länge 2 überschreitet
+			if ((getLength() + s.length()) > 2) {
+				Toolkit.getDefaultToolkit().beep();
+				return;
+			}
+			// Ansonsten Änderung einfügen
+			try {
+				super.insertString(offset, s, attributeSet);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

@@ -124,6 +124,7 @@ public class MainMenuBar extends JMenuBar {
 		for (final Resolution res : Resolution.values()) {
 			final JMenuItem item = new JMenuItem(res.getWidth() + " x "
 					+ res.getHeight());
+			item.setToolTipText("Auflösung ändern");
 			item.setActionCommand(res.toString());
 			item.addActionListener(handler);
 			if (!first)
@@ -135,10 +136,13 @@ public class MainMenuBar extends JMenuBar {
 
 		// Auswahlbereich für Linealanzeige erstellen
 		final JMenu lineal = new JMenu("Lineal");
+		lineal.setIcon(ImageResources.getScaledIcon(24, Images.ICON_LINEAL,
+				Image.SCALE_SMOOTH));
 		ButtonGroup bg = new ButtonGroup();
 		// Kein Lineal
 		JRadioButtonMenuItem radioButton = new JRadioButtonMenuItem(
 				"Kein Lineal");
+		radioButton.setToolTipText("Kein Hilfsraster anzeigen");
 		radioButton.setActionCommand("NO");
 		radioButton.addActionListener(handler);
 		bg.add(radioButton);
@@ -146,12 +150,16 @@ public class MainMenuBar extends JMenuBar {
 		lineal.add(radioButton);
 		// Kreuz
 		radioButton = new JRadioButtonMenuItem("Kreuz");
+		radioButton
+				.setToolTipText("Horizontales und vertikales Hilfsraster anzeigen");
 		radioButton.setActionCommand("CROSS");
 		radioButton.addActionListener(handler);
 		bg.add(radioButton);
 		lineal.add(radioButton);
 		// Stern
 		radioButton = new JRadioButtonMenuItem("Stern");
+		radioButton
+				.setToolTipText("Horizontales, vertikales und diagonales Hilfsraster anzeigen");
 		radioButton.setActionCommand("STAR");
 		radioButton.addActionListener(handler);
 		bg.add(radioButton);

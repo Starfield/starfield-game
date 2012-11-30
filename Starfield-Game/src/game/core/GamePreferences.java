@@ -7,7 +7,11 @@ import game.commands.CommandStack;
 import game.model.Starfield;
 import game.ui.MainWindow;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
+
+import javax.swing.JFrame;
 
 /**
  * Preferences die f¸r das gesamte Spiel gelten.
@@ -35,13 +39,37 @@ public class GamePreferences {
 	 * werden.
 	 */
 	public enum AppMode {
-		GAME_MODE, LOAD_GAME_MODE, EDIT_MODE, LOAD_EDIT_MODE, FIRST_START, REPLAY_MODE;
+		/** Der Modus um ein neues Spiel zu spielen */
+		GAME_MODE,
+		/** Der Modus zum Laden eines gespeicherten Spiels */
+		LOAD_GAME_MODE,
+		/** Der Modus zum Erstellen eines neuen Puzzles */
+		EDIT_MODE,
+		/** Der Modus zum Bearbeiten eines gespeicherten Puzzles */
+		LOAD_EDIT_MODE,
+		/** Der Modus zum Anzeigen des Splashscreens */
+		FIRST_START,
+		/** Der Modus zum starten des Replays */
+		REPLAY_MODE;
 	}
 
 	public enum Resolution {
-		R800X600(800, 600), R1024X768(1024, 768), R1280X800(1280, 800), R1280X1024(
-				1280, 1024), R1366X768(1366, 768), R1400X900(1400, 900), R1680X1050(
-				1680, 1050), R1900X1080(1900, 1080);
+		/** Stellt eine Auflˆsung von 800x600 ein */
+		R800X600(800, 600),
+		/** Stellt eine Auflˆsung von 1024x768 ein */
+		R1024X768(1024, 768),
+		/** Stellt eine Auflˆsung von 1280x800 ein */
+		R1280X800(1280, 800),
+		/** Stellt eine Auflˆsung von 1280x1024 ein */
+		R1280X1024(1280, 1024),
+		/** Stellt eine Auflˆsung von 1366x768 ein */
+		R1366X768(1366, 768),
+		/** Stellt eine Auflˆsung von 1400x900 ein */
+		R1400X900(1400, 900),
+		/** Stellt eine Auflˆsung von 1680x1050 ein */
+		R1680X1050(1680, 1050),
+		/** Stellt eine Auflˆsung von 1900x1080 ein */
+		R1900X1080(1900, 1080);
 
 		private final int width;
 		private final int height;
@@ -62,7 +90,12 @@ public class GamePreferences {
 	}
 
 	public enum LinealMode {
-		NO, CROSS, STAR;
+		/** Kein Lineal anzeigen */
+		NO,
+		/** Horizontales und vertikales Hilfsraster anzeigen */
+		CROSS,
+		/** Horizontales, vertikales und diagonales Hilfsraster anzeigen */
+		STAR;
 	}
 
 	// Optionsvariablen
@@ -108,16 +141,25 @@ public class GamePreferences {
 	 *            die neue Auflˆsung
 	 */
 	public void setResolution(Resolution pResolution) {
-		// Nichts unternehmen, wenn keine ƒnderung eingetreten ist
-		if (_resolution == pResolution)
-			return;
 		// neue Auflˆsung setzen
 		_resolution = pResolution;
-		// neuAufbau der GUI Elemente anstoﬂen
-		MainWindow.getInstance().setSize(_resolution.getWidth(),
-				_resolution.getHeight());
-		MainWindow.getInstance().validate();
-		MainWindow.getInstance().setLocationRelativeTo(null);
+		// ‹berpr¸fen ob Auflˆsung MaximalAuflˆsung ist
+		Dimension curRes = Toolkit.getDefaultToolkit().getScreenSize();
+		boolean maximumReached = false;
+		if (_resolution.getWidth() >= curRes.width)
+			maximumReached = true;
+		if (_resolution.getHeight() >= curRes.height)
+			maximumReached = true;
+		// Wenn Maximum Size dann maximieren, sonst Res setzen
+		if (maximumReached)
+			MainWindow.getInstance().setExtendedState(JFrame.MAXIMIZED_BOTH);
+		else {
+			MainWindow.getInstance().setSize(_resolution.getWidth(),
+					_resolution.getHeight());
+			// neuAufbau der GUI Elemente anstoﬂen
+			MainWindow.getInstance().validate();
+			MainWindow.getInstance().setLocationRelativeTo(null);
+		}
 	}
 
 	/**
