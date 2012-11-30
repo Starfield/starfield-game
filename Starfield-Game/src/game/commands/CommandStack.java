@@ -29,6 +29,12 @@ public class CommandStack implements Serializable {
 	/** Korrespondierendes Starfield */
 	private File starfieldFile = null;
 	
+	/** Zeit, die der Nutzer ein Spiel spielt */
+	private long time = 0L;
+	
+	/** Versuche, die der Nutzer bisher benötigt hat */
+	private int attempts = 0;
+	
 	/**
 	 * Standardkonstruktor
 	 */
@@ -145,14 +151,14 @@ public class CommandStack implements Serializable {
 	}
 	
 	/**
-	 * Ermittelt die Position im Playstack, an welchem der letzte Fehler begangen wurde.
+	 * Ermittelt die Position im Playstack, an welchem der erste Fehler begangen wurde.
 	 *  
 	 * @return
 	 * - Position des Fehlers im Playstack
 	 */
-	public int locateLastMistake() {
+	public int locateFirstMistake() {
 		if (mistake.size() != 0) {
-			return mistake.get(mistake.size() - 1);
+			return mistake.get(0);
 		}
 		return 0;
 	}
@@ -192,12 +198,18 @@ public class CommandStack implements Serializable {
 			type = locateCurrentMarker();
 		}
 		else {
-			type = locateLastMistake();
+			type = locateFirstMistake();
 		}
 		
 		for (int i = stackSize - 1; i >= stackSize - (stackSize - type + 1); i--) {
 			playStack.get(i).undo();
 			playStack.remove(i);
+		}
+		
+		if (!marker) {
+			for (int i = 0; i < mistake.size(); i++) {
+				mistake.set(i, 0);
+			}
 		}
 	}
 	
@@ -213,6 +225,27 @@ public class CommandStack implements Serializable {
 		for (int i = playStack.size() - 1; i >= stackSize; i--) {
 			playStack.remove(i);		
 		}
+	}
+	
+	/**
+	 * Zählt die Versuche, die der Spieler bisher zum Lösen des Spiels benötigte.
+	 * 
+	 * @return count
+	 * - Versuche
+	 */
+	public int countAttempts() {
+		int count = 0;
+		
+		for (int i = 0; i < timeLapseStack.size(); i++) {
+			AbstractCommand command = timeLapseStack.get(i).getCommand();
+			if (command instanceof SetStarCommand ||
+				command instanceof RemoveStarCommand ||
+				command instanceof SetGrayedCommand ||
+				command instanceof RemoveGrayedCommand) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -233,6 +266,45 @@ public class CommandStack implements Serializable {
 	 */
 	public ArrayList<TimeLapseItem> getTimeLapseStack() {
 		return timeLapseStack;
+	}
+
+	/**
+	 * Gibt die Zeit, die der Nutzer spielt, zurück.
+	 * 
+	 * @return time
+	 * - Vergangene Zeit
+	 */
+	public long getTime() {
+		return time;
+	}
+
+	/**
+	 * Setzt die Zeit, die der Nutzer spielt.
+	 * 
+	 * @param time
+	 * - Vergangene Zeit
+	 */
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	/**
+	 * Gibt die Anzahl der Versuche, die der Nutzer bisher benötigt hat, zurück.
+	 * 
+	 * @return attempts
+	 */
+	public int getAttempts() {
+		return attempts;
+	}
+
+	/**
+	 * Setzt die Anzahl der Versuche, die der Nutzer bisher benötigt hat.
+	 * 
+	 * @param attempts
+	 * - Anzahl der Versuche
+	 */
+	public void setAttempts(int attempts) {
+		this.attempts = attempts;
 	}
 	
 }

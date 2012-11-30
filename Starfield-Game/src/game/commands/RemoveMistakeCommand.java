@@ -26,8 +26,8 @@ public class RemoveMistakeCommand extends AbstractCommand {
 	
 	@Override
 	public void execute() {
-		if (getStacks().locateLastMistake() != 0) {
-			getStacks().goBack(false);			
+		if (getStacks().locateFirstMistake() != 0) {
+			getStacks().goBack(false);
 		}
 	}
 
