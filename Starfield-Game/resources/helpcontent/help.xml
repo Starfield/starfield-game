@@ -1,6 +1,11 @@
 <xml>
-	<kapitel><name>AlfaTier</name><file>/helpcontent/name1.html</file></kapitel>
-	<kapitel><name>BetaTier</name><file>/helpcontent/name2.html</file></kapitel>
-	<kapitel><name>CeranFeld</name><file>/helpcontent/name3.html</file></kapitel>
-	<kapitel><name>Demaskierungsthread</name><file>/helpcontent/name4.html</file></kapitel>
+	<kapitel><name>Spielbeschreibung</name><file>/helpcontent/spielbeschreibung.html</file></kapitel>
+	<kapitel><name>Neues Spiel</name><file>/helpcontent/neuesspiel.html</file></kapitel>
+	<kapitel><name>Spiel speichern</name><file>/helpcontent/spielspeichern.html</file></kapitel>
+	<kapitel><name>Spiel laden</name><file>/helpcontent/spielladen.html</file></kapitel>
+	<kapitel><name>Replay ansehen</name><file>/helpcontent/replayansehen.html</file></kapitel>
+	<kapitel><name>Puzzle erstellen</name><file>/helpcontent/puzzleerstellen.html</file></kapitel>
+	<kapitel><name>Puzzle speichern</name><file>/helpcontent/puzzlespeichern.html</file></kapitel>
+	<kapitel><name>Puzzle laden</name><file>/helpcontent/puzzleladen.html</file></kapitel>
+	<kapitel><name>Auflösung ändern</name><file>/helpcontent/auflosungandern.html</file></kapitel>
 </xml>
