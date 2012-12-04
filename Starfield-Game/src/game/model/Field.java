@@ -137,4 +137,12 @@ public class Field extends JLabel {
 		}
 		return false;
 	}
+	
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		String ausgabe = getSolutionContent()+" "+getxPos()+" "+getyPos();
+		return ausgabe;
+	}
 }

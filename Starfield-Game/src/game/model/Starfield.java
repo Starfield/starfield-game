@@ -150,22 +150,29 @@ public class Starfield implements Serializable {
 		return starcounter;
 	}
 
+	/**
+	 * Überprüft die Eingaben des Users während des Spielens.
+	 */
 	public boolean checkSolution() {
 		boolean rightorwrong = true;
-		for (int x = 0; x < size.getWidth(); x++) {
-			for (int y = 0; y < size.getHeight(); y++) {
-				if (listcontainer.get(x).get(y).getUserContent() != (listcontainer
-						.get(x).get(y).getSolutionContent())) {
-					if (listcontainer.get(x).get(y).getUserContent() != (AllowedContent.CONTENT_GRAYED)) {
+		for (ArrayList<Field> list : listcontainer) {
+			for (Field field : list) {
+				if (field.getSolutionContent()!=AllowedContent.CONTENT_EMPTY) {
+					 if(field.getUserContent()==AllowedContent.CONTENT_GRAYED){
+						rightorwrong = false;
+					 }}
+					if( field.getUserContent() != (field.getSolutionContent())&&field.userContent!=AllowedContent.CONTENT_GRAYED){
 						rightorwrong = false;
 					}
-				}
+				
 
 			}
 		}
 
 		return rightorwrong;
 	}
+	
+	
 
 	public ArrayList<Field> getWrongFields() {
 		ArrayList<Field> wrongFields = new ArrayList<Field>();
@@ -915,7 +922,7 @@ public class Starfield implements Serializable {
 			allSolutionStars = new HashSet<Field>();
 			int aiCount = 0;
 			copyUserToSolutionContent();
-			setFieldsGrayIfNoStars(); // !!alles grau, wo 0 drüber
+			setFieldsGrayIfNoStars(); // alles grau, wo 0 drüber
 			setAllFieldsGrayNoArrowPointed(); // alles grau, wo kein Pfeil drauf
 												// & Pfeile+LösungsSterne setzen
 			System.out.println("Anzahl Pfeile: " + arrows.size()
@@ -931,19 +938,24 @@ public class Starfield implements Serializable {
 				checkStarfieldforDiagonalsStars(); // Richtung vom Pfeil nur 1
 													// übrig und bisher kein
 													// Stern
+				checkObviousFieldsWhereNoArrowsInRowColumn();// Checkt ob hinter
+																// einem geraden
+																// Pfeil(u,d,l,r)
+																// kein Stern
+																// mehr soll.
 				System.out.println(aiCount + " Anzahl Pfeile: " + arrows.size()
 						+ " Anzahl Sterne: " + stars.size() + "Anzahl Grayed: "
 						+ grayed.size());
 				aiCount = aiCount + 1;
 
 			}
-			if (aiCount < 2) {
+			if (aiCount < 1) {
 				return "Easy";
-			} else if (aiCount < 20) {
+			} else if (aiCount < 99) {
 				return "Hard";
 			} else {
-				return "Hard";
-	//			return "Nicht eindeutig";
+				setPlayable(false); // darf nicht speicher bzw. spielbar sein!
+				return "Nicht eindeutig";
 			}
 		}
 		return " ";
@@ -971,6 +983,10 @@ public class Starfield implements Serializable {
 
 	}
 
+	/**
+	 * Überprüft das Starfield ob in der Diagonalen von den Pfeilen aus sich nur
+	 * noch ein freies Feld befindet und noch kein Stern gesetzt wurde.
+	 */
 	private void checkStarfieldforDiagonalsStars() {
 		for (ArrayList<Field> list : listcontainer) {
 			for (Field field : list) {
@@ -983,7 +999,7 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Überprüft ob in der Diagnolaen vom Pfeil aus sich nur noch ein freies
+	 * Überprüft ob in der Diagonalen vom Pfeil aus sich nur noch ein freies
 	 * Feld befindet und noch kein Stern gesetzt wurde.
 	 */
 	private void checkDiagonalForStars(Field field) {
@@ -1016,7 +1032,6 @@ public class Starfield implements Serializable {
 		case CONTENT_ARROW_UR:
 			return getEmtpyFieldsInADiagonalUR(field);
 		case CONTENT_ARROW_R:
-
 			return getEmtpyFieldsInADiagonalR(field);
 		case CONTENT_ARROW_DR:
 			return getEmtpyFieldsInADiagonalDR(field);
@@ -1131,10 +1146,199 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Guckt ob in einer Reihe nur 1 Stern hinkommt und ein Pfeil gerade in der
-	 * Reihe positioniert ist. Graut die sich dahinter befindenen aus.
+	 * Guckt ob in einer Reihe nur noch 1 Stern hinkommt und ein Pfeil gerade in
+	 * der Reihe positioniert ist. Graut die sich dahinter befindenen aus.
 	 */
-	private void checkObviousFieldsWhereNoArrowsInRow() {
-		// TO DO
+	private void checkObviousFieldsWhereNoArrowsInRowColumn() {
+		for (ArrayList<Field> list : listcontainer) {
+			for (Field field : list) {
+				switch (field.getSolutionContent()) {
+				case CONTENT_ARROW_U:
+					setFieldsGrayDownToTheArrow(field);
+					break;
+				case CONTENT_ARROW_R:
+					setFieldsGrayLeftToTheArrow(field);
+					break;
+				case CONTENT_ARROW_D:
+					setFieldsGrayUpToTheArrow(field);
+					break;
+				case CONTENT_ARROW_L:
+					setFieldsGrayRightToTheArrow(field);
+					break;
+
+				}
+			}
+
+		}
+	}
+
+	/**
+	 * Setzt Felder unterhalb eines nach obenzeigenden Pfeiles grau, wenn er
+	 * Gesamtzahl - Darunterpfeile=1.
+	 */
+	private void setFieldsGrayDownToTheArrow(Field field) {
+		int starCount = 0;
+		for (Field f : getEmtpyFieldsInADiagonalD(field)) { // holt
+															// leere+sternenfelder
+															// unter
+															// dem
+															// Pfeil
+			if (stars.contains(f)) {
+				starCount = starCount + 1; // Sterne unter dem Pfeil
+			}
+		}
+		if (getStarCountX(field.getxPos()) - starCount == 1) {
+			// Gesamtzahl
+			// -
+			// drunter
+			// =
+			// 1
+			// setzte
+			// alle
+			// darunter
+			// grau.
+			for (Field f : getEmtpyFieldsInADiagonalD(field)) { // holt
+																// leere+sternenfelder
+																// unter
+																// dem
+																// Pfeil
+				if (!arrows.contains(f) && !stars.contains(f)) {
+					grayed.add(f);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Setzt Felder oberhalb eines nach untenzeigenden Pfeiles grau, wenn er
+	 * Gesamtzahl - Darunterpfeile=1.
+	 */
+	private void setFieldsGrayUpToTheArrow(Field field) {
+		int starCount = 0;
+		for (Field f : getEmtpyFieldsInADiagonalU(field)) { // holt
+			// leere+sternenfelder
+			// über
+			// dem
+			// Pfeil
+			if (stars.contains(f)) {
+				starCount = starCount + 1; // Sterne über dem Pfeil
+			}
+		}
+		if (getStarCountX(field.getxPos()) - starCount == 1) {
+
+			// Gesamtzahl
+			// -
+			// drüber
+			// =
+			// 1
+			// setzte
+			// alle
+			// drüber
+			// grau.
+			for (Field f : getEmtpyFieldsInADiagonalU(field)) { // holt
+				// leere+sternenfelder
+				// über
+				// dem
+				// Pfeil
+				if (!arrows.contains(f) && !stars.contains(f)) {
+					grayed.add(f);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Setzt Felder links eines nach rechtszeigenden Pfeiles grau, wenn er
+	 * Gesamtzahl - Darunterpfeile=1.
+	 */
+	private void setFieldsGrayLeftToTheArrow(Field field) {
+		int starCount = 0;
+		for (Field f : getEmtpyFieldsInADiagonalL(field)) { // holt
+			// leere+sternenfelder
+			// links
+			// vom
+			// Pfeil
+			if (stars.contains(f)) {
+				starCount = starCount + 1; // Sterne links vom Pfeil
+			}
+		}
+		if (getStarCountY(field.getyPos()) - starCount == 1) {
+			// Gesamtzahl
+			// -
+			// links
+			// =
+			// 1
+			// setze
+			// alle
+			// links
+			// grau.
+			for (Field f : getEmtpyFieldsInADiagonalL(field)) { // holt
+				// leere+sternenfelder
+				// links
+				// vom
+				// Pfeil
+				if (!arrows.contains(f) && !stars.contains(f)) {
+					grayed.add(f);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Setzt Felder rechts eines nach linkszeigenden Pfeiles grau, wenn er
+	 * Gesamtzahl - Darunterpfeile=1.
+	 */
+	private void setFieldsGrayRightToTheArrow(Field field) {
+		int starCount = 0;
+		for (Field f : getEmtpyFieldsInADiagonalR(field)) { // holt
+			// leere+sternenfelder
+			// rechts
+			// vom
+			// Pfeil
+			if (stars.contains(f)) {
+				starCount = starCount + 1; // Sterne rechts vom Pfeil
+			}
+		}
+		if (getStarCountY(field.getyPos()) - starCount == 1) {
+			// Gesamtzahl
+			// -
+			// rechts
+			// =
+			// 1
+			// setze
+			// alle
+			// rechts
+			// grau.
+			for (Field f : getEmtpyFieldsInADiagonalR(field)) { // holt
+				// leere+sternenfelder
+				// rechts
+				// vom
+				// Pfeil
+				if (!arrows.contains(f) && !stars.contains(f)) {
+					grayed.add(f);
+				}
+			}
+		}
+
+	}
+	/**
+	 * Gibt die möglichen alternativ Felder in einem Hashset zurück.
+	 * Muss nach der KI Überprüfung checkDifficulty aufgerufen werden.
+	 * 
+	 */
+	public HashSet<Field> getPossibleOtherSolutionFields() {
+		HashSet<Field> possibleSolutionFields = new HashSet<Field>();
+		for (ArrayList<Field> list : listcontainer) {
+			for (Field field : list) {
+				if (!stars.contains(field) && !arrows.contains(field)
+						&& !grayed.contains(field)&&!(field.solutionContent==AllowedContent.CONTENT_STAR)) {
+					possibleSolutionFields.add(field);
+				}
+			}
+		}
+		return possibleSolutionFields;
 	}
 }
