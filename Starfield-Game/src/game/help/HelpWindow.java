@@ -6,16 +6,15 @@ package game.help;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -104,18 +103,19 @@ public class HelpWindow extends JFrame {
 	private void setContent(String htmlPage) {
 
 		_content.setText(htmlPage);
+		_content.setCaretPosition(0);
 	}
 
 	private String readHTMLPage(String pageName) {
-		URL url = ClassLoader.class.getResource(pageName);
-		if (url == null) {
+		InputStream is = ClassLoader.class.getResourceAsStream(pageName);
+		if (is == null) {
 			System.out.println("Resource '" + pageName + "' nicht gefunden");
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
 		try {
-			InputStreamReader is = new InputStreamReader(url.openStream());
-			BufferedReader in = new BufferedReader(is);
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader in = new BufferedReader(isr);
 
 			for (String s; (s = in.readLine()) != null;) {
 
@@ -132,17 +132,18 @@ public class HelpWindow extends JFrame {
 	}
 
 	private void readHelpContentFromSystem() {
-		URL url = ClassLoader.class.getResource("/helpcontent/help.xml");
-		if (url == null) {
-			System.out.println("Fehler im ClassLoader");
+		InputStream is = ClassLoader.class
+				.getResourceAsStream("/helpcontent/help.xml");
+		if (is == null) {
+			JOptionPane.showMessageDialog(null, "Fehler beim Laden der XML");
+			return;
 		}
 
 		try {
-			File help = new File(url.toURI());
 			DocumentBuilder db = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 			Document dom;
-			dom = db.parse(help);
+			dom = db.parse(is);
 			Element docEle = dom.getDocumentElement();
 			NodeList nl;
 			nl = docEle.getElementsByTagName("kapitel"); // liefert den Inhalt
@@ -162,12 +163,12 @@ public class HelpWindow extends JFrame {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
 }
