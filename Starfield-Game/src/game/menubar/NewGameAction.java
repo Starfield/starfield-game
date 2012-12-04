@@ -59,6 +59,7 @@ public class NewGameAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pArg0) {
+		boolean goOn = true;
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		jfc.setMultiSelectionEnabled(false);
@@ -72,9 +73,7 @@ public class NewGameAction extends AbstractAction {
 		jfc.addPropertyChangeListener(previewComp);
 
 		// Nur laden wenn User OK geklickt hat
-		int w = 0;
 		do {
-			w = 0;
 			if (jfc.showOpenDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 				String temppfad = jfc.getSelectedFile().getAbsolutePath();
 				if (temppfad.endsWith(".star")) {
@@ -98,42 +97,38 @@ public class NewGameAction extends AbstractAction {
 								MainWindow.getInstance().getGamePrefs()
 										.setAppMode(AppMode.GAME_MODE);
 								MainWindow.getInstance().initGame();
+								goOn = false;
 							} else {
-								int auswahl = JOptionPane.showConfirmDialog(
-										null,
-										"Wollen Sie ein anderes Puzzle laden?",
-										"Puzzle nicht spielbar",
-										JOptionPane.YES_NO_OPTION);
-								switch (auswahl) {
-								case 0:
-									w = 1;
-									break;
-								case 1:
-									w = 0;
-									break;
-								}
+								JOptionPane.showMessageDialog(null,
+										"Wählen sie eine gültige Datei!",
+										"Dateityp ist ungültig",
+										JOptionPane.WARNING_MESSAGE);
 
 							}
 						} else {
-							int auswahl2 = JOptionPane.showConfirmDialog(null,
-									"Wollen Sie ein anderes Puzzle laden?",
-									"Datei nicht lesbar",
-									JOptionPane.YES_NO_OPTION);
-							switch (auswahl2) {
-							case 0:
-								w = 1;
-								break;
-							case 1:
-								w = 0;
-								break;
-							}
+							JOptionPane.showMessageDialog(null,
+									"Wählen sie eine gültige Datei!",
+									"Dateityp ist ungültig",
+									JOptionPane.WARNING_MESSAGE);
 						}
 						ois.close();
 					} catch (Exception e) {
-						e.printStackTrace();
+						JOptionPane.showMessageDialog(null,
+								"Wählen sie eine gültige Datei!",
+								"Dateityp ist ungültig",
+								JOptionPane.WARNING_MESSAGE);
 					}
 				}
+				else {
+					JOptionPane.showMessageDialog(null,
+							"Wählen sie eine gültige Datei!",
+							"Dateityp ist ungültig",
+							JOptionPane.WARNING_MESSAGE);
+				}
 			}
-		} while (w == 1);
+			else {
+				goOn = false;
+			}
+		} while (goOn);
 	}
 }
