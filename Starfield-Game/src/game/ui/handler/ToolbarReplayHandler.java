@@ -3,6 +3,7 @@
  */
 package game.ui.handler;
 
+import game.commands.TimeLapseThread;
 import game.ui.MainWindow;
 import game.ui.ReplayToolbar;
 
@@ -21,6 +22,7 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 
 	private ReplayToolbar _toolbar = null;
 	private JSlider _slider = null;
+	private TimeLapseThread _timeLapseThread = new TimeLapseThread();
 
 	/*
 	 * (non-Javadoc)
@@ -29,6 +31,7 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
+	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent pE) {
 		String cmd = pE.getActionCommand();
 		_toolbar = (ReplayToolbar) MainWindow.getInstance().getActiveToolBar();
@@ -37,12 +40,16 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 			return;
 
 		if (cmd.equals("play")) {
-			// TODO Event zum Starten implementieren
-			System.out.println("Play gedrückt");
+			if (!_timeLapseThread.isAlive()) {
+				_timeLapseThread.start();
+			}
+			else {
+				_timeLapseThread.resume();
+			}
 		}
+		
 		if (cmd.equals("stop")) {
-			// TODO Event zum stoppen implementieren
-			System.out.println("Stop gedrückt");
+			_timeLapseThread.suspend();
 		}
 
 	}
@@ -56,17 +63,8 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 
 		if (_slider == null)
 			return;
-
-		// TODO Event zum Geschwindigkeitsändern einbauen
-		System.out.println("Geschwindigkeit " + _slider.getValue()
-				+ " gewählt.");
-		// Das Event wird bei einem Klick dreimal ausgelöst, warum weiss ich
-		// nicht. Musst sehen ob das deiner Logik egal ist, oder ob dadurch sehr
-		// viel unnötiges im Hintergrund passiert. Die Werte des Sliders kannst
-		// du anpassen wie du willst, kann ich dir bei Bedarf aber auch nochmal
-		// zeigen, die liegen im Moment noch direkt bei der Erstellung des
-		// Sliders in der ReplayToolbar, man kann die aber auch in die GamePrefs
-		// ziehen wenn wir das lieber ist.
+		
+		_timeLapseThread.setSpeed(_slider.getValue()*500);
 	}
 
 }
