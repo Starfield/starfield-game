@@ -4,6 +4,7 @@
 package game.ui.handler;
 
 import game.core.GamePreferences.AppMode;
+import game.model.Field;
 import game.model.Field.AllowedContent;
 import game.ui.EditToolbar;
 import game.ui.MainWindow;
@@ -11,6 +12,7 @@ import game.ui.MainWindow;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -97,8 +99,17 @@ public class ToolbarEditHandler implements ActionListener {
 	}
 
 	private void handleCheck(EditToolbar pToolbar) {
-		pToolbar.setPlayable(MainWindow.getInstance().getCurrentStarfield()
-				.checkPlayable(), false);
+		pToolbar.resetErrors();
+		boolean playable = MainWindow.getInstance().getCurrentStarfield()
+				.checkPlayable();
 		pToolbar.changeDifficulty();
+		Set<Field> errorFields = MainWindow.getInstance().getCurrentStarfield()
+				.getPossibleOtherSolutionFields();
+		if (errorFields.size() > 0) {
+			pToolbar.showErrors(errorFields);
+			pToolbar.setPlayable(false, false);
+		} else
+			pToolbar.setPlayable(playable, false);
 	}
+
 }

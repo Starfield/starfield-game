@@ -29,7 +29,10 @@ import game.ui.StatusBar;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 
 /**
@@ -52,6 +55,7 @@ public class StarfieldViewHandler implements MouseListener {
 		Object o = pE.getSource();
 		LineBorder blackBorder = new LineBorder(Color.BLACK, 1);
 		LineBorder grayBorder = new LineBorder(Color.LIGHT_GRAY, 1);
+		LineBorder redBorder = new LineBorder(new Color(200, 95, 95), 1);
 
 		if (o instanceof Field) {
 			Field selField = (Field) o;
@@ -59,31 +63,55 @@ public class StarfieldViewHandler implements MouseListener {
 					.getCurrentStarfield();
 			if (starfield == null)
 				return;
+
+			JToolBar toolbar = MainWindow.getInstance().getActiveToolBar();
+			Set<Field> shownErrorFields = null;
+			if (toolbar instanceof EditToolbar)
+				shownErrorFields = ((EditToolbar) toolbar).getErrorFields();
+			// Gibts keine Fehlerfelder wird einfach ein leeres erstellt
+			if (shownErrorFields == null)
+				shownErrorFields = new HashSet<Field>();
+
 			if (MainWindow.getInstance().getGamePrefs().getLinealMode() != LinealMode.NO) {
 				// Selektiertes Feld mit schwarzem Hintergrund setzen
-				((Field) o).setBorder(blackBorder);
+				if (shownErrorFields.contains(selField))
+					selField.setBorder(new LineBorder(new Color(240, 75, 75), 1));
+				else
+					selField.setBorder(blackBorder);
 				// Alle Felder nach oben grau umranden
 				Field nextField = selField;
 				while ((nextField = starfield.getField_U(nextField)) != null) {
-					nextField.setBorder(grayBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(grayBorder);
 
 				}
 				// ALle Felder nach unten umranden
 				nextField = selField;
 				while ((nextField = starfield.getField_D(nextField)) != null) {
-					nextField.setBorder(grayBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(grayBorder);
 
 				}
 				// ALle Felder nach links umranden
 				nextField = selField;
 				while ((nextField = starfield.getField_L(nextField)) != null) {
-					nextField.setBorder(grayBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(grayBorder);
 
 				}
 				// ALle Felder nach rechts umranden
 				nextField = selField;
 				while ((nextField = starfield.getField_R(nextField)) != null) {
-					nextField.setBorder(grayBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(grayBorder);
 
 				}
 
@@ -92,25 +120,37 @@ public class StarfieldViewHandler implements MouseListener {
 					// ALle Felder nach links oben umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_UL(nextField)) != null) {
-						nextField.setBorder(grayBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(grayBorder);
 
 					}
 					// ALle Felder nach links unten umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_DL(nextField)) != null) {
-						nextField.setBorder(grayBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(grayBorder);
 
 					}
 					// ALle Felder nach rechts oben umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_UR(nextField)) != null) {
-						nextField.setBorder(grayBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(grayBorder);
 
 					}
 					// ALle Felder nach rechts unten umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_DR(nextField)) != null) {
-						nextField.setBorder(grayBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(grayBorder);
 
 					}
 				}
@@ -123,6 +163,7 @@ public class StarfieldViewHandler implements MouseListener {
 
 		Object o = pE.getSource();
 		LineBorder whiteBorder = new LineBorder(Color.WHITE, 1);
+		LineBorder redBorder = new LineBorder(Color.RED, 1);
 
 		if (o instanceof Field) {
 			Field selField = (Field) o;
@@ -130,34 +171,56 @@ public class StarfieldViewHandler implements MouseListener {
 					.getCurrentStarfield();
 			if (starfield == null)
 				return;
+			JToolBar toolbar = MainWindow.getInstance().getActiveToolBar();
+			Set<Field> shownErrorFields = null;
+			if (toolbar instanceof EditToolbar)
+				shownErrorFields = ((EditToolbar) toolbar).getErrorFields();
+			// Gibts keine Fehlerfelder wird einfach ein leeres erstellt
+			if (shownErrorFields == null)
+				shownErrorFields = new HashSet<Field>();
 
 			if (MainWindow.getInstance().getGamePrefs().getLinealMode() != LinealMode.NO) {
 
 				// Selektiertes Feld Umrandung löschen
-				selField.setBorder(whiteBorder);
+				if (shownErrorFields.contains(selField))
+					selField.setBorder(redBorder);
+				else
+					selField.setBorder(whiteBorder);
 
 				// Alle Felder nach oben Umrandung wegmachen
 				Field nextField = selField;
 				while ((nextField = starfield.getField_U(nextField)) != null) {
-					nextField.setBorder(whiteBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(whiteBorder);
 
 				}
 				// Alle Felder nach unten Umrandung wegmachen
 				nextField = selField;
 				while ((nextField = starfield.getField_D(nextField)) != null) {
-					nextField.setBorder(whiteBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(whiteBorder);
 
 				}
 				// Alle Felder nach links Umrandung wegmachen
 				nextField = selField;
 				while ((nextField = starfield.getField_L(nextField)) != null) {
-					nextField.setBorder(whiteBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(whiteBorder);
 
 				}
 				// Alle Felder nach rechts Umrandung wegmachen
 				nextField = selField;
 				while ((nextField = starfield.getField_R(nextField)) != null) {
-					nextField.setBorder(whiteBorder);
+					if (shownErrorFields.contains(nextField))
+						nextField.setBorder(redBorder);
+					else
+						nextField.setBorder(whiteBorder);
 
 				}
 
@@ -166,25 +229,37 @@ public class StarfieldViewHandler implements MouseListener {
 					// ALle Felder nach links oben umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_UL(nextField)) != null) {
-						nextField.setBorder(whiteBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(whiteBorder);
 
 					}
 					// ALle Felder nach links unten umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_DL(nextField)) != null) {
-						nextField.setBorder(whiteBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(whiteBorder);
 
 					}
 					// ALle Felder nach rechts oben umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_UR(nextField)) != null) {
-						nextField.setBorder(whiteBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(whiteBorder);
 
 					}
 					// ALle Felder nach rechts unten umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_DR(nextField)) != null) {
-						nextField.setBorder(whiteBorder);
+						if (shownErrorFields.contains(nextField))
+							nextField.setBorder(redBorder);
+						else
+							nextField.setBorder(whiteBorder);
 
 					}
 				}

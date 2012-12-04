@@ -109,6 +109,7 @@ public class StarfieldView extends JScrollPane {
 		switch (MainWindow.getInstance().getGamePrefs().getAppMode()) {
 		case LOAD_GAME_MODE:
 		case GAME_MODE:
+		case REPLAY_MODE:
 			createHintBorder(size);
 			break;
 		default:
@@ -221,6 +222,7 @@ public class StarfieldView extends JScrollPane {
 			switch (MainWindow.getInstance().getGamePrefs().getAppMode()) {
 			case GAME_MODE:
 			case LOAD_GAME_MODE:
+			case REPLAY_MODE:
 				calcWidth -= 4;
 				calcHeight -= 4;
 				break;

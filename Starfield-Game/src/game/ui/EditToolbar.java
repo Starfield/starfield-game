@@ -6,15 +6,18 @@ package game.ui;
  */
 import game.core.ImageResources;
 import game.core.ImageResources.Images;
+import game.model.Field;
 import game.model.Field.AllowedContent;
 import game.ui.handler.ToolbarEditHandler;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
@@ -50,6 +54,8 @@ public class EditToolbar extends JToolBar {
 	private JLabel _playableLabel;
 	/** Schwierigkleitsanzeige */
 	private JLabel _difficultyLabel;
+	/** enthält die angezeigten Fehlerhaften Felder */
+	private Set<Field> _currentlyShownErrors;
 
 	public EditToolbar() {
 		_editHandler = new ToolbarEditHandler();
@@ -296,6 +302,14 @@ public class EditToolbar extends JToolBar {
 		return getInputSize(_ySizeInput);
 	}
 
+	/**
+	 * Liefert die Usereingabe eines der beiden Textfelder für die
+	 * Größenänderung
+	 * 
+	 * @param text
+	 *            das Textfeld das ausgelesen werden soll
+	 * @return gibt die eingegebene Größe aus
+	 */
 	private int getInputSize(JTextField text) {
 
 		String input = text.getText();
@@ -314,10 +328,38 @@ public class EditToolbar extends JToolBar {
 		return size;
 	}
 
+	/**
+	 * Ändert anhand der Methode aus dem Starfield die Schwierigkeit des
+	 * eingegebenen Puzzles und ändert den angezeigten Text
+	 */
 	public void changeDifficulty() {
 
 		_difficultyLabel.setText(MainWindow.getInstance().getCurrentStarfield()
 				.checkDifficulty());
+	}
+
+	/**
+	 * Hebt die fehlerhaften Felder durch eine rote Markierung am Rand hervor
+	 * 
+	 * @param errorFields
+	 */
+	public void showErrors(Set<Field> errorFields) {
+		for (Field f : errorFields)
+			f.setBorder(new LineBorder(Color.RED, 1));
+		_currentlyShownErrors = errorFields;
+	}
+
+	public void resetErrors() {
+		if (_currentlyShownErrors != null) {
+			for (Field f : _currentlyShownErrors) {
+				f.setBorder(new LineBorder(Color.WHITE, 1));
+			}
+			_currentlyShownErrors = null;
+		}
+	}
+
+	public Set<Field> getErrorFields() {
+		return _currentlyShownErrors;
 	}
 
 	private class CustomDocument extends PlainDocument {
