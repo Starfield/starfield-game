@@ -69,7 +69,7 @@ public class EditToolbar extends JToolBar {
 
 	private Component initStar() {
 		JPanel panel = new JPanel();
-		Border border = BorderFactory.createTitledBorder("linke Maustaste");
+		Border border = BorderFactory.createTitledBorder("Linke Maustaste");
 		panel.setBorder(border);
 		ButtonGroup bg = new ButtonGroup();
 
@@ -87,7 +87,7 @@ public class EditToolbar extends JToolBar {
 	private Component initArrows() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
-		Border border = BorderFactory.createTitledBorder("rechte Maustaste");
+		Border border = BorderFactory.createTitledBorder("Rechte Maustaste");
 		panel.setBorder(border);
 
 		ButtonGroup arrowBG = new ButtonGroup();
