@@ -102,14 +102,15 @@ public class ToolbarEditHandler implements ActionListener {
 		pToolbar.resetErrors();
 		boolean playable = MainWindow.getInstance().getCurrentStarfield()
 				.checkPlayable();
+		pToolbar.setPlayable(playable, false);
 		pToolbar.changeDifficulty();
 		Set<Field> errorFields = MainWindow.getInstance().getCurrentStarfield()
 				.getPossibleOtherSolutionFields();
 		if (errorFields.size() > 0) {
 			pToolbar.showErrors(errorFields);
 			pToolbar.setPlayable(false, false);
-		} else
-			pToolbar.setPlayable(playable, false);
+		}
+
 	}
 
 }
