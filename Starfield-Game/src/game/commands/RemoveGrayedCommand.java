@@ -34,7 +34,16 @@ public class RemoveGrayedCommand extends AbstractCommand {
 	@Override
 	public void execute() {
 		super.execute();
-		((Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord())).setUserContent(AllowedContent.CONTENT_EMPTY);
+		Field f = (Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord()); 
+		f.setUserContent(AllowedContent.CONTENT_EMPTY);
+		if (f.IsCurrentContentRight()) {
+			for (int i = 0; i < getStacks().getMistake().size(); i++) {
+				if (f == getStacks().getMistake().get(i).getField()) {
+					getStacks().getMistake().remove(i);
+					getStacks().getCorrections().add(this);
+				}
+			}
+		}
 	}
 	
 	/**

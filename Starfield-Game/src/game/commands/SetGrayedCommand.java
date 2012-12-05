@@ -34,7 +34,11 @@ public class SetGrayedCommand extends AbstractCommand {
 	@Override
 	public void execute() {
 		super.execute();
-		((Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord())).setUserContent(AllowedContent.CONTENT_GRAYED);
+		Field f = (Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord());
+		f.setUserContent(AllowedContent.CONTENT_GRAYED);
+		if (!f.IsCurrentContentRight()) {
+			getStacks().addMistake(f);
+		}
 	}
 	
 	/**

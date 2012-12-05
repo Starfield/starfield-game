@@ -1,5 +1,7 @@
 package game.commands;
 
+import game.model.Field;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +26,9 @@ public class CommandStack implements Serializable {
 	private ArrayList<Integer> marker = new ArrayList<Integer>();
 	
 	/** Liste aller fehlerhaften Eingaben des Nutzers */
-	private ArrayList<Integer> mistake = new ArrayList<Integer>();
+	private ArrayList<Mistake> mistake = new ArrayList<Mistake>();
+	
+	private ArrayList<AbstractCommand> corrections = new ArrayList<AbstractCommand>();
 	
 	/** Korrespondierendes Starfield */
 	private File starfieldFile = null;
@@ -146,8 +150,8 @@ public class CommandStack implements Serializable {
 	 * @param mistake
 	 * - Position des Fehlers im Playstack
 	 */
-	public void addMistake() {
-		this.mistake.add(playStack.size());
+	public void addMistake(Field field) {
+		this.mistake.add(new Mistake(playStack.size(), field));
 	}
 	
 	/**
@@ -158,7 +162,7 @@ public class CommandStack implements Serializable {
 	 */
 	public int locateFirstMistake() {
 		if (mistake.size() != 0) {
-			return mistake.get(0);
+			return mistake.get(0).getStackPos();
 		}
 		return 0;
 	}
@@ -179,7 +183,7 @@ public class CommandStack implements Serializable {
 	 * @return mistake
 	 * - Array mit Fehlern
 	 */
-	public ArrayList<Integer> getMistake() {
+	public ArrayList<Mistake> getMistake() {
 		return mistake;
 	}
 
@@ -208,7 +212,10 @@ public class CommandStack implements Serializable {
 		
 		if (!marker) {
 			for (int i = 0; i < mistake.size(); i++) {
-				mistake.set(i, 0);
+				mistake.remove(i);
+			}
+			for (int i = 0; i < corrections.size(); i++) {
+				corrections.get(i).execute();
 			}
 		}
 	}
@@ -305,6 +312,16 @@ public class CommandStack implements Serializable {
 	 */
 	public void setAttempts(int attempts) {
 		this.attempts = attempts;
+	}
+
+	/**
+	 * Gibt die im Spiel korrigierten Fehler zurück.
+	 * 
+	 * @return corrections
+	 * - Korrigierte Fehler
+	 */
+	public ArrayList<AbstractCommand> getCorrections() {
+		return corrections;
 	}
 	
 }

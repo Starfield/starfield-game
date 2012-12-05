@@ -37,7 +37,7 @@ public class SetStarCommand extends AbstractCommand {
 		Field f = (Field) MainWindow.getInstance().getCurrentStarfield().getField(getxCoord(), getyCoord());
 		f.setUserContent(AllowedContent.CONTENT_STAR);
 		if (!f.IsCurrentContentRight()) {
-			getStacks().addMistake();
+			getStacks().addMistake(f);
 		}
 	}
 
