@@ -3,11 +3,14 @@
  */
 package game.ui;
 
+import game.core.ImageResources;
+import game.core.ImageResources.Images;
 import game.ui.handler.ToolbarReplayHandler;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
@@ -87,6 +90,19 @@ public class ReplayToolbar extends JToolBar {
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridy = 3;
 		panel.add(slider, c);
+
+		// Bilder für Geschwindigkeit
+		label = new JLabel(ImageResources.getScaledIcon(24, Images.ICON_SLOW,
+				Image.SCALE_SMOOTH));
+		c.anchor = GridBagConstraints.LINE_START;
+		c.gridy = 4;
+		panel.add(label, c);
+
+		label = new JLabel(ImageResources.getScaledIcon(24, Images.ICON_FAST,
+				Image.SCALE_SMOOTH));
+		c.anchor = GridBagConstraints.LINE_END;
+		c.gridx = 1;
+		panel.add(label, c);
 
 		return panel;
 	}
