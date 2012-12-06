@@ -60,6 +60,25 @@ public class TimeLapseThread extends Thread {
 	 * - Geschwindigkeit des Zeitraffers
 	 */
 	public void setSpeed(int speed) {
-		this.speed = speed;
+		switch (speed) {
+		case 1:
+			this.speed = 2500;
+			break;
+		case 2:
+			this.speed = 2000;
+			break;
+		case 3:
+			this.speed = 1500;
+			break;
+		case 4:
+			this.speed = 1000;
+			break;
+		case 5:
+			this.speed = 500;
+			break;
+		default:
+			this.speed = 1500;
+			break;
+		};
 	}
 }

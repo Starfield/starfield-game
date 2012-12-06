@@ -64,7 +64,7 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 		if (_slider == null)
 			return;
 		
-		_timeLapseThread.setSpeed(_slider.getValue()*500);
+		_timeLapseThread.setSpeed(_slider.getValue());
 	}
 
 }
