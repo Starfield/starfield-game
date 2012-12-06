@@ -3,6 +3,8 @@
  */
 package game.menubar;
 
+import game.core.ImageResources;
+import game.core.ImageResources.Images;
 import game.model.Starfield;
 import game.ui.StarfieldView;
 
@@ -58,13 +60,7 @@ public class StarfieldPreviewComponent extends JPanel implements
 		boolean update = false;
 		String prop = event.getPropertyName();
 
-		// If the directory changed, don't show an image.
-		if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
-			_file = null;
-			_preview = null;
-			repaint();
-			// If a file became selected, find out which one.
-		} else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
+		if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
 			_file = (File) event.getNewValue();
 			update = true;
 		}
@@ -76,7 +72,8 @@ public class StarfieldPreviewComponent extends JPanel implements
 				loadImage();
 				repaint();
 			}
-		}
+		} else
+			handleIncompatibleFileError();
 	}
 
 	private void loadImage() {
@@ -90,23 +87,32 @@ public class StarfieldPreviewComponent extends JPanel implements
 					((Starfield) o).clearUserContent().prepareUserContent(true);
 					StarfieldView view = new StarfieldView(((Starfield) o));
 					view.repaint();
+					Rectangle rect = new Rectangle(view.getContent()
+							.getPreferredSize().width, view.getContent()
+							.getPreferredSize().height);
 					BufferedImage image = paintNotVisibleComponent(
-							view.getContent(), new Container(), new Rectangle(
-									view.getContent().getPreferredSize()));
-					_preview = new ImageIcon(image.getScaledInstance(150, 150,
-							Image.SCALE_SMOOTH));
+							view.getContent(), new Container(), rect);
+					if (rect.getHeight() > rect.getWidth())
+						_preview = new ImageIcon(image.getScaledInstance(-1,
+								150, Image.SCALE_SMOOTH));
+					else
+						_preview = new ImageIcon(image.getScaledInstance(150,
+								-1, Image.SCALE_SMOOTH));
 					if (_preview != null)
 						_content.setIcon(_preview);
-				}
+
+				} else
+					handleIncompatibleFileError();
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				handleIncompatibleFileError();
 			} catch (IOException e) {
-				e.printStackTrace();
+				handleIncompatibleFileError();
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				handleIncompatibleFileError();
 			} finally {
 				try {
-					ois.close();
+					if (ois != null)
+						ois.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -118,12 +124,17 @@ public class StarfieldPreviewComponent extends JPanel implements
 
 	private BufferedImage paintNotVisibleComponent(Component c, Container con,
 			Rectangle rect) {
-
 		BufferedImage img = new BufferedImage(rect.width, rect.height,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = img.createGraphics();
 		SwingUtilities.paintComponent(g, c, con, rect);
 		g.dispose();
 		return img;
+	}
+
+	private void handleIncompatibleFileError() {
+		_preview = ImageResources.getScaledIcon(150, Images.ICON_NO_PREVIEW,
+				Image.SCALE_SMOOTH);
+		_content.setIcon(_preview);
 	}
 }

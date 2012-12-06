@@ -50,6 +50,9 @@ public class LoadPuzzleAction extends AbstractAction {
 		jfc.setFileHidingEnabled(true);
 		FileFilter ff = new FileNameExtensionFilter("Starfield-Puzzle", "star");
 		jfc.setFileFilter(ff);
+		StarfieldPreviewComponent previewComp = new StarfieldPreviewComponent();
+		jfc.setAccessory(previewComp);
+		jfc.addPropertyChangeListener(previewComp);
 		File dirfile = new File("Puzzle");
 		jfc.setCurrentDirectory(dirfile.getAbsoluteFile());
 		do {
@@ -69,14 +72,14 @@ public class LoadPuzzleAction extends AbstractAction {
 							// stellen
 							MainWindow.getInstance().getGamePrefs()
 									.setLoadedStarfield((Starfield) o);
-							// Dem MainWindow bescheid geben, die Elemente neu zu
+							// Dem MainWindow bescheid geben, die Elemente neu
+							// zu
 							// erstellen
 							MainWindow.getInstance().getGamePrefs()
 									.setAppMode(AppMode.LOAD_EDIT_MODE);
 							MainWindow.getInstance().initGame();
 							goOn = false;
-						}
-						else {
+						} else {
 							JOptionPane.showMessageDialog(null,
 									"Bitte wählen Sie ein spielbares Puzzle!",
 									"Puzzle ist nicht spielbar",
@@ -89,15 +92,13 @@ public class LoadPuzzleAction extends AbstractAction {
 								"Dateityp ist ungültig",
 								JOptionPane.WARNING_MESSAGE);
 					}
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(null,
 							"Wählen sie eine gültige Datei!",
 							"Dateityp ist ungültig",
 							JOptionPane.WARNING_MESSAGE);
 				}
-			}
-			else {
+			} else {
 				goOn = false;
 			}
 		} while (goOn);

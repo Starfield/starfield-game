@@ -59,6 +59,7 @@ public class ImageResources {
 		ICON_PLAYABLE_UNSURE("icons/icon_playable_unsure"),
 		ICON_SLOW("icons/icon_slow"),
 		ICON_FAST("icons/icon_fast"),
+		ICON_NO_PREVIEW("icons/icon_no_preview"),
 		ICON_ARROW_U("icons/arrows/UpArrowIcon"),
 		ICON_ARROW_D("icons/arrows/DownArrowIcon"),
 		ICON_ARROW_L("icons/arrows/LeftArrowIcon"),
