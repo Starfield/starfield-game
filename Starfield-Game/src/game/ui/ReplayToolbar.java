@@ -18,8 +18,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 /**
@@ -34,6 +36,8 @@ public class ReplayToolbar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 
 	private final ToolbarReplayHandler _replayHandler;
+
+	private JProgressBar _progressBar;
 
 	public ReplayToolbar() {
 		// EventHandler erzeugen
@@ -68,7 +72,7 @@ public class ReplayToolbar extends JToolBar {
 		panel.add(button, c);
 
 		// Stop Button
-		button = new JButton("Stop");
+		button = new JButton("Pause");
 		button.addActionListener(_replayHandler);
 		button.setActionCommand("stop");
 		c.gridx = 1;
@@ -104,10 +108,33 @@ public class ReplayToolbar extends JToolBar {
 		c.gridx = 1;
 		panel.add(label, c);
 
+		// Leerzeile
+		label = new JLabel(" ");
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridy = 5;
+		panel.add(label, c);
+
+		// ProgressBar
+		_progressBar = new JProgressBar(SwingConstants.HORIZONTAL);
+		c.gridx = 0;
+		c.gridy = 6;
+		panel.add(_progressBar, c);
+
 		return panel;
 	}
 
 	public ToolbarReplayHandler getReplayHandler() {
 		return _replayHandler;
+	}
+
+	public void setProgressMaximum(int maximum) {
+		_progressBar.setMaximum(maximum);
+		_progressBar.setMinimum(1);
+		_progressBar.setValue(1);
+		_progressBar.repaint();
+	}
+
+	public void setProgressTick() {
+		_progressBar.setValue(_progressBar.getValue() + 1);
 	}
 }

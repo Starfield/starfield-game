@@ -99,14 +99,25 @@ public class ToolbarEditHandler implements ActionListener {
 	}
 
 	private void handleCheck(EditToolbar pToolbar) {
+		// Alte Fehleranzeigen entfernen
 		pToolbar.resetErrors();
+		// grobe Verletzung der Regeln abfragen
 		Set<Field> errorFields = MainWindow.getInstance().getCurrentStarfield()
 				.checkPlayable();
-		pToolbar.setPlayable(errorFields.size() == 0, false);
-		pToolbar.changeDifficulty();
-		errorFields.addAll(MainWindow.getInstance().getCurrentStarfield()
-				.getPossibleOtherSolutionFields());
-		if (errorFields.size() > 0) {
+		// Anhand der groben Fehler die Spielbarkeit setzen
+		pToolbar.setPlayable(errorFields.isEmpty(), false);
+		if (errorFields.isEmpty()) {
+			// Ist das Puzzle spielbar, wird die Schwierigkeit geprüft
+			pToolbar.changeDifficulty();
+			// Die Eindeutigkeit überprüfen und die gefundenen Fehler in die
+			// Liste
+			// schreiben
+			errorFields.addAll(MainWindow.getInstance().getCurrentStarfield()
+					.getPossibleOtherSolutionFields());
+		}
+		// Gibt es Felder in der Liste, werden diese auf dem Bildschirm
+		// angezeigt
+		if (!errorFields.isEmpty()) {
 			pToolbar.showErrors(errorFields);
 			pToolbar.setPlayable(false, false);
 		}

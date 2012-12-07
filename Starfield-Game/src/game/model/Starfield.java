@@ -27,14 +27,13 @@ public class Starfield implements Serializable {
 	HashSet<Field> allSolutionStars; // alle Sterne zur KI-Überprüfung
 	HashSet<Field> grayed;
 	Dimension size;
-	
 
 	public Starfield(int xNumber, int yNumber) {
 		size = new Dimension();
 		size.setSize(xNumber, yNumber);
 		listcontainer = new ArrayList<ArrayList<Field>>();
 		createStarfield(xNumber, yNumber);
-		playable=false;
+		playable = false;
 		grayed = new HashSet<Field>();
 		stars = new HashSet<Field>();
 		arrows = new HashSet<Field>();
@@ -163,22 +162,21 @@ public class Starfield implements Serializable {
 		boolean rightorwrong = true;
 		for (ArrayList<Field> list : listcontainer) {
 			for (Field field : list) {
-				if (field.getSolutionContent()!=AllowedContent.CONTENT_EMPTY) {
-					 if(field.getUserContent()==AllowedContent.CONTENT_GRAYED){
-						rightorwrong = false;
-					 }}
-					if( field.getUserContent() != (field.getSolutionContent())&&field.userContent!=AllowedContent.CONTENT_GRAYED){
+				if (field.getSolutionContent() != AllowedContent.CONTENT_EMPTY) {
+					if (field.getUserContent() == AllowedContent.CONTENT_GRAYED) {
 						rightorwrong = false;
 					}
-				
+				}
+				if (field.getUserContent() != (field.getSolutionContent())
+						&& field.userContent != AllowedContent.CONTENT_GRAYED) {
+					rightorwrong = false;
+				}
 
 			}
 		}
 
 		return rightorwrong;
 	}
-	
-	
 
 	public ArrayList<Field> getWrongFields() {
 		ArrayList<Field> wrongFields = new ArrayList<Field>();
@@ -561,6 +559,8 @@ public class Starfield implements Serializable {
 				}
 			}
 			break;
+		default:
+			break;
 
 		}
 		return false;
@@ -579,7 +579,7 @@ public class Starfield implements Serializable {
 						if (!ContainsStar(args.get(0))) { // Checkt ob der Pfeil
 															// auf einen Stern
 															// zeigt
-							wrongFields.add(getField(x, y));	
+							wrongFields.add(getField(x, y));
 						}
 					} else {
 						if (!(IsHitByArrow(args.get(1),
@@ -923,6 +923,10 @@ public class Starfield implements Serializable {
 	 */
 	public String checkDifficulty() {
 		if (playable) {
+			arrows.clear();
+			stars.clear();
+			allSolutionStars.clear();
+			grayed.clear();
 			int aiCount = 0;
 			copyUserToSolutionContent();
 			setFieldsGrayIfNoStars(); // alles grau, wo 0 drüber
@@ -1168,6 +1172,8 @@ public class Starfield implements Serializable {
 				case CONTENT_ARROW_L:
 					setFieldsGrayRightToTheArrow(field);
 					break;
+				default:
+					break;
 
 				}
 			}
@@ -1327,17 +1333,20 @@ public class Starfield implements Serializable {
 		}
 
 	}
+
 	/**
-	 * Gibt die möglichen alternativ Felder in einem Hashset zurück.
-	 * Muss nach der KI Überprüfung checkDifficulty aufgerufen werden.
+	 * Gibt die möglichen alternativ Felder in einem Hashset zurück. Muss nach
+	 * der KI Überprüfung checkDifficulty aufgerufen werden.
 	 * 
 	 */
 	public HashSet<Field> getPossibleOtherSolutionFields() {
 		HashSet<Field> possibleSolutionFields = new HashSet<Field>();
 		for (ArrayList<Field> list : listcontainer) {
 			for (Field field : list) {
-				if (!stars.contains(field) && !arrows.contains(field)
-						&& !grayed.contains(field)&&!(field.solutionContent==AllowedContent.CONTENT_STAR)) {
+				if (!stars.contains(field)
+						&& !arrows.contains(field)
+						&& !grayed.contains(field)
+						&& !(field.solutionContent == AllowedContent.CONTENT_STAR)) {
 					possibleSolutionFields.add(field);
 				}
 			}
