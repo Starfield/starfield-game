@@ -1,5 +1,7 @@
 package game.commands;
 
+import java.io.Serializable;
+
 import game.model.Field;
 
 /**
@@ -9,7 +11,9 @@ import game.model.Field;
  * 
  * @author Nikolaj
  */
-public class Mistake {
+public class Mistake implements Serializable {
+
+	private static final long serialVersionUID = 1199451520364465550L;
 
 	/** Position des Fehlers im Play Stack */
 	private int stackPos;
