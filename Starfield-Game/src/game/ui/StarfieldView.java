@@ -36,9 +36,9 @@ public class StarfieldView extends JScrollPane {
 	/** Das Modell */
 	private final Starfield _starfield;
 	/** Der Handler für Aktionen */
-	private final StarfieldViewHandler _handler = new StarfieldViewHandler();
+	private final StarfieldViewHandler _handler;
 	/** ContentPanel */
-	private static JPanel _content = new JPanel();
+	private static JPanel _content;
 
 	private GridBagLayout _layout;
 
@@ -46,10 +46,11 @@ public class StarfieldView extends JScrollPane {
 	private Dimension _hintBorderSize = new Dimension(0, 0);
 
 	public StarfieldView(final Starfield pStarfield) {
-		super(_content);
+		super(_content = new JPanel());
 		setBorder(null);
 		_content.removeAll();
 		_starfield = pStarfield;
+		_handler = new StarfieldViewHandler();
 		if (_starfield != null) {
 			initWindowsPrefs();
 			fillView();
@@ -82,22 +83,8 @@ public class StarfieldView extends JScrollPane {
 				c.gridx = x + 1;
 				c.gridy = y + 1;
 				final game.model.Field field = _starfield.getField(x, y);
-				// nach fünf spalten soll eine Linie kommen
-				// if (((x + 1) % 5) == 0) {
-				// c.ipadx = 2;
-				//
-				// } else {
-				// c.ipadx = 0;
-				// }
-				// // nach fünf reihen soll eine Linie kommen
-				// if (((y + 1) % 5) == 0) {
-				// c.ipady = 2;
-				// } else {
-				// c.ipady = 0;
-				// }
 				if (!listenersRegistered(field))
 					// for (MouseListener ml : field.getMouseListeners())
-					// field.removeMouseListener(ml);
 					field.addMouseListener(_handler);
 				_content.add(field, c);
 

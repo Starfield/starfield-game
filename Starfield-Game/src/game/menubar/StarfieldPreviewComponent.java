@@ -76,6 +76,10 @@ public class StarfieldPreviewComponent extends JPanel implements
 			handleIncompatibleFileError();
 	}
 
+	/**
+	 * Diese Methode erstellt anhand des selektierten Files einen Snapshot des
+	 * Puzzles und stellt diesen in der Vorschauansicht dar.
+	 */
 	private void loadImage() {
 		if (_file != null) {
 			ObjectInputStream ois = null;
