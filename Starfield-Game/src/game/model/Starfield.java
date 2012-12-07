@@ -922,11 +922,12 @@ public class Starfield implements Serializable {
 	 * Überprüft die Schwierigkeit und gibt sie aus.
 	 */
 	public String checkDifficulty() {
+
 		if (playable) {
-			arrows.clear();
-			stars.clear();
-			allSolutionStars.clear();
-			grayed.clear();
+			grayed = new HashSet<Field>();
+			stars = new HashSet<Field>();
+			arrows = new HashSet<Field>();
+			allSolutionStars = new HashSet<Field>();
 			int aiCount = 0;
 			copyUserToSolutionContent();
 			setFieldsGrayIfNoStars(); // alles grau, wo 0 drüber
@@ -937,7 +938,7 @@ public class Starfield implements Serializable {
 					+ grayed.size());
 
 			// Schleife
-			while ((!isAIFinished()) && aiCount < 100) {
+			while ((!isAIFinished()) && aiCount < 900) {
 				setStarCountEqualEmptyFields(); // freie Plätze = Anzahl Sterne
 												// > setze Sterne
 				fillFullRowColumnGray(); // setzt falls alle Sterne gesetzt
@@ -1085,7 +1086,7 @@ public class Starfield implements Serializable {
 		while (!(getField_UR(field) == (null))) {
 			field = getField_UR(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
