@@ -34,6 +34,11 @@ public class Starfield implements Serializable {
 		size.setSize(xNumber, yNumber);
 		listcontainer = new ArrayList<ArrayList<Field>>();
 		createStarfield(xNumber, yNumber);
+		playable=false;
+		grayed = new HashSet<Field>();
+		stars = new HashSet<Field>();
+		arrows = new HashSet<Field>();
+		allSolutionStars = new HashSet<Field>();
 	}
 
 	public void createStarfield(int xNumber, int yNumber) {
@@ -574,7 +579,7 @@ public class Starfield implements Serializable {
 						if (!ContainsStar(args.get(0))) { // Checkt ob der Pfeil
 															// auf einen Stern
 															// zeigt
-							wrongFields.add(getField(x, y));							
+							wrongFields.add(getField(x, y));	
 						}
 					} else {
 						if (!(IsHitByArrow(args.get(1),
@@ -918,10 +923,6 @@ public class Starfield implements Serializable {
 	 */
 	public String checkDifficulty() {
 		if (playable) {
-			grayed = new HashSet<Field>();
-			stars = new HashSet<Field>();
-			arrows = new HashSet<Field>();
-			allSolutionStars = new HashSet<Field>();
 			int aiCount = 0;
 			copyUserToSolutionContent();
 			setFieldsGrayIfNoStars(); // alles grau, wo 0 drüber
