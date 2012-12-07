@@ -81,8 +81,8 @@ public class LoadPuzzleAction extends AbstractAction {
 							goOn = false;
 						} else {
 							JOptionPane.showMessageDialog(null,
-									"Bitte wählen Sie ein spielbares Puzzle!",
-									"Puzzle ist nicht spielbar",
+									"Wählen sie eine gültige Datei!",
+									"Dateityp ist ungültig",
 									JOptionPane.WARNING_MESSAGE);
 						}
 						ois.close();

@@ -309,7 +309,8 @@ public class StarfieldViewHandler implements MouseListener {
 				// Im Editmodus wird überprüft, ob das Spielfeld lösbar ist
 				if (o instanceof EditToolbar)
 					((EditToolbar) o).setPlayable(MainWindow.getInstance()
-							.getCurrentStarfield().checkPlayable(), true);
+							.getCurrentStarfield().checkPlayable().size() == 0,
+							true);
 			}
 
 		}

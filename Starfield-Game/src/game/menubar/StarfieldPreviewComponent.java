@@ -128,6 +128,7 @@ public class StarfieldPreviewComponent extends JPanel implements
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = img.createGraphics();
 		SwingUtilities.paintComponent(g, c, con, rect);
+		// c.paint(g);
 		g.dispose();
 		return img;
 	}
