@@ -27,6 +27,7 @@ public class Starfield implements Serializable {
 	HashSet<Field> allSolutionStars; // alle Sterne zur KI-Überprüfung
 	HashSet<Field> grayed;
 	Dimension size;
+	
 
 	public Starfield(int xNumber, int yNumber) {
 		size = new Dimension();
@@ -560,7 +561,8 @@ public class Starfield implements Serializable {
 		return false;
 	}
 
-	public boolean checkPlayable() {
+	public HashSet<Field> checkPlayable() {
+		HashSet<Field> wrongFields = new HashSet<Field>();
 		ArrayList<ArrayList<Field>> args = new ArrayList<ArrayList<Field>>();
 		for (int x = 0; x < size.getWidth(); x++) {
 			for (int y = 0; y < size.getHeight(); y++) {
@@ -572,7 +574,7 @@ public class Starfield implements Serializable {
 						if (!ContainsStar(args.get(0))) { // Checkt ob der Pfeil
 															// auf einen Stern
 															// zeigt
-							return false;
+							wrongFields.add(getField(x, y));							
 						}
 					} else {
 						if (!(IsHitByArrow(args.get(1),
@@ -591,7 +593,7 @@ public class Starfield implements Serializable {
 										AllowedContent.CONTENT_ARROW_UR))
 								&& !(IsHitByArrow(args.get(8),
 										AllowedContent.CONTENT_ARROW_R))) {
-							return false;
+							wrongFields.add(getField(x, y));
 						}
 					}
 
@@ -599,7 +601,7 @@ public class Starfield implements Serializable {
 			}
 		}
 
-		return true;
+		return wrongFields;
 
 	}
 
