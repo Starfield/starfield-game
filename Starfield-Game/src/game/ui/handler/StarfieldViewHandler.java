@@ -54,7 +54,7 @@ public class StarfieldViewHandler implements MouseListener {
 	public void mouseEntered(MouseEvent pE) {
 		Object o = pE.getSource();
 		LineBorder blackBorder = new LineBorder(Color.BLACK, 1);
-		LineBorder grayBorder = new LineBorder(Color.LIGHT_GRAY, 1);
+		LineBorder grayBorder = new LineBorder(Color.BLUE, 1);
 		LineBorder redBorder = new LineBorder(new Color(200, 95, 95), 1);
 
 		if (o instanceof Field) {

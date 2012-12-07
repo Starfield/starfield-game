@@ -12,6 +12,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -39,6 +40,9 @@ public class ReplayToolbar extends JToolBar {
 
 	private JProgressBar _progressBar;
 
+	/** MarkerList */
+	private ArrayList<JLabel> _markerList;
+
 	public ReplayToolbar() {
 		// EventHandler erzeugen
 		_replayHandler = new ToolbarReplayHandler();
@@ -46,9 +50,69 @@ public class ReplayToolbar extends JToolBar {
 		BoxLayout layout = new BoxLayout(panel, VERTICAL);
 		panel.setLayout(layout);
 
+		panel.add(initMarker());
 		panel.add(initControls());
 
 		add(panel);
+	}
+
+	/**
+	 * Initialisiert die Grundeinstellungen der Toolbar
+	 */
+	private JPanel initMarker() {
+		// Internes Panel zur Ablage
+		JPanel panel = new JPanel();
+		// Layout mit Optionen festlegen
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(2, 2, 2, 2);
+		// Rahmen festlegen
+		Border border = BorderFactory.createTitledBorder("Marker");
+		panel.setBorder(border);
+
+		// Markervisualierung hinzufügen
+		_markerList = new ArrayList<JLabel>();
+
+		JLabel label = new JLabel(
+				ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		_markerList.add(label);
+		c.gridx = 0;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		_markerList.add(label);
+		c.gridx = 1;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		_markerList.add(label);
+		c.gridx = 2;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		_markerList.add(label);
+		c.gridx = 3;
+		c.gridy = 0;
+		panel.add(label, c);
+		label = new JLabel(ImageResources.getIcon(Images.ICON_MARKER_OFF));
+		_markerList.add(label);
+		c.gridx = 4;
+		c.gridy = 0;
+		panel.add(label, c);
+
+		return panel;
+	}
+
+	public ArrayList<JLabel> getMarkerList() {
+		return this._markerList;
+	}
+
+	public void setNextMarker() {
+		// Logik einfügen, dass beim Aufruf aus dem MarkerHandler das nächste
+		// Icon in der markerList auf "AN" gesetzt wird
+		_markerList.get(0).setIcon(
+				ImageResources.getIcon(Images.ICON_MARKER_OFF));
+
 	}
 
 	private Component initControls() {
