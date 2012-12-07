@@ -3,6 +3,7 @@
  */
 package game.menubar.handler;
 
+import game.core.GamePreferences.HelpMode;
 import game.core.GamePreferences.LinealMode;
 import game.core.GamePreferences.Resolution;
 import game.ui.MainWindow;
@@ -25,6 +26,7 @@ public class MainMenuBarHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent pEvent) {
 		String cmd = pEvent.getActionCommand();
+		// Änderungen am Linealmodus abfragen
 		if (cmd.equalsIgnoreCase("NO")) {
 			MainWindow.getInstance().getGamePrefs()
 					.setLinealMode(LinealMode.NO);
@@ -38,6 +40,15 @@ public class MainMenuBarHandler implements ActionListener {
 		if (cmd.equalsIgnoreCase("STAR")) {
 			MainWindow.getInstance().getGamePrefs()
 					.setLinealMode(LinealMode.STAR);
+			return;
+		}
+		// Änderungen am Hilfsmodus abfragen
+		if (cmd.equalsIgnoreCase("HELP_OFF")) {
+			MainWindow.getInstance().getGamePrefs().setHelpMode(HelpMode.OFF);
+			return;
+		}
+		if (cmd.equalsIgnoreCase("HELP_ON")) {
+			MainWindow.getInstance().getGamePrefs().setHelpMode(HelpMode.ON);
 			return;
 		}
 		// Änderung des Users in die Optionen schreiben

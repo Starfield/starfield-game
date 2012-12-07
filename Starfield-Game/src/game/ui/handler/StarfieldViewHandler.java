@@ -17,6 +17,7 @@ import game.commands.SetArrowUpLeftCommand;
 import game.commands.SetArrowUpRightCommand;
 import game.commands.SetGrayedCommand;
 import game.commands.SetStarCommand;
+import game.core.GamePreferences.HelpMode;
 import game.core.GamePreferences.LinealMode;
 import game.model.Field;
 import game.model.Field.AllowedContent;
@@ -45,6 +46,16 @@ import javax.swing.border.LineBorder;
  */
 public class StarfieldViewHandler implements MouseListener {
 
+	// Border für MouseEntered
+	LineBorder blackBorder = new LineBorder(Color.BLACK, 1);
+	LineBorder linealBorder = new LineBorder(Color.BLUE, 1);
+	LineBorder helpBorder = new LineBorder(Color.GREEN, 1);
+	LineBorder redLightBorder = new LineBorder(new Color(200, 95, 95), 1);
+
+	// Border für MouseExited
+	LineBorder whiteBorder = new LineBorder(Color.WHITE, 1);
+	LineBorder redBorder = new LineBorder(Color.RED, 1);
+
 	@Override
 	public void mouseClicked(MouseEvent pE) {
 
@@ -53,9 +64,6 @@ public class StarfieldViewHandler implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent pE) {
 		Object o = pE.getSource();
-		LineBorder blackBorder = new LineBorder(Color.BLACK, 1);
-		LineBorder grayBorder = new LineBorder(Color.BLUE, 1);
-		LineBorder redBorder = new LineBorder(new Color(200, 95, 95), 1);
 
 		if (o instanceof Field) {
 			Field selField = (Field) o;
@@ -82,36 +90,35 @@ public class StarfieldViewHandler implements MouseListener {
 				Field nextField = selField;
 				while ((nextField = starfield.getField_U(nextField)) != null) {
 					if (shownErrorFields.contains(nextField))
-						nextField.setBorder(redBorder);
+						nextField.setBorder(redLightBorder);
 					else
-						nextField.setBorder(grayBorder);
-
+						nextField.setBorder(linealBorder);
 				}
 				// ALle Felder nach unten umranden
 				nextField = selField;
 				while ((nextField = starfield.getField_D(nextField)) != null) {
 					if (shownErrorFields.contains(nextField))
-						nextField.setBorder(redBorder);
+						nextField.setBorder(redLightBorder);
 					else
-						nextField.setBorder(grayBorder);
+						nextField.setBorder(linealBorder);
 
 				}
 				// ALle Felder nach links umranden
 				nextField = selField;
 				while ((nextField = starfield.getField_L(nextField)) != null) {
 					if (shownErrorFields.contains(nextField))
-						nextField.setBorder(redBorder);
+						nextField.setBorder(redLightBorder);
 					else
-						nextField.setBorder(grayBorder);
+						nextField.setBorder(linealBorder);
 
 				}
 				// ALle Felder nach rechts umranden
 				nextField = selField;
 				while ((nextField = starfield.getField_R(nextField)) != null) {
 					if (shownErrorFields.contains(nextField))
-						nextField.setBorder(redBorder);
+						nextField.setBorder(redLightBorder);
 					else
-						nextField.setBorder(grayBorder);
+						nextField.setBorder(linealBorder);
 
 				}
 
@@ -121,49 +128,186 @@ public class StarfieldViewHandler implements MouseListener {
 					nextField = selField;
 					while ((nextField = starfield.getField_UL(nextField)) != null) {
 						if (shownErrorFields.contains(nextField))
-							nextField.setBorder(redBorder);
+							nextField.setBorder(redLightBorder);
 						else
-							nextField.setBorder(grayBorder);
+							nextField.setBorder(linealBorder);
 
 					}
 					// ALle Felder nach links unten umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_DL(nextField)) != null) {
 						if (shownErrorFields.contains(nextField))
-							nextField.setBorder(redBorder);
+							nextField.setBorder(redLightBorder);
 						else
-							nextField.setBorder(grayBorder);
+							nextField.setBorder(linealBorder);
 
 					}
 					// ALle Felder nach rechts oben umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_UR(nextField)) != null) {
 						if (shownErrorFields.contains(nextField))
-							nextField.setBorder(redBorder);
+							nextField.setBorder(redLightBorder);
 						else
-							nextField.setBorder(grayBorder);
+							nextField.setBorder(linealBorder);
 
 					}
 					// ALle Felder nach rechts unten umranden
 					nextField = selField;
 					while ((nextField = starfield.getField_DR(nextField)) != null) {
 						if (shownErrorFields.contains(nextField))
-							nextField.setBorder(redBorder);
+							nextField.setBorder(redLightBorder);
 						else
-							nextField.setBorder(grayBorder);
+							nextField.setBorder(linealBorder);
 
 					}
 				}
 			}
+
+			if (MainWindow.getInstance().getGamePrefs().getHelpMode() == HelpMode.ON) {
+				switch (selField.getUserContent()) {
+				case CONTENT_STAR:
+					// Im Falle eines Sterns müssen alle Felder auf Pfeile
+					// durchsucht werden, die in Richtung des Sterns zeigen
+					highlightArrows(selField, starfield);
+					break;
+				case CONTENT_EMPTY:
+				case CONTENT_GRAYED:
+					// Diese Felder brauchen nicht gesondert beachtet werden
+					break;
+				default:
+					// Die Übrigbleibenden Felder sind Felder mit Pfeilen drin,
+					// hier werden die Felder gehighlightet auf die der Pfeil
+					// zeigt.
+					highlightLane(selField, starfield);
+					break;
+				}
+			}
 		}
+	}
+
+	private void highlightArrows(Field selField, Starfield starfield) {
+		// Felder nach oben durchsuchen
+		Field nextField = selField;
+		while ((nextField = starfield.getField_U(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_D) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach oben-rechts durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_UR(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_DL) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach rechts durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_R(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_L) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach unten-rechts durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_DR(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_UL) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach unten durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_D(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_U) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach unten-links durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_DL(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_UR) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach links durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_L(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_R) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+		// Felder nach oben-links durchsuchen
+		nextField = selField;
+		while ((nextField = starfield.getField_UL(nextField)) != null) {
+			if (nextField.getUserContent() == AllowedContent.CONTENT_ARROW_DR) {
+				nextField.setBorder(helpBorder);
+			}
+		}
+
+	}
+
+	private void highlightLane(Field selField, Starfield starfield) {
+		// Nach der Art des Pfeils werden alle Zellen in der Richtung
+		// gekennzeichnet
+		Field nextField;
+		switch (selField.getUserContent()) {
+		case CONTENT_ARROW_U:
+			nextField = selField;
+			while ((nextField = starfield.getField_U(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_UR:
+			nextField = selField;
+			while ((nextField = starfield.getField_UR(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_R:
+			nextField = selField;
+			while ((nextField = starfield.getField_R(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_DR:
+			nextField = selField;
+			while ((nextField = starfield.getField_DR(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_D:
+			nextField = selField;
+			while ((nextField = starfield.getField_D(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_DL:
+			nextField = selField;
+			while ((nextField = starfield.getField_DL(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_L:
+			nextField = selField;
+			while ((nextField = starfield.getField_L(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		case CONTENT_ARROW_UL:
+			nextField = selField;
+			while ((nextField = starfield.getField_UL(nextField)) != null) {
+				nextField.setBorder(helpBorder);
+			}
+			break;
+		default:
+			return;
+		}
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent pE) {
 
 		Object o = pE.getSource();
-		LineBorder whiteBorder = new LineBorder(Color.WHITE, 1);
-		LineBorder redBorder = new LineBorder(Color.RED, 1);
 
 		if (o instanceof Field) {
 			Field selField = (Field) o;
@@ -264,6 +408,23 @@ public class StarfieldViewHandler implements MouseListener {
 					}
 				}
 
+			}
+
+			if (MainWindow.getInstance().getGamePrefs().getHelpMode() == HelpMode.ON) {
+				// Alle Felder werden durchlaufen, hat ein Feld einen Rand vom
+				// HelpModus so wird der alte Rand wieder gesetzt
+				for (int x = 0; x < starfield.getSize().width; x++) {
+					for (int y = 0; y < starfield.getSize().height; y++) {
+						final Field f = starfield.getField(x, y);
+						if (f.getBorder() == helpBorder) {
+							if (shownErrorFields.contains(f))
+								f.setBorder(redBorder);
+							else
+								f.setBorder(whiteBorder);
+						}
+
+					}
+				}
 			}
 		}
 	}

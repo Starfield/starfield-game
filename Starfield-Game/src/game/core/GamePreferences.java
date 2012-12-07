@@ -31,6 +31,7 @@ public class GamePreferences {
 		_loadedCommandStack = null;
 		_resolution = Resolution.R800X600;
 		_lineal = LinealMode.NO;
+		_helpMode = HelpMode.OFF;
 	}
 
 	/**
@@ -98,6 +99,13 @@ public class GamePreferences {
 		STAR;
 	}
 
+	public enum HelpMode {
+		/** Aus */
+		OFF,
+		/** An */
+		ON;
+	}
+
 	// Optionsvariablen
 	/** AppModus */
 	private AppMode _appMode;
@@ -111,6 +119,8 @@ public class GamePreferences {
 	private Resolution _resolution;
 	/** LinealMode */
 	private LinealMode _lineal;
+	/** Hilfsmodus */
+	private HelpMode _helpMode;
 
 	/**
 	 * @return the {@link AppMode}
@@ -248,5 +258,13 @@ public class GamePreferences {
 
 	public LinealMode getLinealMode() {
 		return _lineal;
+	}
+
+	public void setHelpMode(HelpMode newMode) {
+		_helpMode = newMode;
+	}
+
+	public HelpMode getHelpMode() {
+		return _helpMode;
 	}
 }

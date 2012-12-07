@@ -51,6 +51,7 @@ public class ImageResources {
 		ICON_ABOUT("icons/icon_about"),
 		ICON_LINEAL("icons/icon_lineal"),
 		ICON_HELP("icons/icon_help"),
+		ICON_HELP_MODE("icons/icon_help_mode"),
 		ICON_MARKER_ON("icons/icon_marker_on"),
 		ICON_MARKER_OFF("icons/icon_marker_off"),
 		ICON_OPTIONS("icons/icon_options"),

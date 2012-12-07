@@ -166,6 +166,30 @@ public class MainMenuBar extends JMenuBar {
 		lineal.add(radioButton);
 
 		_options.add(lineal);
+
+		// Auswahlbereich für Linealanzeige erstellen
+		final JMenu helpMode = new JMenu("Hilfsmodus");
+		helpMode.setIcon(ImageResources.getScaledIcon(24,
+				Images.ICON_HELP_MODE, Image.SCALE_SMOOTH));
+		bg = new ButtonGroup();
+		// Kein helpMode
+		radioButton = new JRadioButtonMenuItem("Aus");
+		radioButton.setToolTipText("Keine Hilfe zu Feldern anzeigen");
+		radioButton.setActionCommand("HELP_OFF");
+		radioButton.addActionListener(handler);
+		bg.add(radioButton);
+		radioButton.setSelected(true); // Standard
+		helpMode.add(radioButton);
+		// Kreuz
+		radioButton = new JRadioButtonMenuItem("An");
+		radioButton.setToolTipText("Hilfe bei selektierten Feldern");
+		radioButton.setActionCommand("HELP_ON");
+		radioButton.addActionListener(handler);
+		bg.add(radioButton);
+		helpMode.add(radioButton);
+
+		_options.add(helpMode);
+
 		return _options;
 	}
 
