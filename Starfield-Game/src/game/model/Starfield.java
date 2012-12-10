@@ -1062,7 +1062,7 @@ public class Starfield implements Serializable {
 		while (!(getField_UL(field) == (null))) {
 			field = getField_UL(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
@@ -1074,7 +1074,7 @@ public class Starfield implements Serializable {
 		while (!(getField_U(field) == (null))) {
 			field = getField_U(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
@@ -1110,7 +1110,7 @@ public class Starfield implements Serializable {
 		while (!(getField_DR(field) == (null))) {
 			field = getField_DR(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
@@ -1122,7 +1122,7 @@ public class Starfield implements Serializable {
 		while (!(getField_D(field) == (null))) {
 			field = getField_D(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
@@ -1134,7 +1134,7 @@ public class Starfield implements Serializable {
 		while (!(getField_DL(field) == (null))) {
 			field = getField_DL(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
@@ -1146,7 +1146,7 @@ public class Starfield implements Serializable {
 		while (!(getField_L(field) == (null))) {
 			field = getField_L(field);
 			if (field.getSolutionContent() == AllowedContent.CONTENT_EMPTY
-					&& field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
+					|| field.getSolutionContent() == AllowedContent.CONTENT_STAR) {
 				fields.add(field);
 			}
 		}
