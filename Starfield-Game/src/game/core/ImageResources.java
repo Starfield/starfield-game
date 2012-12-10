@@ -3,6 +3,8 @@
  */
 package game.core;
 
+import game.model.Field.AllowedContent;
+
 import java.awt.Image;
 import java.net.URL;
 import java.util.HashMap;
@@ -33,6 +35,8 @@ public class ImageResources {
 	// Klassenvariablen
 	/** SimpleImageCache */
 	private static Map<Images, ImageIcon> _imageCache = new HashMap<ImageResources.Images, ImageIcon>();
+
+	private static Map<AllowedContent, Images> _contentMapping;
 
 	/**
 	 * Auflistung aller bekannten Bilder
@@ -146,6 +150,11 @@ public class ImageResources {
 		return null;
 	}
 
+	public static ImageIcon getScaledIcon(int size, AllowedContent image,
+			int scaleHint) {
+		return getScaledIcon(size, getRelatedImage(image), scaleHint);
+	}
+
 	/**
 	 * Liefert in Abhängigkeit der eingestellten Optionen den richtigen Bildpfad
 	 * 
@@ -187,6 +196,40 @@ public class ImageResources {
 					_imageCache.remove(image);
 			}
 		}
+	}
+
+	/**
+	 * Diese Methode initialisiert das Mapping von AllowedContent zu Images
+	 */
+	private static void initContentMap() {
+		_contentMapping = new HashMap<AllowedContent, Images>();
+
+		_contentMapping.put(AllowedContent.CONTENT_EMPTY, Images.CONTENT_EMPTY);
+		_contentMapping.put(AllowedContent.CONTENT_GRAYED,
+				Images.CONTENT_GRAYED);
+		_contentMapping.put(AllowedContent.CONTENT_STAR, Images.CONTENT_STAR);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_U,
+				Images.CONTENT_ARROW_U);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_D,
+				Images.CONTENT_ARROW_D);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_L,
+				Images.CONTENT_ARROW_L);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_R,
+				Images.CONTENT_ARROW_R);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_UR,
+				Images.CONTENT_ARROW_UR);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_UL,
+				Images.CONTENT_ARROW_UL);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_DR,
+				Images.CONTENT_ARROW_DR);
+		_contentMapping.put(AllowedContent.CONTENT_ARROW_DL,
+				Images.CONTENT_ARROW_DL);
+	}
+
+	private static Images getRelatedImage(AllowedContent content) {
+		if (_contentMapping == null)
+			initContentMap();
+		return _contentMapping.get(content);
 	}
 
 	/**

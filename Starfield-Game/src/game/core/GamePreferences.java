@@ -32,6 +32,7 @@ public class GamePreferences {
 		_resolution = Resolution.R800X600;
 		_lineal = LinealMode.NO;
 		_helpMode = HelpMode.OFF;
+		_floatableToolbars = false;
 	}
 
 	/**
@@ -54,6 +55,15 @@ public class GamePreferences {
 		REPLAY_MODE;
 	}
 
+	/**
+	 * Stellt eine Auswahl von Auflösungen dar, für die das Spiel optimiert
+	 * dargestellt werden kann. <br>
+	 * Eine weitere Auflösung kann durch hinzufügen in diese Liste hinzugefügt
+	 * werden, es sind keine weiteren Codeveränderungen nötig.
+	 * 
+	 * @author Jan
+	 * 
+	 */
 	public enum Resolution {
 		/** Stellt eine Auflösung von 800x600 ein */
 		R800X600(800, 600),
@@ -90,6 +100,18 @@ public class GamePreferences {
 
 	}
 
+	/**
+	 * Beschreibt den Modus für die Linealanzeige auf dem Spielfeld. <br>
+	 * Bei eingeschalteter LinealAnzeige gibt es zwei Modi:
+	 * <ul>
+	 * <li>Der Kreuz-Modus hebt waagerechte und senkrechte Linien von der
+	 * aktuell mit der Maus markierten Zelle hervor</li>
+	 * <li>Der Stern-Modus hebt zusätzlich auch die diagonalen hervor</li>
+	 * </ul>
+	 * 
+	 * @author Jan
+	 * 
+	 */
 	public enum LinealMode {
 		/** Kein Lineal anzeigen */
 		NO,
@@ -99,6 +121,19 @@ public class GamePreferences {
 		STAR;
 	}
 
+	/**
+	 * Beschreibt den Modus für die Hilfsanzeige des Spiels. <br>
+	 * Bei eingeschalteter Hilfsanzeige werden folgende Hilfen angezeigt:
+	 * <ul>
+	 * <li>Hält man die Maus einen Pfeil, so werden alle Zellen in Richtung des
+	 * Pfeils herborgehoben</li>
+	 * <li>Hält man die Maus einen Stern so werden alle Pfeile die auf diesen
+	 * Stern zeigen hervorgehoben</li>
+	 * </ul>
+	 * 
+	 * @author Jan
+	 * 
+	 */
 	public enum HelpMode {
 		/** Aus */
 		OFF,
@@ -121,6 +156,8 @@ public class GamePreferences {
 	private LinealMode _lineal;
 	/** Hilfsmodus */
 	private HelpMode _helpMode;
+	/** flotable toolbars */
+	private final boolean _floatableToolbars;
 
 	/**
 	 * @return the {@link AppMode}
@@ -244,27 +281,67 @@ public class GamePreferences {
 		_starfieldFile = pFile;
 	}
 
+	/**
+	 * Liefert das File des gespeicherten Starfield, das im Zwischenspeicher
+	 * liegt
+	 * 
+	 * @return
+	 */
 	public File getStarfieldFile() {
 		return _starfieldFile;
 	}
 
+	/**
+	 * Löscht das zuvor gespeicherte Starfield aus dem Zwischenspeicher
+	 */
 	public void removeStarfieldFile() {
 		_starfieldFile = null;
 	}
 
+	/**
+	 * Setzt den Modus des Bildschirmlineals
+	 * 
+	 * @param newMode
+	 *            aus {@link LinealMode}
+	 */
 	public void setLinealMode(LinealMode newMode) {
 		_lineal = newMode;
 	}
 
+	/**
+	 * Liefert den eingestellten {@link LinealMode}
+	 * 
+	 * @return den LinealMode
+	 */
 	public LinealMode getLinealMode() {
 		return _lineal;
 	}
 
+	/**
+	 * Setzt den Modus für die Hilfsanzeige
+	 * 
+	 * @param newMode
+	 *            aus {@link HelpMode}
+	 */
 	public void setHelpMode(HelpMode newMode) {
 		_helpMode = newMode;
 	}
 
+	/**
+	 * Liefert den eingestellten {@link HelpMode}
+	 * 
+	 * @return den HelpMode
+	 */
 	public HelpMode getHelpMode() {
 		return _helpMode;
+	}
+
+	/**
+	 * Sind die Toolbars floatable?
+	 * 
+	 * @return
+	 */
+	public boolean isToolbarFloatable() {
+		return _floatableToolbars;
 	}
 }

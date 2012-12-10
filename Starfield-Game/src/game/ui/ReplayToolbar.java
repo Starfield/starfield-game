@@ -54,6 +54,8 @@ public class ReplayToolbar extends JToolBar {
 		panel.add(initControls());
 
 		add(panel);
+		setFloatable(MainWindow.getInstance().getGamePrefs()
+				.isToolbarFloatable());
 	}
 
 	/**

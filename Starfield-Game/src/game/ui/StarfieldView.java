@@ -199,6 +199,10 @@ public class StarfieldView extends JScrollPane {
 			allowedHeight -= _hintBorderSize.height;
 			allowedWidth -= _hintBorderSize.width;
 
+			// Zusätzliche Pixel abziehen weils immer noch nicht passt -.-
+			allowedHeight += 18;
+			allowedWidth -= 3;
+
 			// Einzelne Kantenlänge berechnen
 			int calcWidth = allowedWidth / _starfield.getSize().width;
 			int calcHeight = allowedHeight / _starfield.getSize().height;

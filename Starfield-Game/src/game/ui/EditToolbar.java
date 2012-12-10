@@ -65,6 +65,8 @@ public class EditToolbar extends JToolBar {
 		panel.add(initArrows());
 		panel.add(initGlobal());
 		add(panel);
+		setFloatable(MainWindow.getInstance().getGamePrefs()
+				.isToolbarFloatable());
 	}
 
 	private Component initStar() {

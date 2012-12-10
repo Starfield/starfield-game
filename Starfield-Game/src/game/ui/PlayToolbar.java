@@ -49,6 +49,8 @@ public class PlayToolbar extends JToolBar {
 		panel.add(initError());
 
 		add(panel);
+		setFloatable(MainWindow.getInstance().getGamePrefs()
+				.isToolbarFloatable());
 	}
 
 	/**
