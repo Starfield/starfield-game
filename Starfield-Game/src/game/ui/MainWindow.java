@@ -15,6 +15,7 @@ import game.model.Starfield;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -265,6 +266,10 @@ public class MainWindow extends JFrame {
 		// werden
 		if (_gamePrefs.getAppMode() == AppMode.LOAD_GAME_MODE)
 			_commandStack.loadSavegame();
+		if (_gamePrefs.getAppMode() == AppMode.LOAD_EDIT_MODE)
+			if (_toolbar instanceof EditToolbar)
+				((EditToolbar) _toolbar).get_editHandler().actionPerformed(
+						new ActionEvent(_toolbar, 0, "CHECK"));
 		_contentPane.add(_starfieldView, BorderLayout.CENTER);
 
 	}

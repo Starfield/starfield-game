@@ -364,6 +364,10 @@ public class EditToolbar extends JToolBar {
 		return _currentlyShownErrors;
 	}
 
+	public ToolbarEditHandler get_editHandler() {
+		return _editHandler;
+	}
+
 	private class CustomDocument extends PlainDocument {
 
 		/**
