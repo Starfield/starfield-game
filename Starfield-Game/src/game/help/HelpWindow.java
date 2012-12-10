@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -112,6 +113,11 @@ public class HelpWindow extends JFrame {
 			System.out.println("Resource '" + pageName + "' nicht gefunden");
 			return null;
 		}
+
+		URL test = ClassLoader.class
+				.getResource("/helpcontent/screenshots/anwenden.png");
+		System.out.println(test);
+
 		StringBuilder sb = new StringBuilder();
 		try {
 			InputStreamReader isr = new InputStreamReader(is);
@@ -119,7 +125,11 @@ public class HelpWindow extends JFrame {
 
 			for (String s; (s = in.readLine()) != null;) {
 
-				sb.append(s);
+				if (s.contains("<img")) {
+					final String parsedString = parseIMGTag(s);
+					sb.append(parsedString);
+				} else
+					sb.append(s);
 
 			}
 			in.close();
@@ -129,6 +139,15 @@ public class HelpWindow extends JFrame {
 		}
 		return sb.toString();
 
+	}
+
+	private String parseIMGTag(String s) {
+		final int srcIndex = s.indexOf("src=") + 5;
+		final int endIndex = s.indexOf("\"", srcIndex);
+		final String imagePath = s.substring(srcIndex, endIndex);
+		URL url = ClassLoader.class.getResource(imagePath);
+		return s.substring(0, srcIndex) + url
+				+ s.substring(endIndex, s.length());
 	}
 
 	private void readHelpContentFromSystem() {
