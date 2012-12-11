@@ -113,11 +113,6 @@ public class HelpWindow extends JFrame {
 			System.out.println("Resource '" + pageName + "' nicht gefunden");
 			return null;
 		}
-
-		URL test = ClassLoader.class
-				.getResource("/helpcontent/screenshots/anwenden.png");
-		System.out.println(test);
-
 		StringBuilder sb = new StringBuilder();
 		try {
 			InputStreamReader isr = new InputStreamReader(is);
@@ -134,7 +129,6 @@ public class HelpWindow extends JFrame {
 			}
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return sb.toString();
