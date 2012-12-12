@@ -39,6 +39,9 @@ public class CommandStack implements Serializable {
 	/** Versuche, die der Nutzer bisher benötigt hat */
 	private int attempts = 0;
 	
+	/** Gibt an, ob Änderungen am Play Stack vorgenommen wurden */
+	private boolean stackChange = false;
+	
 	/**
 	 * Standardkonstruktor
 	 */
@@ -322,6 +325,26 @@ public class CommandStack implements Serializable {
 	 */
 	public ArrayList<AbstractCommand> getCorrections() {
 		return corrections;
+	}
+
+	/**
+	 * Gibt zurück, ob Änderungen am Play Stack vorgenommen wurden.
+	 * 
+	 * @return stackChange
+	 * - Änderung
+	 */
+	public boolean isStackChange() {
+		return stackChange;
+	}
+
+	/**
+	 * Setzt, ob Änderungen am Play Stack vorgenommen wurden.
+	 * 
+	 * @param stackChange
+	 * - Änderung
+	 */
+	public void setStackChange(boolean stackChange) {
+		this.stackChange = stackChange;
 	}
 	
 }

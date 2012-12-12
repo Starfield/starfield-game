@@ -46,6 +46,7 @@ public abstract class AbstractCommand implements Serializable {
 	public void execute() {
 		stacks.addPlayCommand(this);
 		stacks.addTimeLapseCommand(this, true);
+		stacks.setStackChange(true);
 	}
 
 	/**
@@ -53,6 +54,7 @@ public abstract class AbstractCommand implements Serializable {
 	 */
 	public void undo() {
 		stacks.addTimeLapseCommand(this, false);
+		stacks.setStackChange(true);
 	}
 
 	/**
