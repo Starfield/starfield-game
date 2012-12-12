@@ -2,6 +2,7 @@ package game.commands;
 
 import game.ui.MainWindow;
 import game.ui.PlayToolbar;
+import game.ui.ReplayToolbar;
 
 import java.awt.AWTEvent;
 
@@ -41,7 +42,13 @@ public class SetMarkerCommand extends AbstractCommand {
 	public void execute() {
 		super.execute();
 		getStacks().addMarker(number);
-		((PlayToolbar) MainWindow.getInstance().getActiveToolBar()).get_playHandler().setMarker();
+		if (MainWindow.getInstance().getActiveToolBar() instanceof PlayToolbar)
+		{
+			((PlayToolbar) MainWindow.getInstance().getActiveToolBar()).get_playHandler().setMarker();
+		}
+		else {
+			((ReplayToolbar) MainWindow.getInstance().getActiveToolBar()).getReplayHandler().setMarker();
+		}
 	}
 
 	/**

@@ -195,8 +195,8 @@ public class ReplayToolbar extends JToolBar {
 
 	public void setProgressMaximum(int maximum) {
 		_progressBar.setMaximum(maximum);
-		_progressBar.setMinimum(1);
-		_progressBar.setValue(1);
+		_progressBar.setMinimum(0);
+		_progressBar.setValue(0);
 		_progressBar.repaint();
 	}
 

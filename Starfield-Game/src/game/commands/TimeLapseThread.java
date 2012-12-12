@@ -3,6 +3,7 @@ package game.commands;
 import java.util.ArrayList;
 
 import game.ui.MainWindow;
+import game.ui.ReplayToolbar;
 
 /**
  * Der TimeLapseThread ist ein neuer Thread, der für das Abspielen des Zeitraffers am Ende eines Spiels verantwortlich ist.
@@ -18,7 +19,18 @@ public class TimeLapseThread extends Thread {
 	private int timeLapseSize = timeLapseStack.size();
 	
 	/** Geschwindigkeit des Zeitraffers */
-	private int speed = 1500;
+	private int speed = 0;
+	
+	/**
+	 * Konstruktor
+	 * 
+	 * @param slider
+	 * - Position bzw. Geschwindigkeit des Sliders
+	 */
+	public TimeLapseThread(int slider) {
+		setSpeed(slider);
+		((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressMaximum(timeLapseStack.size());
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -28,10 +40,14 @@ public class TimeLapseThread extends Thread {
 	public void run() {
 		for (int i = 0; i < timeLapseSize; i++) {
 			if (timeLapseStack.get(i).isExecute()) {
-				timeLapseStack.get(i).getCommand().execute();	
+				timeLapseStack.get(i).getCommand().execute();
+				((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressTick();
+				timeLapseStack.remove(timeLapseStack.size()-1);
 			}
 			else {
 				timeLapseStack.get(i).getCommand().undo();
+				((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressTick();
+				timeLapseStack.remove(timeLapseStack.size()-1);
 			}
 			
 			try {
@@ -62,22 +78,22 @@ public class TimeLapseThread extends Thread {
 	public void setSpeed(int speed) {
 		switch (speed) {
 		case 1:
-			this.speed = 2500;
+			this.speed = 800;
 			break;
 		case 2:
-			this.speed = 2000;
-			break;
-		case 3:
-			this.speed = 1500;
-			break;
-		case 4:
-			this.speed = 1000;
-			break;
-		case 5:
 			this.speed = 500;
 			break;
+		case 3:
+			this.speed = 400;
+			break;
+		case 4:
+			this.speed = 300;
+			break;
+		case 5:
+			this.speed = 100;
+			break;
 		default:
-			this.speed = 1500;
+			this.speed = 300;
 			break;
 		};
 	}
