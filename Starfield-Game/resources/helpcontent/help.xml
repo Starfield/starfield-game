@@ -8,4 +8,6 @@
 	<kapitel><name>Puzzle speichern</name><file>/helpcontent/puzzlespeichern.html</file></kapitel>
 	<kapitel><name>Puzzle laden</name><file>/helpcontent/puzzleladen.html</file></kapitel>
 	<kapitel><name>Auflösung ändern</name><file>/helpcontent/auflosungandern.html</file></kapitel>
+	<kapitel><name>Lineal aktivieren</name><file>/helpcontent/lineal.html</file></kapitel>
+	<kapitel><name>Hilfsmodus aktivieren</name><file>/helpcontent/hilfe.html</file></kapitel>
 </xml>
