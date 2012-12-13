@@ -13,9 +13,16 @@ public class Highscore implements Serializable {
 
 	private static final long serialVersionUID = 6303659531368081229L;
 	
+	/** Name des Spielers */
 	private String name;
+	
+	/** Gespielter Zeit */
 	private long time;
+
+	/** Getätigte Versuche */
 	private int attempts;
+	
+	/** Punktzahl */
 	private int points;
 	
 	/**
