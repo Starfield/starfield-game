@@ -54,4 +54,14 @@ public class HighscoreList implements Serializable {
 		}
 	}
 
+	/**
+	 * Gibt die Highscore Liste zurück.
+	 * 
+	 * @return highscores
+	 * - Liste der 10 Highscores
+	 */
+	public ArrayList<Highscore> getHighscores() {
+		return highscores;
+	}
+
 }
