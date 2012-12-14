@@ -1,6 +1,8 @@
 package game.commands;
 
+import game.core.GamePreferences.AppMode;
 import game.model.Field;
+import game.ui.MainWindow;
 
 import java.awt.AWTEvent;
 import java.io.Serializable;
@@ -44,17 +46,21 @@ public abstract class AbstractCommand implements Serializable {
 	 * Übernimmt die Eintragung des ausgeführten Commands in den Play Stack und den Time Lapse Stack.
 	 */
 	public void execute() {
-		stacks.addPlayCommand(this);
-		stacks.addTimeLapseCommand(this, true);
-		stacks.setStackChange(true);
+		if (MainWindow.getInstance().getGamePrefs().getAppMode() != AppMode.REPLAY_MODE) {
+			stacks.addPlayCommand(this);
+			stacks.addTimeLapseCommand(this, true);
+			stacks.setStackChange(true);
+		}
 	}
 
 	/**
 	 * Übernimmt die Eintragung des ausgeführten Commands in den Time Lapse Stack.
 	 */
 	public void undo() {
-		stacks.addTimeLapseCommand(this, false);
-		stacks.setStackChange(true);
+		if (MainWindow.getInstance().getGamePrefs().getAppMode() != AppMode.REPLAY_MODE) {
+			stacks.addTimeLapseCommand(this, false);
+			stacks.setStackChange(true);
+		}
 	}
 
 	/**

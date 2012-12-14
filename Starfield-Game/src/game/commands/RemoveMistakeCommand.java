@@ -1,5 +1,8 @@
 package game.commands;
 
+import game.ui.MainWindow;
+import game.ui.PlayToolbar;
+
 import java.awt.AWTEvent;
 
 /**
@@ -28,6 +31,9 @@ public class RemoveMistakeCommand extends AbstractCommand {
 	public void execute() {
 		if (getStacks().locateFirstMistake() != 0) {
 			getStacks().goBack(false);
+			if (MainWindow.getInstance().getActiveToolBar() instanceof PlayToolbar) {
+				((PlayToolbar)MainWindow.getInstance().getActiveToolBar()).get_playHandler().removeMarkers();
+			}
 		}
 	}
 

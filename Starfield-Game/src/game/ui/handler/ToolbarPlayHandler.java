@@ -85,8 +85,9 @@ public class ToolbarPlayHandler implements ActionListener {
 								null,
 								"Beim Zurückspringen werden alle Marker gelöscht. Wollen Sie wirklich fortfahren?",
 								"Wollen sie wirklich fortfahren?",
-								JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
+								JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 					command.execute();
+				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Es gibt keinen Fehler!");
 			}

@@ -220,6 +220,9 @@ public class CommandStack implements Serializable {
 			for (int i = 0; i < corrections.size(); i++) {
 				corrections.get(i).execute();
 			}
+			for (int i = 0; i < this.marker.size(); i++) {
+				this.marker.set(i, 0);
+			}
 		}
 	}
 	
