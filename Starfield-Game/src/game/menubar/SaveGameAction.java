@@ -43,7 +43,7 @@ public class SaveGameAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent pE) {
 		if (MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.GAME_MODE
-				|| MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.LOAD_GAME_MODE){
+				|| MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.LOAD_GAME_MODE) {
 			// TODO Speicherdialog aufrufen
 			JFileChooser jfc = new JFileChooser();
 			jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -52,12 +52,12 @@ public class SaveGameAction extends AbstractAction {
 			FileFilter ff = new FileNameExtensionFilter("Starfield-Spielstand",
 					"save");
 			jfc.setFileFilter(ff);
-			//setzt ausgangspfad und erstellt ordner des ausgangspfads wenn nicht vorhanden
+			// setzt ausgangspfad und erstellt ordner des ausgangspfads wenn
+			// nicht vorhanden
 			File dirfile = new File("Spielstand");
-			if (dirfile.getAbsoluteFile().exists()){
+			if (dirfile.getAbsoluteFile().exists()) {
 				jfc.setCurrentDirectory(dirfile.getAbsoluteFile());
-			}
-			else {
+			} else {
 				try {
 					dirfile.mkdir();
 					jfc.setCurrentDirectory(dirfile.getAbsoluteFile());
@@ -66,61 +66,68 @@ public class SaveGameAction extends AbstractAction {
 					e.printStackTrace();
 				}
 			}
-			//-----------------
-			int w=0;
-			do{
-				w=0;
+			// -----------------
+			int w = 0;
+			do {
+				w = 0;
 				if (jfc.showSaveDialog(jfc) == JFileChooser.APPROVE_OPTION) {
 					String temppfad = jfc.getSelectedFile().getAbsolutePath();
 					if (temppfad.endsWith(".save")) {
 					} else {
 						temppfad = temppfad + ".save";
 					}
-					//prüft ob die datei bereits existiert
+					// prüft ob die datei bereits existiert
 					File tempfile = new File(temppfad);
-					if(tempfile.exists()){
-						int auswahl = JOptionPane.showConfirmDialog(null, "Wollen Sie den Spielstand überschreiben?", "Spielstand existiert", JOptionPane.YES_NO_CANCEL_OPTION);
-						switch (auswahl){
+					if (tempfile.exists()) {
+						int auswahl = JOptionPane.showConfirmDialog(null,
+								"Wollen Sie den Spielstand überschreiben?",
+								"Spielstand existiert",
+								JOptionPane.YES_NO_CANCEL_OPTION);
+						switch (auswahl) {
 						case 0:
 							try {
 								File f = new File(temppfad);
 								FileOutputStream fos = new FileOutputStream(f);
-								ObjectOutputStream oos = new ObjectOutputStream(fos);
+								ObjectOutputStream oos = new ObjectOutputStream(
+										fos);
 								oos.flush();
-								oos.writeObject(MainWindow.getInstance().getCommandStack());
+								oos.writeObject(MainWindow.getInstance()
+										.getCommandStack());
 								oos.close();
+								MainWindow.getInstance().getCommandStack()
+										.setStackChange(false);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							w=0;
+							w = 0;
 							break;
 						case 1:
-							w=1;
+							w = 1;
 							break;
 						case 2:
-							w=0;
+							w = 0;
 							break;
 						}
-					}
-					else{
+					} else {
 						try {
 							File f = new File(temppfad);
 							FileOutputStream fos = new FileOutputStream(f);
 							ObjectOutputStream oos = new ObjectOutputStream(fos);
 							oos.flush();
-							oos.writeObject(MainWindow.getInstance().getCommandStack());
+							oos.writeObject(MainWindow.getInstance()
+									.getCommandStack());
 							oos.close();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						w=0;
+						w = 0;
 					}
-					
+
 				}
-			}while(w==1);
-	
+			} while (w == 1);
+
 		}
 	}
 }

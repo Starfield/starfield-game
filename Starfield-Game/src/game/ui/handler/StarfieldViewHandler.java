@@ -472,6 +472,7 @@ public class StarfieldViewHandler implements MouseListener {
 					((EditToolbar) o).setPlayable(MainWindow.getInstance()
 							.getCurrentStarfield().checkPlayable().size() == 0,
 							true);
+				MainWindow.getInstance().getCommandStack().setStackChange(true);
 			}
 
 		}

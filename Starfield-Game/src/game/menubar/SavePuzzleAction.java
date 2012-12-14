@@ -101,6 +101,8 @@ public class SavePuzzleAction extends AbstractAction {
 														.getCurrentStarfield()
 														.checkPlayable().size() == 0));
 								oos.close();
+								MainWindow.getInstance().getCommandStack()
+										.setStackChange(false);
 							} catch (IOException e) {
 								e.printStackTrace();
 							}

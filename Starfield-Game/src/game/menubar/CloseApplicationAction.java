@@ -37,11 +37,17 @@ public class CloseApplicationAction extends AbstractAction {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent pE) {
-		// TODO Überprüfen ob nichtgespeicherte Änderungen vorliegen
+		// Wird der Splashscreen angezeigt oder befindet man sich im Replay
+		// Modus kann das Spiel direkt geschlossen werden
 		if (MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.FIRST_START
 				| MainWindow.getInstance().getGamePrefs().getAppMode() == AppMode.REPLAY_MODE) {
 			exitApplication();
 		}
+
+		// Gibt es keine ungespeicherten Änderungen kann das Spiel direkt
+		// geschlossen werden
+		if (!MainWindow.getInstance().getCommandStack().isStackChange())
+			exitApplication();
 
 		// Confirm Dialog ob Änderungen gespeichert werden sollen
 		final int userChoice = JOptionPane.showConfirmDialog(null,

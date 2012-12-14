@@ -89,6 +89,8 @@ public class ToolbarPlayHandler implements ActionListener {
 		if (cmd == "checkSolution") {
 			checkInput();
 		}
+
+		MainWindow.getInstance().getCommandStack().setStackChange(true);
 	}
 
 	public void setMarker() {
