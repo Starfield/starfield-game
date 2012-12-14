@@ -29,6 +29,7 @@ public class RemoveMistakeCommand extends AbstractCommand {
 	
 	@Override
 	public void execute() {
+		super.execute();
 		if (getStacks().locateFirstMistake() != 0) {
 			getStacks().goBack(false);
 			if (MainWindow.getInstance().getActiveToolBar() instanceof PlayToolbar) {

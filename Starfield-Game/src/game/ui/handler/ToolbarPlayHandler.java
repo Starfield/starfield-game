@@ -10,6 +10,7 @@ import game.core.ImageResources.Images;
 import game.model.Starfield;
 import game.ui.MainWindow;
 import game.ui.PlayToolbar;
+import game.ui.ReplayToolbar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JToolBar;
 
 /**
  * 
@@ -24,12 +26,6 @@ import javax.swing.JOptionPane;
  * @author Nikolaj
  */
 public class ToolbarPlayHandler implements ActionListener {
-
-	private PlayToolbar _toolbar = null;
-
-	ArrayList<JLabel> _markerList = null;
-
-	JLabel l = null;
 
 	/*
 	 * (non-Javadoc)
@@ -40,8 +36,6 @@ public class ToolbarPlayHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent pE) {
 		String cmd = pE.getActionCommand();
-		_toolbar = (PlayToolbar) MainWindow.getInstance().getActiveToolBar();
-		_markerList = _toolbar.getMarkerList();
 
 		if (cmd == "setMarker") {
 			if (lastOn() != 4) {
@@ -99,23 +93,36 @@ public class ToolbarPlayHandler implements ActionListener {
 
 		MainWindow.getInstance().getCommandStack().setStackChange(true);
 	}
+	
+	private ArrayList<JLabel> getMarkerList() {
+		JToolBar toolbar = MainWindow.getInstance().getActiveToolBar();
+		ArrayList<JLabel> list = null;
+		if (toolbar instanceof PlayToolbar) {
+			list = ((PlayToolbar)toolbar).getMarkerList();
+		}
+		if (toolbar instanceof ReplayToolbar) {
+			list = ((ReplayToolbar)toolbar).getMarkerList();
+		}
+		return list;
+	}
 
 	public void setMarker() {
-		_markerList.get(firstOff()).setIcon(
+		getMarkerList().get(firstOff()).setIcon(
 				ImageResources.getIcon(Images.ICON_MARKER_ON));
 	}
 
 	public void removeSingleMarker() {
-		_markerList.get(lastOn()).setIcon(
+		getMarkerList().get(lastOn()).setIcon(
 				ImageResources.getIcon(Images.ICON_MARKER_OFF));
 	}
 
 	public void removeMarkers() {
-		for (int i = 0; i < _markerList.size(); i++) {
-			l = _markerList.get(i);
+		
+		for (int i = 0; i < getMarkerList().size(); i++) {
+			final JLabel l = getMarkerList().get(i);
 			if (l.getIcon().equals(
 					ImageResources.getIcon(Images.ICON_MARKER_ON)))
-				_markerList.get(i).setIcon(
+				getMarkerList().get(i).setIcon(
 						ImageResources.getIcon(Images.ICON_MARKER_OFF));
 		}
 	}
@@ -176,8 +183,8 @@ public class ToolbarPlayHandler implements ActionListener {
 	 * @return - letzter gesetzter Marker
 	 */
 	private int lastOn() {
-		for (int i = _markerList.size() - 1; i >= 0; i--) {
-			l = _markerList.get(i);
+		for (int i = getMarkerList().size() - 1; i >= 0; i--) {
+			final JLabel l = getMarkerList().get(i);
 			if (l.getIcon().equals(
 					ImageResources.getIcon(Images.ICON_MARKER_ON))) {
 				return i;
@@ -192,8 +199,8 @@ public class ToolbarPlayHandler implements ActionListener {
 	 * @return - erster nicht gesetzter Marker
 	 */
 	private int firstOff() {
-		for (int i = 0; i < _markerList.size(); i++) {
-			l = _markerList.get(i);
+		for (int i = 0; i < getMarkerList().size(); i++) {
+			final JLabel l = getMarkerList().get(i);
 			if (l.getIcon().equals(
 					ImageResources.getIcon(Images.ICON_MARKER_OFF))) {
 				return i;

@@ -40,15 +40,19 @@ public class TimeLapseThread extends Thread {
 	public void run() {
 		((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).getReplayHandler().removeMarkers();
 		for (int i = 0; i < timeLapseSize; i++) {
-			if (timeLapseStack.get(i).isExecute()) {
-				timeLapseStack.get(i).getCommand().execute();
+			if (timeLapseStack.get(i).getCommand() instanceof RemoveMistakeCommand) {
+				((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).getReplayHandler().removeMarkers();
 				((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressTick();
-//				timeLapseStack.remove(timeLapseStack.size()-1);
 			}
 			else {
-				timeLapseStack.get(i).getCommand().undo();
-				((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressTick();
-//				timeLapseStack.remove(timeLapseStack.size()-1);
+				if (timeLapseStack.get(i).isExecute()) {
+					timeLapseStack.get(i).getCommand().execute();
+					((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressTick();
+				}
+				else {
+					timeLapseStack.get(i).getCommand().undo();
+					((ReplayToolbar)MainWindow.getInstance().getActiveToolBar()).setProgressTick();
+				}
 			}
 			
 			try {
