@@ -24,9 +24,17 @@ public class Starfield implements Serializable {
 	Boolean playable;
 	HashSet<Field> arrows;
 	HashSet<Field> stars;
-	HashSet<Field> allSolutionStars; // alle Sterne zur KI-Überprüfung
 	HashSet<Field> grayed;
+	HashSet<Field> arrowsSave; // zur Speicherung der bereits gefundenen
+								// Elemente
+	HashSet<Field> starsSave;
+	HashSet<Field> grayedSave;
+	HashSet<Field> allSolutionStars; // alle Sterne zur KI-Überprüfung
 	Dimension size;
+	int arrowsCountOld = 0;
+	int starsCountOld = 0;
+	int grayedCountOld = 0;
+	int solutionFounded = 0;
 
 	public Starfield(int xNumber, int yNumber) {
 		size = new Dimension();
@@ -178,6 +186,9 @@ public class Starfield implements Serializable {
 		return rightorwrong;
 	}
 
+	/**
+	 * Gibt die falschen Felder zurück.
+	 */
 	public ArrayList<Field> getWrongFields() {
 		ArrayList<Field> wrongFields = new ArrayList<Field>();
 		for (ArrayList<Field> list : this.listcontainer) {
@@ -566,6 +577,9 @@ public class Starfield implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Überprüft die Spielbarkeit und gibt ggf. die falschen Felder zurück.
+	 */
 	public HashSet<Field> checkPlayable() {
 		HashSet<Field> wrongFields = new HashSet<Field>();
 		ArrayList<ArrayList<Field>> args = new ArrayList<ArrayList<Field>>();
@@ -919,7 +933,7 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Überprüft die Schwierigkeit und gibt sie aus.
+	 * Überprüft die Schwierigkeit(und Eindeutigkeit) und gibt sie aus.
 	 */
 	public String checkDifficulty() {
 
@@ -933,42 +947,75 @@ public class Starfield implements Serializable {
 			setFieldsGrayIfNoStars(); // alles grau, wo 0 drüber
 			setAllFieldsGrayNoArrowPointed(); // alles grau, wo kein Pfeil drauf
 												// & Pfeile+LösungsSterne setzen
-			System.out.println("Anzahl Pfeile: " + arrows.size()
-					+ " Anzahl Sterne: " + stars.size() + "Anzahl Grayed: "
-					+ grayed.size());
+			String difficulty = "Einfach";
+			// Schleife für einfachen Modus
+			while ((!isAIFinished()) && hasChanged()) {
 
-			// Schleife
-			while ((!isAIFinished()) && aiCount < 900) {
 				setStarCountEqualEmptyFields(); // freie Plätze = Anzahl Sterne
 												// > setze Sterne
+				aiCount = aiCount + 1;
+			}
+			resetOldCount();
+			// Schleife für mittleren Modus
+			while ((!isAIFinished()) && hasChanged()) {
+				setStarCountEqualEmptyFields(); // freie Plätze = Anzahl Sterne
+				// > setze Sterne
 				fillFullRowColumnGray(); // setzt falls alle Sterne gesetzt
 											// wurden Restfelder Grau
 				checkStarfieldforDiagonalsStars(); // Richtung vom Pfeil nur 1
-													// übrig und bisher kein
+													// mögliches Feld übrig und
+													// bisher kein
+													// Stern
+				difficulty = "Mittel";
+				aiCount = aiCount + 2;
+			}
+			resetOldCount();
+			// Schleife für schweren Modus
+			while ((!isAIFinished()) && hasChanged()) {
+				setStarCountEqualEmptyFields(); // freie Plätze = Anzahl Sterne
+				// > setze Sterne
+				fillFullRowColumnGray(); // setzt falls alle Sterne gesetzt
+											// wurden Restfelder Grau
+				checkStarfieldforDiagonalsStars(); // Richtung vom Pfeil nur 1
+													// mögliches Feld übrig und
+													// bisher kein
 													// Stern
 				checkObviousFieldsWhereNoArrowsInRowColumn();// Checkt ob hinter
 																// einem geraden
 																// Pfeil(u,d,l,r)
 																// kein Stern
 																// mehr soll.
-				System.out.println(aiCount + " Anzahl Pfeile: " + arrows.size()
-						+ " Anzahl Sterne: " + stars.size() + "Anzahl Grayed: "
-						+ grayed.size());
-				aiCount = aiCount + 1;
+				difficulty = "Schwer";
+				aiCount = aiCount + 3;
+			}
 
-			}
-			if (aiCount < 1) {
-				return "Easy";
-			} else if (aiCount < 99) {
-				return "Hard";
+			if (aiCount > 15 && aiCount < 999) {
+				difficulty = "Schwer";
 			} else {
-				setPlayable(false); // darf nicht speicher bzw. spielbar sein!
-				return "Nicht eindeutig";
+				if (!isAIFinished()) {
+					setPlayable(false); // darf nicht speicher bzw. spielbar
+										// sein!
+					difficulty = "Nicht eindeutig";
+				}
 			}
+
+			return difficulty;
 		}
 		return " ";
 	}
 
+	/**
+	 * Setzt die Zähler für die HasChanged() Abfrage zurück.
+	 */
+	private void resetOldCount() {
+		starsCountOld = 0;
+		arrowsCountOld = 0;
+		grayedCountOld = 0;
+	}
+
+	/**
+	 * Setzt alle Felder grau, wenn die Reihe fertig gefüllt ist mit Sternen.
+	 */
 	private void fillFullRowColumnGray() {
 		for (int x = 0; x < size.getWidth(); x++) {
 			fillFullColumnGray(x);
@@ -1031,6 +1078,9 @@ public class Starfield implements Serializable {
 		}
 	}
 
+	/**
+	 * Holt sich alle freien Felder in der jeweiligen Richtung des Pfeiles.
+	 */
 	private HashSet<Field> getEmptyFieldsInDiagonalDirection(Field field) {
 		switch (field.getSolutionContent()) {
 		case CONTENT_ARROW_UL:
@@ -1221,7 +1271,7 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Setzt Felder oberhalb eines nach untenzeigenden Pfeiles grau, wenn er
+	 * Setzt Felder oberhalb eines nach untenzeigenden Pfeiles grau, wenn
 	 * Gesamtzahl - Darunterpfeile=1.
 	 */
 	private void setFieldsGrayUpToTheArrow(Field field) {
@@ -1260,7 +1310,7 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Setzt Felder links eines nach rechtszeigenden Pfeiles grau, wenn er
+	 * Setzt Felder links eines nach rechtszeigenden Pfeiles grau, wenn
 	 * Gesamtzahl - Darunterpfeile=1.
 	 */
 	private void setFieldsGrayLeftToTheArrow(Field field) {
@@ -1298,7 +1348,7 @@ public class Starfield implements Serializable {
 	}
 
 	/**
-	 * Setzt Felder rechts eines nach linkszeigenden Pfeiles grau, wenn er
+	 * Setzt Felder rechts eines nach linkszeigenden Pfeiles grau, wenn
 	 * Gesamtzahl - Darunterpfeile=1.
 	 */
 	private void setFieldsGrayRightToTheArrow(Field field) {
@@ -1344,14 +1394,27 @@ public class Starfield implements Serializable {
 		HashSet<Field> possibleSolutionFields = new HashSet<Field>();
 		for (ArrayList<Field> list : listcontainer) {
 			for (Field field : list) {
-				if (!stars.contains(field)
-						&& !arrows.contains(field)
-						&& !grayed.contains(field)
-						&& !(field.solutionContent == AllowedContent.CONTENT_STAR)) {
+				if (!stars.contains(field) && !arrows.contains(field)
+						&& !grayed.contains(field)) {
 					possibleSolutionFields.add(field);
 				}
 			}
 		}
 		return possibleSolutionFields;
+	}
+
+	/**
+	 * Überprüft ob noch Sterne, Pfeile oder graue Felder gefunden wurden.
+	 * 
+	 */
+	private boolean hasChanged() {
+		if (stars.size() == starsCountOld && arrows.size() == arrowsCountOld
+				&& grayed.size() == grayedCountOld) {
+			return false; // hat sich nichts geändert
+		}
+		starsCountOld = stars.size();
+		arrowsCountOld = arrows.size();
+		grayedCountOld = grayed.size();
+		return true; // hat sich geändert - setze neue Werte
 	}
 }
