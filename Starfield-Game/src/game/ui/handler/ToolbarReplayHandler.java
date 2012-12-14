@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
 public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 
 	private ReplayToolbar _toolbar = null;
-	private JSlider _slider = null;
+	private int _sliderSpeed = 3;
 	private TimeLapseThread _timeLapseThread = null;
 	private ArrayList<JLabel> _markerList = null;
 	private JLabel l = null;
@@ -45,12 +45,7 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 
 		if (cmd.equals("play")) {
 			if (_timeLapseThread == null) {
-				if (_slider != null) {
-					_timeLapseThread = new TimeLapseThread(_slider.getValue());
-				}
-				else {
-					_timeLapseThread = new TimeLapseThread(3);
-				}
+				_timeLapseThread = new TimeLapseThread(_sliderSpeed);
 			}
 			switch (_timeLapseThread.getState()) {
 			case NEW:
@@ -60,15 +55,16 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 				_timeLapseThread.resume();
 				break;
 			case TERMINATED:
-				_timeLapseThread = new TimeLapseThread(_slider.getValue());
-				MainWindow.getInstance().getCurrentStarfield().clearUserContent().prepareUserContent(true);
+				_timeLapseThread = new TimeLapseThread(_sliderSpeed);
+				MainWindow.getInstance().getCurrentStarfield()
+						.clearUserContent().prepareUserContent(true);
 				_timeLapseThread.start();
 				break;
 			default:
 				break;
 			}
 		}
-		
+
 		if (cmd.equals("stop")) {
 			_timeLapseThread.suspend();
 		}
@@ -79,20 +75,23 @@ public class ToolbarReplayHandler implements ActionListener, ChangeListener {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+	 * )
 	 */
 	@Override
 	public void stateChanged(ChangeEvent pE) {
 		Object o = pE.getSource();
-		if (o instanceof JSlider) {
-			_slider = (JSlider) o;
-		}
 
-		if (_slider == null)
+		if (o == null)
 			return;
-		
-		if (_timeLapseThread != null) {
-			_timeLapseThread.setSpeed(_slider.getValue());
+
+		if (o instanceof JSlider) {
+			JSlider slider = (JSlider) o;
+
+			if (_timeLapseThread != null) {
+				_timeLapseThread.setSpeed(slider.getValue());
+			}
+			_sliderSpeed = slider.getValue();
 		}
 	}
 
